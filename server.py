@@ -47,12 +47,13 @@ def process_rideform():
 
 ## Login forms: model window?
 
-@app.route('login', methods=["GET"])
+@app.route('/login', methods=["GET"])
 def view_login():
     return render_template('login.html')
 
-@app.route('login', methods=["POST"])
+@app.route('/login', methods=["POST"])
 def login():
+    pass
     # check if username/password matches
     # log user in
     # flash messages
