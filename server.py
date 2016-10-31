@@ -18,15 +18,67 @@ app.secret_key = "thomothgromoth"
 app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
-def indec():
+def index():
     """Homepage"""
+
+    return render_template('index.html')
+
+@app.route('/search')
+def search_rides():
+    """Search database for rides"""
+    # get items from form
+    # query database
+    # return results
+    #**TD** figure out mile radius & lat/long situation. create lat/long helper fnc
+    return render_template('search.html')
+
+@app.route('/post-ride', methods=["GET"])
+def view_rideform():
+
+    return render_template('rideform.html')
+
+@app.route('/post-ride', methods=["POST"])
+def process_rideform():
+    # get form inputs
+    # add to database
+    # prompt to login
+    # flash message
+    return redirect('/home.html')
+
+## Login forms: model window?
+
+@app.route('login', methods=["GET"])
+def view_login():
+    return render_template('login.html')
+
+@app.route('login', methods=["POST"])
+def login():
+    # check if username/password matches
+    # log user in
+    # flash messages
+    # QUESTION : how do I redirect them from whatever page they logged in from?
+    #   ideas: keep stored in sessions what page the request is coming from
+
+@app.route('/logout', methods=["POST"])
+def logout():
+    # logout user
+    # delete session
+    # flash message
+    return redirect('/')
+
+#### Future Routes ####
+# @app.route('/details/<rideid>')
+# def ride_details():
+#     return render_template('details.html', ride_id=ride_id)
+
+# driver profiles
 
 if __name__ == '__main__':
     # Debug for DebugToolbarExtension. Also so server restarts when changes made
     app.debug = True
 
     # Connection function from model.py
-    connect_to_db(app)
+    connect_db(app)
 
     # Debug Toolbar
     DebugToolbarExtension(app)
