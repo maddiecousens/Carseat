@@ -4,6 +4,92 @@
 
 {% block content %}
 
-<h1>FUTURE RIDEFORM /rideform </h1>
+
+<!-- Why isn't placeholder text displaying -->
+
+<div class="well">
+    Add driver as 1 or 2.
+    Add date as 00/00/0000
+</div>
+
+<form action="/post-ride" method="post">
+    <div class="form-group">
+
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="driver">Driver</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="driver" name="driver"
+                    aria-describedby="driver" placedholder="Eventually grab from session" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="start_location">Starting Location</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="start_location" name="start_location"
+                    aria-describedby="start_location" placedholder="Start Location" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="end_location">Ending Location</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="end_location" name="end_location"
+                    aria-describedby="end_location" placedholder="End Location" required>
+                </div>
+            </div>
+        </div>
+
+        <br> 
+
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="date">Date</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="date" name="date"
+                    aria-describedby="date" placedholder="Date of trip" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class='col-xs-8'>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+            </div>
+           
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="seats">Seats Available</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="seats" name="seats"
+                    aria-describedby="seats" placedholder="Seats Available" required>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- submit button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </div>
+</form>
 
 {% endblock %}

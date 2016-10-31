@@ -3,7 +3,71 @@
 {% block Title %} Home {% endblock %}
 
 {% block content %}
+<div class="well">
+    Research
+</div>
 
-<h1>FUTURE SEARCH RESULTS /search </h1>
+<!-- Eventually turn into an ajax request -->
+<form action="/search">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="input-group">
+                    <label for="starting">Starting Destination</label>
+                    <input type="text" class="form-control" id="starting" name="starting" 
+                    aria-describedby="starting destination" placeholder="Enter Starting Location" required>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                <div class="input-group">
+                    <label for="ending">Ending Destination</label>
+                    <input type="text" class="form-control" id="ending" name="ending" 
+                    aria-describedby="ending destination" placeholder="Enter Ending Location" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <!-- submit button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </div>
+</form>
+
+
+
+<div class="container">
+    <table class="table table-hover">
+    <h2>Upcoming Rides</h2>
+
+{% if rides %}
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Driver</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Seats</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for ride in rides %}
+      <tr>
+        <td>{{ ride.date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.user.name }}</td>
+        <td>{{ ride.start_location }}</td>
+        <td>{{ ride.end_location }}</td>
+        <td>{{ ride.seats }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% else %}
+<p>No upcoming rides for that search</p>
+{% endif %}
+</div>
 
 {% endblock %}
+    

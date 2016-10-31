@@ -7,6 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 #**TD** Adjust once model.py is created
 from model import *
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -26,11 +27,19 @@ def index():
 @app.route('/search')
 def search_rides():
     """Search database for rides"""
-    # get items from form
-    # query database
-    # return results
-    #**TD** figure out mile radius & lat/long situation. create lat/long helper fnc
-    return render_template('search.html')
+
+    if request.args.get('query'):
+        rides = Ride.query.options(db.joinedload('user')).all()
+        return render_template('search.html', rides=rides)
+    else:
+        starting = request.args.get('starting')
+        ending = request.args.get('ending')
+        print starting, ending
+        
+        rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_location == starting, Ride.end_location == ending).all()
+        
+        #**TD** figure out mile radius & lat/long situation. create lat/long helper fnc
+        return render_template('search.html', rides=rides)
 
 @app.route('/post-ride', methods=["GET"])
 def view_rideform():
@@ -39,11 +48,21 @@ def view_rideform():
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
-    # get form inputs
-    # add to database
-    # prompt to login
-    # flash message
-    return redirect('/home.html')
+    driver = request.form.get('driver')
+    start_location = request.form.get('start_location')
+    end_location = request.form.get('end_location')
+    date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
+    seats = request.form.get('seats')
+
+    print driver, start_location, end_location, date, seats
+
+    ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
+
+    db.session.add(ride)
+    db.session.commit()
+    flash("Ride added to DB")
+
+    return redirect('/')
 
 ## Login forms: model window?
 

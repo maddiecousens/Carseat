@@ -12,32 +12,31 @@
     Enter a starting and ending destination to look for rides.
 </div>
 
-<form action="/application" method="post">
+<form action="/search">
     <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="input-group">
+                    <label for="starting">Starting Destination</label>
+                    <input type="text" class="form-control" id="starting" name="starting" 
+                    aria-describedby="starting destination" placeholder="Enter Starting Location" required>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <div class="input-group">
-                <label for="starting">Starting Destination</label>
-                <input type="text" class="form-control" id="starting" name="starting" 
-                aria-describedby="starting destination" placeholder="Enter Starting Location" required>
+            <div class="col-xs-12 col-sm-6">
+                <div class="input-group">
+                    <label for="ending">Ending Destination</label>
+                    <input type="text" class="form-control" id="ending" name="ending" 
+                    aria-describedby="ending destination" placeholder="Enter Ending Location" required>
+                </div>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6">
-            <div class="input-group">
-                <label for="ending">Ending Destination</label>
-                <input type="text" class="form-control" id="ending" name="ending" 
-                aria-describedby="ending destination" placeholder="Enter Ending Location" required>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <!-- submit button -->
-    <button type="submit" class="btn btn-primary">Submit</button>
+        <br>
+        <!-- submit button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
 
     </div>
-    </form>
+</form>
 
 {% endblock %}

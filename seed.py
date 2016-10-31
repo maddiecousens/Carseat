@@ -3,15 +3,20 @@ from model import User, Ride, Rider
 from model import connect_db, db
 from server import app
 
+from sqlalchemy import func
+
 from datetime import datetime
 
 def example_data():
     """Create some sample data."""
 
     # In case this is run more than once, empty out existing data
-    User.query.delete()
-    Ride.query.delete()
-    Rider.query.delete()
+    print "deleting data"
+    db.drop_all()
+    db.create_all()
+    # User.query.delete()
+    # Ride.query.delete()
+    # Rider.query.delete()
 
    # Add sample employees and departments
     maddie = User(user_id=1 ,name="Maddie", email="maddie@", password="doge1")
@@ -33,12 +38,48 @@ def example_data():
 
     db.session.add_all([maddie, ahmad, carl, lexie, sfth, sfla, rider1, rider2, rider3, rider4])
     db.session.commit()
+    print "adding data"
 
+def set_val_user_id():
+    """Set value for the next user_id after seeding database"""
 
+    # Get the Max user_id in the database
+    result = db.session.query(func.max(User.user_id)).one()
+    max_id = int(result[0])
+
+    # Set the value for the next user_id to be max_id + 1
+    query = "SELECT setval('users_user_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id})
+    db.session.commit()
+
+def set_val_ride_id():
+    """Set value for the next user_id after seeding database"""
+
+    # Get the Max user_id in the database
+    result = db.session.query(func.max(Ride.ride_id)).one()
+    max_id = int(result[0])
+
+    # Set the value for the next user_id to be max_id + 1
+    query = "SELECT setval('rides_ride_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id})
+    db.session.commit()
+
+def set_val_rider_id():
+    """Set value for the next user_id after seeding database"""
+
+    # Get the Max user_id in the database
+    result = db.session.query(func.max(Rider.id)).one()
+    max_id = int(result[0])
+
+    # Set the value for the next user_id to be max_id + 1
+    query = "SELECT setval('riders_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id})
+    db.session.commit()
 
 if __name__ == "__main__":
     connect_db(app)
 
-    # In case tables haven't been created, create them
-    db.create_all()
     example_data()
+    set_val_user_id()
+    set_val_rider_id()
+    set_val_ride_id()
