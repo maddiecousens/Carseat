@@ -114,6 +114,7 @@ def connect_db(app):
 
     # Configure connection to PostgreSQL
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///rideshare'
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 

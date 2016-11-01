@@ -94,6 +94,14 @@
 
 <script> 
 
+    var submitRide = $('#ride-form-submit');
+
+    function checkLoggedIn(evt) {
+        evt.preventDefault();
+        
+    }
+
+    submitRide.on('click', checkLoggedIn);
 
 
 

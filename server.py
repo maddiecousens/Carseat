@@ -142,10 +142,18 @@ def register():
     flash("You have been added as a user. Please login")
     return redirect("login")
 
-@app.route('/profile', methods=["GET"])
-def register_form():
+@app.route('/profile/<user_id>', methods=["GET"])
+def register_form(user_id):
 
-    return render_template('profile.html')
+    # user_id = session['current_user']
+    user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)
+    rides_offered = user.rides_offered
+    rides_taking = user.rides_taking
+    # query.
+
+
+
+    return render_template('profile.html', session=session, user=user, rides_offered=rides_offered, rides_taking=rides_taking)
 
 
 #### Future Routes ####

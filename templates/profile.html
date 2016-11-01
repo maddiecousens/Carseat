@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block Title %} Home {% endblock %}
+
+{% block content %}
+
+<h1>User Details</h1>
+    <p>
+        Name: {{ user.name }}
+    </p>
+    <p>
+        Email: {{ user.email }}
+    </p>
+
+{% if rides_offered %}
+
+<div class="container">
+    <table class="table table-hover">
+    <h2>Upcoming Rides you have offered</h2>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Driver</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Seats</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for ride in rides_offered %}
+      <tr>
+        <td>{{ ride.date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.user.name }}</td>
+        <td>{{ ride.start_location }}</td>
+        <td>{{ ride.end_location }}</td>
+        <td>{{ ride.seats }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
+
+
+{% if rides_taking %}
+
+<div class="container">
+    <table class="table table-hover">
+    <h2>Upcoming Rides you are taking</h2>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Driver</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Seats</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for ride in rides_taking %}
+      <tr>
+        <td>{{ ride.ride.date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.ride.user.name }}</td>
+        <td>{{ ride.ride.start_location }}</td>
+        <td>{{ ride.ride.end_location }}</td>
+        <td>{{ ride.ride.seats }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
+
+
+
+{% endblock %}
