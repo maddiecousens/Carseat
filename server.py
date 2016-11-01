@@ -22,7 +22,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage"""
 
-    return render_template('index.html')
+    return render_template('index.html', session=session)
 
 @app.route('/search')
 def search_rides():
@@ -39,12 +39,12 @@ def search_rides():
         rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_location == starting, Ride.end_location == ending).all()
         
         #**TD** figure out mile radius & lat/long situation. create lat/long helper fnc
-        return render_template('search.html', rides=rides)
+        return render_template('search.html', rides=rides, session=session)
 
 @app.route('/post-ride', methods=["GET"])
 def view_rideform():
 
-    return render_template('rideform.html')
+    return render_template('rideform.html', session=session)
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
@@ -68,23 +68,85 @@ def process_rideform():
 
 @app.route('/login', methods=["GET"])
 def view_login():
-    return render_template('login.html')
+    return render_template('login.html', session=session)
 
-@app.route('/login', methods=["POST"])
-def login():
-    pass
-    # check if username/password matches
-    # log user in
-    # flash messages
+@app.route("/login", methods=["POST"])
+def login_process():
+    """Login process"""
+
+    # Get email and password from input fields in form
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+
+    # If email is in database, grab password from database
+    if User.query.filter(User.email == email).first():
+
+        # Grab user OBJECT
+        user = User.query.filter(User.email==email).first()
+
+        db_password = user.password
+
+        # Check if provided pw matches db pw
+        if password == db_password:
+
+            # Set session cookie to user_id from user OBJECT
+            session['current_user'] = user.user_id 
+            flash("Logged in as %s" % user.name)
+
+            return redirect('/') 
+
+        # If wrong password, flash message, redirect to login
+        else:
+            flash("Wrong password!")
+            return redirect("/login")
+
+    # If email is not in database, flash message, redirect to /login
+    else:
+        flash("Email is not in use.  Please register.")
+        return redirect("/login")
     # QUESTION : how do I redirect them from whatever page they logged in from?
     #   ideas: keep stored in sessions what page the request is coming from
 
+@app.route('/logout', methods=["GET"])
+def logout_form():
+    """temp logout form"""
+    return render_template('logout.html', session=session)
+
+
 @app.route('/logout', methods=["POST"])
 def logout():
-    # logout user
-    # delete session
-    # flash message
-    return redirect('/')
+    """Log user out"""
+    del session['current_user']
+    flash("You've been logged out")
+
+    return redirect("/")
+
+
+@app.route('/register', methods=["GET"])
+def register_form():
+    """Registration form"""
+    return render_template('register.html', session=session)
+
+@app.route('/register', methods=["POST"])
+def register():
+    """Add user to db"""
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User(name=name, email=email, password=password)
+
+    db.session.add(user)
+    db.session.commit()
+    flash("You have been added as a user. Please login")
+    return redirect("login")
+
+@app.route('/profile', methods=["GET"])
+def register_form():
+
+    return render_template('profile.html')
+
 
 #### Future Routes ####
 # @app.route('/details/<rideid>')
