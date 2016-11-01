@@ -13,6 +13,62 @@
     </p>
 
 {% if rides_offered %}
+<div class="container">
+    <table class="table table-hover">
+    <h2>Approve/Deny Ride Requests</h2>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Requester</th>
+        <th>Seats Requested</th>
+        <th>Approve/Deny</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for ride in rides_offered %}
+
+{% if ride.requests %}
+
+{% for request in ride.requests %}
+      <tr>
+        <td>{{ ride.date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.start_location }}</td>
+        <td>{{ ride.end_location }}</td>
+        <td>{{ request.user.name }}</td>
+        <td>{{ request.seats }}</td>
+        <td>
+            <form action="/request-approval" method="POST">
+                <input type="hidden" name="request_id" value={{ request.id }}></input>
+                <input type="hidden" name="ride_id" value={{ ride.ride_id }}></input>
+                <input type="hidden" name="requester" value={{ request.requester }}></input>
+                <input type="hidden" name="seats" value={{ request.seats }}></input>
+                <input type="submit" name='approvedeny' value="Approve">
+            </form>
+            <form action="/request-approval" method="POST">
+                <input type="hidden" name="request_id" value={{request.id}}></input>
+                <input type="submit" name='approvedeny' value="Reject">
+            </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+{% if rides_offered %}
 
 <div class="container">
     <table class="table table-hover">
@@ -20,17 +76,15 @@
     <thead>
       <tr>
         <th>Date</th>
-        <th>Driver</th>
         <th>Start</th>
         <th>End</th>
-        <th>Seats</th>
+        <th>Seat Left</th>
       </tr>
     </thead>
     <tbody>
     {% for ride in rides_offered %}
       <tr>
         <td>{{ ride.date.strftime('%Y-%m-%d') }}</td>
-        <td>{{ ride.user.name }}</td>
         <td>{{ ride.start_location }}</td>
         <td>{{ ride.end_location }}</td>
         <td>{{ ride.seats }}</td>

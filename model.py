@@ -67,6 +67,30 @@ class Rider(db.Model):
         return "<Rider id={}, ride_id={}, user_id={}>".format(self.id, 
             self.ride_id, self.user_id)
 
+
+class Request(db.Model):
+    """Requests for rides"""
+
+    __tablename__ = "requests"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable=False)
+    requester = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    seats = db.Column(db.Integer, nullable=False)
+
+
+    ride = db.relationship("Ride",
+                            backref=db.backref("requests"))
+
+    user = db.relationship("User",
+                            backref=db.backref("requests"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Requests id={}, ride_id={}, requester={}, seats={}>".format(self.id, 
+            self.ride_id, self.requester, self.seats)
+
 # class Request(db.Model):
 #     """Pending Requests"""
 
@@ -92,11 +116,16 @@ class Rider(db.Model):
 #        4 | Lexie  | lexie@  | doge4
 # (4 rows)
 
-# rideshare=# select * from rides;
 #  ride_id | driver | start_location | end_location |            date            | seats 
 # ---------+--------+----------------+--------------+----------------------------+-------
-#        1 |      1 | SF             | Tahoe        | 2016-10-31 21:17:37.659467 |     4
-#        2 |      2 | SF             | LA           | 2016-10-31 21:17:37.659565 |     4
+#        1 |      1 | SF             | Tahoe        | 2016-10-31 22:47:41.647222 |     4
+#        2 |      2 | SF             | LA           | 2016-10-31 22:47:41.647333 |     4
+#        3 |      1 | NY             | SF           | 2016-11-05 00:00:00        |     5
+#        4 |      2 | SF             | Tahoe        | 2016-12-25 00:00:00        |     5
+
+
+
+
 
 
 

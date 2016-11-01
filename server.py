@@ -48,7 +48,7 @@ def view_rideform():
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
-    driver = request.form.get('driver')
+    driver = session['current_user']
     start_location = request.form.get('start_location')
     end_location = request.form.get('end_location')
     date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
@@ -142,18 +142,67 @@ def register():
     flash("You have been added as a user. Please login")
     return redirect("login")
 
+
 @app.route('/profile/<user_id>', methods=["GET"])
-def register_form(user_id):
+def user_profile(user_id):
 
     # user_id = session['current_user']
     user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)
     rides_offered = user.rides_offered
+    request_objects = []
+    for ride in rides_offered:
+        if ride.requests:
+            request_objects.append
+
     rides_taking = user.rides_taking
-    # query.
-
-
 
     return render_template('profile.html', session=session, user=user, rides_offered=rides_offered, rides_taking=rides_taking)
+
+@app.route('/request-seats', methods=["POST"])
+def request_seats():
+    """Add request to DB"""
+    
+    seats = request.form.get('seats')
+
+    ride_id = request.form.get('ride_id')
+    requester = session['current_user']
+    new_request = Request(ride_id=ride_id, requester=requester, seats=seats)
+    db.session.add(new_request)
+    db.session.commit()
+    flash('You have requested this ride')
+    path = '/profile/{}'.format(requester)
+    return redirect(path)
+
+
+@app.route('/request-approval', methods=["POST"])
+def request_approval():
+    """Approve or reject request"""
+    approval = request.form.get('approvedeny')
+    ride_id = request.form.get('ride_id')
+    requester = request.form.get('requester')
+    seats = request.form.get('seats')
+    request_id = request.form.get('request_id')
+    current_user = session['current_user']
+
+    if approval == 'Approve':
+        ride_request = Request.query.get(request_id)
+        ride = Ride.query.get(ride_id)
+        ride.seats = ride.seats - int(seats)
+        rider = Rider(ride_id=ride_id, user_id=requester, seats=seats)
+
+        db.session.delete(ride_request)
+        db.session.add(rider)
+        db.session.commit()
+        flash("Request Approved")
+    else:
+        ride_request = Request.query.get(request_id)
+        db.session.delete(ride_request)
+        db.session.commit()
+        flash("Request Denied")
+    db.session.commit()
+    path = '/profile/{}'.format(current_user)
+    return redirect(path)
+
 
 
 #### Future Routes ####

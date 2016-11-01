@@ -4,7 +4,8 @@
 
 {% block content %}
 <div class="well">
-    Research
+    To Do:
+    - Don't show rides you are the driver for!!! Or indicate them in some way
 </div>
 
 <!-- Eventually turn into an ajax request -->
@@ -49,6 +50,7 @@
         <th>Start</th>
         <th>End</th>
         <th>Seats</th>
+        <th>Request</th>
       </tr>
     </thead>
     <tbody>
@@ -59,6 +61,18 @@
         <td>{{ ride.start_location }}</td>
         <td>{{ ride.end_location }}</td>
         <td>{{ ride.seats }}</td>
+        <td>
+            <form action="/request-seats" method="POST">
+                <select name='seats'>
+                    {% for i in range(ride.seats) %}
+                    <option value={{ i+1 }}>{{ i+1 }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="ride_id" value={{ride.ride_id}}></input>
+                <input type="submit" value="Request Seats">
+            </form>
+
+        </td>
       </tr>
     {% endfor %}
     </tbody>
@@ -70,4 +84,6 @@
 </div>
 
 {% endblock %}
+
+
     
