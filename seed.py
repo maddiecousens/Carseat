@@ -1,4 +1,4 @@
-from model import User, Ride, Rider
+from model import User, Ride, Rider, Request
 
 from model import connect_db, db
 from server import app
@@ -25,10 +25,10 @@ def example_data():
 
     # = User(name="", email="", password="")
 
-    sfth =Ride(ride_id=1 ,driver=1, start_location="SF", end_location="Tahoe",date=datetime.now(), seats=4)
-    sfth =Ride(ride_id=2 ,driver=1, start_location="SF", end_location="Tahoe",date=datetime.now(), seats=4)
-    sfla =Ride(ride_id=3 ,driver=2, start_location="SF", end_location="LA",date=datetime.now(), seats=5)
-    sfla =Ride(ride_id=4 ,driver=2, start_location="SF", end_location="LA",date=datetime.now(), seats=5)
+    sfth1 =Ride(ride_id=1 ,driver=1, start_location="SF", end_location="Tahoe",date=datetime.now(), seats=4)
+    sfth2 =Ride(ride_id=2 ,driver=1, start_location="SF", end_location="Tahoe",date=datetime.now(), seats=4)
+    sfla1 =Ride(ride_id=3 ,driver=2, start_location="SF", end_location="LA",date=datetime.now(), seats=5)
+    sfla2 =Ride(ride_id=4 ,driver=2, start_location="SF", end_location="LA",date=datetime.now(), seats=5)
 
 
     # Ride(driver=, start_location="", end_location="",date =)
@@ -43,7 +43,7 @@ def example_data():
     request3 = Request(ride_id=3, requester=3, seats=3)
     request4 = Request(ride_id=3, requester=1, seats=1)
 
-    db.session.add_all([maddie, ahmad, carl, lexie, sfth, sfla, request1, request2, request3, request4])
+    db.session.add_all([maddie, ahmad, carl, sfth1, sfth2, sfla1, sfla2, request1, request2, request3, request4])
     db.session.commit()
     print "adding data"
 
@@ -88,5 +88,5 @@ if __name__ == "__main__":
 
     example_data()
     set_val_user_id()
-    set_val_rider_id()
+    # set_val_rider_id()
     set_val_ride_id()
