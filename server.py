@@ -7,7 +7,7 @@ from flask import (Flask, jsonify, render_template, redirect,
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Ride, Rider, Request
+from model import User, Ride, Rider, Request, connect_db, db
 
 from datetime import datetime
 
@@ -28,7 +28,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """ Homepage """
 
-    return render_template('index.html', session=session)
+    return render_template('index.html')
 
 @app.route('/search')
 def search_rides():
@@ -37,7 +37,7 @@ def search_rides():
     # If user clicks 'All Rides' from NavBar, show all rides
     if request.args.get('query'):
         rides = Ride.query.options(db.joinedload('user')).all()
-        return render_template('search.html', rides=rides, session=session)
+        return render_template('search.html', rides=rides)
 
     # If user enters search terms, show rides based off search terms
     else:
@@ -45,42 +45,54 @@ def search_rides():
         ending = request.args.get('ending')
 
         rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_location == starting, Ride.end_location == ending).all()
-        
-        return render_template('search.html', rides=rides, session=session)
+        print '\n\n\n'
+        print rides
+        print '\n\n\n'
+        return render_template('search.html', rides=rides)
 
 @app.route('/post-ride', methods=["GET"])
 def view_rideform():
     """ Form to post new ride """
 
-    return render_template('rideform.html', session=session)
+    return render_template('rideform.html')
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
     """ Add new ride to database """
 
-    # Get driver from who is logged in
-    driver = session['current_user']
+    if session.get('current_user')):
 
-    start_location = request.form.get('start_location')
-    end_location = request.form.get('end_location')
-    # parse date
-    date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
-    seats = request.form.get('seats')
+        # Get driver from who is logged in
+        driver = session['current_user']
 
-    ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
+        start_location = request.form.get('start_location')
+        end_location = request.form.get('end_location')
+        # parse date
+        date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
+        seats = request.form.get('seats')
 
-    db.session.add(ride)
-    db.session.commit()
+        ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
 
-    flash("Ride added to DB")
+        db.session.add(ride)
+        db.session.commit()
 
-    return redirect('/')
+        flash("Ride added to DB")
+
+
+        return redirect('/profile/{}'.format(driver))
+
+    else:
+        flash("You must be logged in to post a ride")
+
+        return redirect('login/')
+
+    
 
 
 @app.route('/login', methods=["GET"])
 def view_login():
     """ Show login form """
-    return render_template('login.html', session=session)
+    return render_template('login.html')
 
 @app.route("/login", methods=["POST"])
 def login_process():
@@ -125,25 +137,16 @@ def login_process():
 def logout_form():
     """ Temporary logout form """
 
-    return render_template('logout.html', session=session)
-
-
-@app.route('/logout', methods=["POST"])
-def logout():
-    """ Log out user """
-
-    # delete session
     del session['current_user']
     flash("You've been logged out")
 
     return redirect("/")
 
-
 @app.route('/register', methods=["GET"])
 def register_form():
     """ Registration form """
 
-    return render_template('register.html', session=session)
+    return render_template('register.html')
 
 @app.route('/register', methods=["POST"])
 def register():
@@ -176,8 +179,7 @@ def user_profile(user_id):
 
     rides_taking = user.rides_taking
 
-    return render_template('profile.html', session=session, 
-                                           user=user, 
+    return render_template('profile.html', user=user, 
                                            rides_offered=rides_offered, 
                                            rides_taking=rides_taking)
 
@@ -269,7 +271,7 @@ if __name__ == '__main__':
     DebugToolbarExtension(app)
 
     # Allows redirects
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     app.run(host="0.0.0.0", port=5000)
     # app.run(debug=True, host="0.0.0.0")
