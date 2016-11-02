@@ -1,0 +1,2 @@
+driver, seats, cost, start_lat, start_long, start_name, start_number, start_street, start_city, start_state, start_zip, end_lat, end_long, end_name, end_number, end_street, end_city, end_state, end_zip, start_timestamp, end_timsetamp, mileage, car_type, luggage, comments
+1, 5, 15.00, 37.897369, -122.300884, '', '', '', 'Albany', 'CA', '94706', 38.954470, -119.942625, '', '', '', 'South Lake Tahoe', 'CA', '96150', '11/11/16 09:15', '11/11/16 12:30', '56', 'Honda', '3 Small Suitcases', 'Will be a short driver. Willing to stop for bathroom breaks'

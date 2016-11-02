@@ -63,11 +63,6 @@
 
 
 
-
-
-
-
-
 {% if rides_offered %}
 
 <div class="container">
@@ -76,18 +71,24 @@
     <thead>
       <tr>
         <th>Date</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Seat Left</th>
+        <th>From</th>
+        <th>Time</th>
+        <th>To</th>
+        <th>Time</th>
+        <th>Seats</th>
+        <th>Cost</th>
       </tr>
     </thead>
     <tbody>
     {% for ride in rides_offered %}
       <tr>
-        <td>{{ ride.date.strftime('%Y-%m-%d') }}</td>
-        <td>{{ ride.start_location }}</td>
-        <td>{{ ride.end_location }}</td>
+        <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
+        <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
+        <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
+        <td>{{ ride.end_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.seats }}</td>
+        <td>{{ ride.cost }}</td>
       </tr>
     {% endfor %}
     </tbody>
@@ -105,19 +106,25 @@
       <tr>
         <th>Date</th>
         <th>Driver</th>
-        <th>Start</th>
-        <th>End</th>
+        <th>From</th>
+        <th>Time</th>
+        <th>To</th>
+        <th>Time</th>
         <th>Seats</th>
+        <th>Cost</th>
       </tr>
     </thead>
     <tbody>
     {% for ride in rides_taking %}
       <tr>
-        <td>{{ ride.ride.date.strftime('%Y-%m-%d') }}</td>
-        <td>{{ ride.ride.user.name }}</td>
-        <td>{{ ride.ride.start_location }}</td>
-        <td>{{ ride.ride.end_location }}</td>
-        <td>{{ ride.ride.seats }}</td>
+        <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.user.name }}</td>
+        <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
+        <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
+        <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
+        <td>{{ ride.end_timestamp.strftime('%H:%M')}}</td>
+        <td>{{ ride.seats }}</td>
+        <td>{{ ride.cost }}</td>
       </tr>
     {% endfor %}
     </tbody>

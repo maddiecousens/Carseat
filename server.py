@@ -20,6 +20,7 @@ app.secret_key = "thomothgromoth"
 
 # Fail if Jinja uses undefined variable
 app.jinja_env.undefined = StrictUndefined
+app.jinja_env.auto_reload = True
 
 #############################################################################
 # Routes
@@ -44,7 +45,7 @@ def search_rides():
         starting = request.args.get('starting')
         ending = request.args.get('ending')
 
-        rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_location == starting, Ride.end_location == ending).all()
+        rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_city == starting, Ride.end_city == ending).all()
         print '\n\n\n'
         print rides
         print '\n\n\n'
@@ -60,31 +61,31 @@ def view_rideform():
 def process_rideform():
     """ Add new ride to database """
 
-    if session.get('current_user')):
+    # if session.get('current_user')):
 
         # Get driver from who is logged in
-        driver = session['current_user']
+    driver = session['current_user']
 
-        start_location = request.form.get('start_location')
-        end_location = request.form.get('end_location')
-        # parse date
-        date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
-        seats = request.form.get('seats')
+    start_location = request.form.get('start_location')
+    end_location = request.form.get('end_location')
+    # parse date
+    date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
+    seats = request.form.get('seats')
 
-        ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
+    ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
 
-        db.session.add(ride)
-        db.session.commit()
+    db.session.add(ride)
+    db.session.commit()
 
-        flash("Ride added to DB")
+    flash("Ride added to DB")
 
 
-        return redirect('/profile/{}'.format(driver))
+    return redirect('/profile/{}'.format(driver))
 
-    else:
-        flash("You must be logged in to post a ride")
+    # else:
+    #     flash("You must be logged in to post a ride")
 
-        return redirect('login/')
+    #     return redirect('login/')
 
     
 
@@ -271,7 +272,7 @@ if __name__ == '__main__':
     DebugToolbarExtension(app)
 
     # Allows redirects
-    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     app.run(host="0.0.0.0", port=5000)
     # app.run(debug=True, host="0.0.0.0")

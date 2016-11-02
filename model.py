@@ -23,6 +23,27 @@ class User(db.Model):
         return "<User user_id=%s, email=%s, password=%s>" % (self.user_id, 
                                             self.email, self.password)
 
+# class Ride(db.Model):
+#     """A specific ride"""
+
+#     __tablename__ = "rides"
+
+#     ride_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     driver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+#     start_location = db.Column(db.String(100), nullable=False)
+#     end_location = db.Column(db.String(100), nullable=False)
+#     date = db.Column(db.DateTime, nullable=False)
+#     seats = db.Column(db.Integer, nullable=False)
+
+#     user = db.relationship("User",
+#                             backref=db.backref("rides_offered"))
+
+#     def __repr__(self):
+#         """Provide helpful representation when printed."""
+
+#         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
+#             self.driver, self.start_location, self.end_location, self.date)
+
 class Ride(db.Model):
     """A specific ride"""
 
@@ -30,10 +51,41 @@ class Ride(db.Model):
 
     ride_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     driver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    start_location = db.Column(db.String(100), nullable=False)
-    end_location = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
     seats = db.Column(db.Integer, nullable=False)
+    cost = db.Column(db.Numeric, nullable=False) #look into this datatype
+
+    # Start Location
+    start_lat = db.Column(db.Float(24), nullable=False)
+    start_long = db.Column(db.Float(24), nullable=False)
+    start_name = db.Column(db.String(200), nullable=True)
+    start_number = db.Column(db.String(50), nullable=True)
+    start_street = db.Column(db.String(100), nullable=True)
+    start_city = db.Column(db.String(50), nullable=False)
+    start_state = db.Column(db.String(15), nullable=False) #add validation
+    start_zip = db.Column(db.Integer, nullable=False)
+    # End Location
+    end_lat = db.Column(db.Float(24), nullable=False)
+    end_long = db.Column(db.Float(24), nullable=False)
+    end_name = db.Column(db.String(200), nullable=True)
+    end_number = db.Column(db.String(50), nullable=True)
+    end_street = db.Column(db.String(100), nullable=True)
+    end_city = db.Column(db.String(50), nullable=False)
+    end_state = db.Column(db.String(15), nullable=False) #add validation
+    end_zip = db.Column(db.Integer, nullable=False)
+
+    # Date/Time
+    start_timestamp = db.Column(db.DateTime, nullable=False)
+    end_timestamp = db.Column(db.DateTime, nullable=False)
+    # start_date = db.Column(db.Date, nullable=False) #is there a date only object?
+    # end_date = db.Column(db.Date, nullable=False) # is there a date only object?
+    
+    #Details
+    mileage = db.Column(db.Float(24), nullable=True) 
+    # pickup_window = db.Column(db.DateTime, nullable=True) 
+    car_type = db.Column(db.String(100), nullable=True)  # would there be a way to validate this? API?
+    luggage =  db.Column(db.String(50), nullable=True) #number for now.. drop down js
+    comments = db.Column(db.Text, nullable=True) #db.Text field??
+
 
     user = db.relationship("User",
                             backref=db.backref("rides_offered"))
@@ -42,8 +94,7 @@ class Ride(db.Model):
         """Provide helpful representation when printed."""
 
         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
-            self.driver, self.start_location, self.end_location, self.date)
-
+            self.driver, self.start_city, self.end_city, self.start_timestamp)
 
 class Rider(db.Model):
     """Association table. Users taking Rides"""
