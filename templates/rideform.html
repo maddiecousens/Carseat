@@ -12,164 +12,207 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-
+<div class="container" id="customcontainerwidth" role="main">
 <!-- Why isn't placeholder text displaying -->
 
 <div class="well">
-    Add driver as 1 or 2.
-    Add date as 00/00/0000
+    Add flexible pickup window
 </div>
 
 <form action="/post-ride" method="post">
     <div class="form-group">
 
-        <!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">Street Address</label>  
-  <div class="col-md-4">
-  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
-  <span class="help-block">ex: 1049 Curtis St.</span>  
-  </div>
-</div><br>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">City</label>  
-  <div class="col-md-4">
-  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
-    
-  </div>
-</div><br>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">Zip</label>  
-  <div class="col-md-4">
-  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
-    
-  </div>
-</div><br>
-
-
-<!--         <div class="row">
-            <div class="col-xs-8">
-                <label for="driver">Driver</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="driver" name="driver"
-                    aria-describedby="driver" placedholder="Eventually grab from session" required>
+        <fieldset>
+            <div class="row">
+                <div class="col-xs-8">
+                    <label for="seats">Seats Available</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="seats" name="seats"
+                        aria-describedby="seats" placedholder="Seats Available" required>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <br> -->
+            <br>
+            <div class="row">
+                <div class="col-xs-8">
+                    <label for="cost">Cost per Seat</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="cost" name="cost"
+                        aria-describedby="cost" placedholder="Ex: 15.00" required>
+                    </div>
+                </div>
+            </div>
 
-       <!--  Starting Location
-        Street Address:
-        City:
-        State:
-        Zip:
+        </fieldset>
 
-        Ending Location
-        Street Address:
-        City:
-        State:
-        Zip:
-
-        When will you leave?
-        date:
-        time:
-
-        When will you arrive:
-        date:
-        time:
-
-        What kind of car do you drive?
-
-        How much space for luggage?
-
-        Any other comments? -->
-
-
-       <!--  <div class="row">
+        <fieldset>
+            <legend>Starting Address</legend>
+        <div class="row">
             <div class="col-xs-8">
-                <label for="start_location">Starting Location</label>
+                <label for="start-streetaddress">Street Address</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="start_location" name="start_location"
-                    aria-describedby="start_location" placedholder="Start Location" required>
+                    <input type="text" class="form-control" id="start-streetaddress" name="start-streetaddress"
+                    aria-describedby="start-streetaddress" placedholder="Address" required>
                 </div>
             </div>
         </div>
 
         <br>
 
-        <div class="row">
+         <div class="row">
             <div class="col-xs-8">
-                <label for="end_location">Ending Location</label>
+                <label for="start-city">City</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="end_location" name="end_location"
-                    aria-describedby="end_location" placedholder="End Location" required>
+                    <input type="text" class="form-control" id="start-city" name="start-city"
+                    aria-describedby="start-city" placedholder="City" required>
                 </div>
             </div>
         </div>
 
-        <br> 
+        <br>
 
-        <div class="row">
+         <div class="row">
             <div class="col-xs-8">
-                <label for="date">Date</label>
+                <label for="start-state">State</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="date" name="date"
-                    aria-describedby="date" placedholder="Date of trip" required>
+                    <input type="text" class="form-control" id="start-state" name="start-state"
+                    aria-describedby="start-state" placedholder="State" required>
                 </div>
             </div>
         </div>
 
-       <!--  <div class="row">
-            <div class='col-xs-8'>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-            </div>
-           
-        </div> -->
+        <br>
 
-        <!-- <br>
-
-        <div class="row">
+         <div class="row">
             <div class="col-xs-8">
-                <label for="seats">Seats Available</label>
+                <label for="start-zip">Zip</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="seats" name="seats"
-                    aria-describedby="seats" placedholder="Seats Available" required>
-                </div>
-            </div>
-        </div> -->
-
-        <div class="container">
-            <div class='col-md-5'>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker6'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class='col-md-5'>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker7'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+                    <input type="text" class="form-control" id="start-zip" name="start-zip"
+                    aria-describedby="start-zip" placedholder="Zip" required>
                 </div>
             </div>
         </div>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Ending Address</legend>
+        <div class="row">
+            <div class="col-xs-8">
+                <label for="end-streetaddress">Street Address</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="end-streetaddress" name="end-streetaddress"
+                    aria-describedby="end-streetaddress" placedholder="Address" required>
+                </div>
+            </div>
+        </div>
+
+         <br>
+
+         <div class="row">
+            <div class="col-xs-8">
+                <label for="end-city">City</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="end-city" name="end-city"
+                    aria-describedby="end-city" placedholder="City" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+         <div class="row">
+            <div class="col-xs-8">
+                <label for="end-state">State</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="end-state" name="end-state"
+                    aria-describedby="end-state" placedholder="State" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <br>
+
+         <div class="row">
+            <div class="col-xs-8">
+                <label for="end-zip">Zip</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="end-zip" name="end-zip"
+                    aria-describedby="end-zip" placedholder="Zip" required>
+                </div>
+            </div>
+        </div>
+        </fieldset>
+
+
+        <fieldset>
+            <legend>When will you leave and Arrive?</legend>
+                <div class="container">
+                    <div class='col-md-5'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker6'>
+                                <input type='text' name='date' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-5'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker7'>
+                                <input type='text' name='date' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </fieldset>
+
+
+        <fieldset>
+            <legend>Details</legend>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label for="cartype">What kind of car do you drive?</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cartype" name="cartype"
+                            aria-describedby="cartype" placedholder="Car Type" required>
+                        </div>
+                    </div>
+                </div>
+        
+
+                <br> 
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label for="luggage">How much luggage can each passenger bring?</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="luggage" name="luggage"
+                            aria-describedby="luggage" placedholder="" required>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label for="comments">Comments</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="comments" name="comments"
+                            aria-describedby="comments" placedholder="" required>
+                        </div>
+                    </div>
+                </div>
+
+        </fieldset>
 
 
         <script type="text/javascript">
@@ -184,6 +227,8 @@
                 $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
             });
         });
+
+        
     </script>
 
 

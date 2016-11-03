@@ -74,18 +74,95 @@ def process_rideform():
         # Get driver from who is logged in
     driver = session['current_user']
 
-    start_location = request.form.get('start_location')
-    end_location = request.form.get('end_location')
+    # start_address = request.form.get('start-streetaddress')
+    # start_city = request.form.get('start-city')
+    # start_state = request.form.get('start-state')
+    # start_zip = request.form.get('start-zip')
+
+    # end_address = request.form.get('end-streetaddress')
+    # end_city = request.form.get('end-city')
+    # end_state = request.form.get('end-state')
+    # end_zip = request.form.get('end-zip')
+
+    # cost = request.form.get('cost')
+    # seats = request.form.get('seats')
+
+    # car_type = request.form.get('car_type')
+    # luggage = request.form.get('luggage')
+    # comments = request.form.get('comments')
+
+    start_address = request.form['start-streetaddress']
+    start_city = request.form['start-city']
+    start_state = request.form['start-state']
+    start_zip = request.form['start-zip']
+
+    end_address = request.form['end-streetaddress']
+    end_city = request.form['end-city']
+    end_state = request.form['end-state']
+    end_zip = request.form['end-zip']
+
+    cost = request.form['cost']
+    seats = request.form['seats']
+    
+    car_type = request.form['car_type']
+    luggage = request.form['luggage']
+    comments = request.form['comments']
+
+
+
+    return render_template('home.html')
+
+    # start_lat = #geocode
+    # start_long = #geocode
+    # start_number = #geocode
+    # start_street = #geocode
+    # start_state = #geocode
+    # start_zip = #geocode
+
+    # end_lat = #geocode
+    # end_long = #geocode
+    # end_number = #geocode
+    # end_street = #geocode
+    # end_state = #geocode
+    # end_zip = #geocode
+
+    # start_timestamp = #parse
+    # end_timestamp = #parse
     # parse date
-    date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
-    seats = request.form.get('seats')
+    # date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
+    # seats = request.form.get('seats')
 
-    ride = Ride(driver=driver, start_location=start_location, end_location=end_location, date=date, seats=seats)
+    # ride = Ride(driver=driver,
+    #             seats=seats,
+    #             cost=cost,
+    #             # starting location
+    #             start_lat=start_lat,
+    #             start_long=start_long,
+    #             start_number= start_number,
+    #             start_street=start_street,
+    #             start_state=start_state,
+    #             start_zip=start_zip,
+    #             # ending location
+    #             end_lat=end_lat,
+    #             end_long=end_long,
+    #             end_number=end_number,
+    #             end_street=end_street,
+    #             end_state=end_state,
+    #             end_zip=end_zip,
+    #             #details
+    #             start_timestamp=start_timestamp,
+    #             end_timestamp=end_timestamp,
+    #             start_location=start_location, 
+    #             end_location=end_location, 
+    #             car_type=car_type,
+    #             luggage=luggage,
+    #             comments=comments
+    #            )
 
-    db.session.add(ride)
-    db.session.commit()
+    # db.session.add(ride)
+    # db.session.commit()
 
-    flash("Ride added to DB")
+    # flash("Ride added to DB")
 
 
 #     return redirect('/profile/{}'.format(driver))
