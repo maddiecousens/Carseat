@@ -11,6 +11,8 @@ from model import User, Ride, Rider, Request, connect_db, db
 
 from datetime import datetime
 
+import geocoder
+
 
 
 app = Flask(__name__)
@@ -42,13 +44,15 @@ def search_rides():
 
     # If user enters search terms, show rides based off search terms
     else:
-        starting = request.args.get('starting')
-        ending = request.args.get('ending')
+        start = request.args.get('starting')
+        starting = geocoder.google(start, components="country:US").city
+
+        end = request.args.get('ending')
+        
+        ending = geocoder.google(end, components="country:US").city
 
         rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_city == starting, Ride.end_city == ending).all()
-        print '\n\n\n'
-        print rides
-        print '\n\n\n'
+        
         return render_template('search.html', rides=rides)
 
 @app.route('/post-ride', methods=["GET"])
