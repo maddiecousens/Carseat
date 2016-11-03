@@ -2,3 +2,4 @@ env/
 *.pyc
 *.ds_store
 *.sh
+secrets.js

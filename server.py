@@ -65,52 +65,46 @@ def view_rideform():
 
     return render_template('rideform.html')
 
+@app.route('/googletest', methods=["GET"])
+def google_test():
+    """  """
+
+    return render_template('googletest4.html')
+
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
     """ Add new ride to database """
+    # import pdb; pdb.set_trace()
+    # return request.form.get('luggage')
+
 
     # if session.get('current_user')):
 
         # Get driver from who is logged in
-    driver = session['current_user']
+    # driver = session['current_user']
 
-    # start_address = request.form.get('start-streetaddress')
-    # start_city = request.form.get('start-city')
-    # start_state = request.form.get('start-state')
-    # start_zip = request.form.get('start-zip')
+    start_address = request.form.get('start-streetaddress')
+    start_city = request.form.get('start-city')
+    start_state = request.form.get('start-state')
+    start_zip = request.form.get('start-zip')
 
-    # end_address = request.form.get('end-streetaddress')
-    # end_city = request.form.get('end-city')
-    # end_state = request.form.get('end-state')
-    # end_zip = request.form.get('end-zip')
+    end_address = request.form.get('end-streetaddress')
+    end_city = request.form.get('end-city')
+    end_state = request.form.get('end-state')
+    end_zip = request.form.get('end-zip')
 
-    # cost = request.form.get('cost')
-    # seats = request.form.get('seats')
+    cost = request.form.get('cost')
+    seats = request.form.get('seats')
 
-    # car_type = request.form.get('car_type')
-    # luggage = request.form.get('luggage')
-    # comments = request.form.get('comments')
+    car_type = request.form.get('cartype')
+    luggage = request.form.get('luggage')
+    comments = request.form.get('comments')
 
-    start_address = request.form['start-streetaddress']
-    start_city = request.form['start-city']
-    start_state = request.form['start-state']
-    start_zip = request.form['start-zip']
+    date1 = request.form.get('date1')
+    date2 = request.form.get('date2')
 
-    end_address = request.form['end-streetaddress']
-    end_city = request.form['end-city']
-    end_state = request.form['end-state']
-    end_zip = request.form['end-zip']
+    # return request.form.get('date1')
 
-    cost = request.form['cost']
-    seats = request.form['seats']
-    
-    car_type = request.form['car_type']
-    luggage = request.form['luggage']
-    comments = request.form['comments']
-
-
-
-    return render_template('home.html')
 
     # start_lat = #geocode
     # start_long = #geocode
@@ -192,8 +186,6 @@ def process_rideform():
 # tznames = pytz.country_timezones['us']
 
 
-    
-
 
 @app.route('/login', methods=["GET"])
 def view_login():
@@ -222,7 +214,7 @@ def login_process():
 
             # Set session cookie to user_id from user OBJECT
             session['current_user'] = user.user_id 
-            flash("Logged in as %s" % user.name)
+            flash("Logged in as %s" % user.first_name)
             redirect_path = '/profile/{}'.format(user.user_id)
             return redirect(redirect_path) 
 
