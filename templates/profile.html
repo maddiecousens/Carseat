@@ -6,7 +6,7 @@
 
 <h1>User Details</h1>
     <p>
-        Name: {{ user.name }}
+        Name: {{ user.first_name }} {{ user.last_name }}
     </p>
     <p>
         Email: {{ user.email }}
@@ -42,7 +42,7 @@
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
         <td>{{ ride.end_timestamp.strftime('%H:%M') }}</td>
         <td>{{ ride.cost }}</td>
-        <td>{{ request.user.name }}</td>
+        <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
         <td>{{ request.seats }}</td>
         <td>
             <form action="/request-approval" method="POST">
@@ -124,7 +124,7 @@
     {% for ride in rides_taking %}
       <tr>
         <td>{{ ride.ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
-        <td>{{ ride.ride.user.name }}</td>
+        <td>{{ ride.ride.user.first_name }} {{ ride.ride.user.last_name }}</td>
         <td>{{ ride.ride.start_city }}, {{ ride.ride.start_state }}</td>
         <td>{{ ride.ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.ride.end_city }}, {{ ride.ride.end_state }}</td>

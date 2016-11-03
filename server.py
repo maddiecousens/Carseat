@@ -13,6 +13,10 @@ from datetime import datetime
 
 import geocoder
 
+import arrow
+
+from helperfunctions import state_to_timezone
+
 
 
 app = Flask(__name__)
@@ -86,10 +90,30 @@ def process_rideform():
 
     return redirect('/profile/{}'.format(driver))
 
-    # else:
-    #     flash("You must be logged in to post a ride")
+    date_form = request.form.get('datetimething')
+    if state in []
+        tz = 
+    if state in[]
+        tz =
+    timezone = state_to_timezone(state)
 
-    #     return redirect('login/')
+
+    leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
+    leaving_tz = date_from.replace(timezone)
+    leaving_utc = leaving_tz.to('utc')
+
+arizona = pytz.timezone('US/Arizona')
+central = pytz.timezone('US/Central')
+eastern = pytz.timezone('US/Eastern')
+US/Hawaii
+US/Mountain
+US/Pacific
+
+
+
+
+tznames = pytz.country_timezones['us']
+
 
     
 

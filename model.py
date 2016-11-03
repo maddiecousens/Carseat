@@ -1,11 +1,28 @@
 """Modes and database functions for Rideshare Project"""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
 ##############################################################################
 # Database Models
+
+# class User(db.Model):
+#     """User of the site. Can be driver (as of now)"""
+
+#     __tablename__ = "users"
+
+#     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     name = db.Column(db.String(100), nullable=False)
+#     email = db.Column(db.String(64), nullable=True)
+#     password = db.Column(db.String(64), nullable=True)
+
+#     def __repr__(self):
+#         """Provide helpful representation when printed."""
+
+#         return "<User user_id=%s, email=%s, password=%s>" % (self.user_id, 
+#                                             self.email, self.password)
 
 class User(db.Model):
     """User of the site. Can be driver (as of now)"""
@@ -13,15 +30,22 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=True)
+    photo = db.Column(db.String(300), nullable=True)
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
+    member_since = db.Column(db.DateTime, default=datetime.now())
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s, email=%s, password=%s>" % (self.user_id, 
-                                            self.email, self.password)
+        return "<User user_id=%s, name = %s, email=%s, password=%s>" % (self.user_id, 
+                                            self.first_name, self.email, self.password)
+
+#grep for user.name--> replace with first_name, last_name
+
 
 # class Ride(db.Model):
 #     """A specific ride"""
@@ -81,7 +105,7 @@ class Ride(db.Model):
     
     #Details
     mileage = db.Column(db.Float(24), nullable=True) 
-    # pickup_window = db.Column(db.DateTime, nullable=True) 
+    # pickup_window = db.Column(db.Time, nullable=True) 
     car_type = db.Column(db.String(100), nullable=True)  # would there be a way to validate this? API?
     luggage =  db.Column(db.String(50), nullable=True) #number for now.. drop down js
     comments = db.Column(db.Text, nullable=True) #db.Text field??

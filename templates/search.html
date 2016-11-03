@@ -60,7 +60,7 @@
     {% for ride in rides %}
       <tr>
         <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
-        <td>{{ ride.user.name }}</td>
+        <td>{{ ride.user.first_name }} {{ ride.user.last_name }}</td>
         <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
         <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>

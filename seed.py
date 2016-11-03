@@ -25,9 +25,9 @@ def example_data():
     # Rider.query.delete()
 
    # Add sample employees and departments
-    maddie = User(user_id=1 ,name="Maddie", email="maddie@", password="doge1")
-    ahmad = User(user_id=2 ,name="Ahmad", email="ahmad@", password="doge2")
-    carl = User(user_id=3 ,name="Carl", email="carl@", password="doge3")
+    maddie = User(user_id=1 ,first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1")
+    ahmad = User(user_id=2 ,first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="doge2")
+    carl = User(user_id=3 ,first_name="Carl", last_name="Tinker", age=51, email="carl@", password="doge3")
 
     # = User(name="", email="", password="")
 
