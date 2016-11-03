@@ -4,6 +4,14 @@
 
 {% block content %}
 
+<!-- Jquery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- moment js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
+<!-- bootstrap datepicker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
+
 
 <!-- Why isn't placeholder text displaying -->
 
@@ -14,6 +22,34 @@
 
 <form action="/post-ride" method="post">
     <div class="form-group">
+
+        <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Street Address</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
+  <span class="help-block">ex: 1049 Curtis St.</span>  
+  </div>
+</div><br>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">City</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div><br>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Zip</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div><br>
+
 
 <!--         <div class="row">
             <div class="col-xs-8">
@@ -27,7 +63,34 @@
 
         <br> -->
 
-        <div class="row">
+       <!--  Starting Location
+        Street Address:
+        City:
+        State:
+        Zip:
+
+        Ending Location
+        Street Address:
+        City:
+        State:
+        Zip:
+
+        When will you leave?
+        date:
+        time:
+
+        When will you arrive:
+        date:
+        time:
+
+        What kind of car do you drive?
+
+        How much space for luggage?
+
+        Any other comments? -->
+
+
+       <!--  <div class="row">
             <div class="col-xs-8">
                 <label for="start_location">Starting Location</label>
                 <div class="input-group">
@@ -61,7 +124,7 @@
             </div>
         </div>
 
-        <div class="row">
+       <!--  <div class="row">
             <div class='col-xs-8'>
                     <div class='input-group date' id='datetimepicker1'>
                         <input type='text' class="form-control" />
@@ -71,9 +134,9 @@
                     </div>
             </div>
            
-        </div>
+        </div> -->
 
-        <br>
+        <!-- <br>
 
         <div class="row">
             <div class="col-xs-8">
@@ -83,7 +146,46 @@
                     aria-describedby="seats" placedholder="Seats Available" required>
                 </div>
             </div>
+        </div> -->
+
+        <div class="container">
+            <div class='col-md-5'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker6'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-5'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker7'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        <script type="text/javascript">
+ 
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker();
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    </script>
+
 
 
         <!-- submit button -->
@@ -98,7 +200,7 @@
 
     // function checkLoggedIn(evt) {
     //     evt.preventDefault();
-        
+
     // }
 
     // submitRide.on('click', checkLoggedIn);

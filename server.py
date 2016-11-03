@@ -15,7 +15,7 @@ import geocoder
 
 import arrow
 
-from helperfunctions import state_to_timezone
+import helperfunctions
 
 
 
@@ -88,31 +88,31 @@ def process_rideform():
     flash("Ride added to DB")
 
 
-    return redirect('/profile/{}'.format(driver))
+#     return redirect('/profile/{}'.format(driver))
 
-    date_form = request.form.get('datetimething')
-    if state in []
-        tz = 
-    if state in[]
-        tz =
-    timezone = state_to_timezone(state)
-
-
-    leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
-    leaving_tz = date_from.replace(timezone)
-    leaving_utc = leaving_tz.to('utc')
-
-arizona = pytz.timezone('US/Arizona')
-central = pytz.timezone('US/Central')
-eastern = pytz.timezone('US/Eastern')
-US/Hawaii
-US/Mountain
-US/Pacific
+#     date_form = request.form.get('datetimething')
+#     if state in []
+#         tz = 
+#     if state in[]
+#         tz =
+#     timezone = state_to_timezone(state)
 
 
+#     leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
+#     leaving_tz = date_from.replace(timezone)
+#     leaving_utc = leaving_tz.to('utc')
+
+# arizona = pytz.timezone('US/Arizona')
+# central = pytz.timezone('US/Central')
+# eastern = pytz.timezone('US/Eastern')
+# US/Hawaii
+# US/Mountain
+# US/Pacific
 
 
-tznames = pytz.country_timezones['us']
+
+
+# tznames = pytz.country_timezones['us']
 
 
     
