@@ -2,15 +2,24 @@
 
 {% block Title %} Home {% endblock %}
 
-{% block content %}
-
-<!-- Jquery -->
+{% block head %} 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <!-- moment js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
 <!-- bootstrap datepicker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- Jquery -->
+
 
 <div class="container" id="customcontainerwidth" role="main">
 <!-- Why isn't placeholder text displaying -->
@@ -51,10 +60,19 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Starting Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" id="startingpoint"name="start-address"
+                        <input type="text" class="form-control autocomplete" id="autocomplete"name="start-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
+            </div>
+            <div>
+            <input type="text" id="street_number" name="street_number"></input>
+            <input type="text" id="route" name="route"></input>
+            <input type="text" id="locality" name="locality"></input>
+            <input type="text" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+            <input type="text" id="postal_code" name="postal_code"></input>
+            <input type="text" id="lat" name="lat"></input>
+            <input type="text" id="lng" name="lng"></input>        
             </div>
 
             <br>
@@ -63,10 +81,21 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Ending Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" id="endingpoint" name="start-address"
+                        <input type="text" class="form-control autocomplete" id="autocomplete2" name="end-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
+            </div>
+
+            <div>
+            <input type="text" id="street_number2" name="street_number"></input>
+            <input type="text" id="route2" name="route2"></input>
+            <input type="text" id="locality2" name="locality2"></input>
+            <input type="text" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
+            <input type="text" id="postal_code2" name="postal_code2"></input>
+            <input type="text" id="lat2" name="lat2"></input>
+            <input type="text" id="lng2" name="lng2"></input>
+
             </div>
 
         <fieldset>
@@ -152,21 +181,76 @@
 
 
     </script>
+
     <script>
 
-      var placeSearch, autocomplete;
-      var locations = document.getElementsByClassName('autocomplete');
+      var placeSearch, autocomplete, autocomplete2;
+
+      var componentForm = {
+        street_number: 'long_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        postal_code: 'short_name'
+      };
 
       function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
         // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */
+            (document.getElementById('autocomplete')));
 
-        for (i=0; i < locations.length; i++) {
+        autocomplete.addListener('place_changed', function() {
+            fillInAddress(autocomplete, "");
+        });
 
-            autocomplete = new google.maps.places.Autocomplete(
-                        locations[i]);
+        autocomplete2 = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */
+            (document.getElementById('autocomplete2'))); // what does ** @type mean
 
-            function geolocate() {
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        
+        autocomplete2.addListener('place_changed', function() {
+            fillInAddress(autocomplete2, "2");
+        });               // look up the place_changed listener
+      
+      }
+
+      function fillInAddress(autocomplete, unique) {
+        // Get the place details from the autocomplete object.
+
+        var place = autocomplete.getPlace();
+
+        for (var component in componentForm) {
+          if(!!document.getElementById(component + unique)) {
+            document.getElementById(component + unique).value = '';
+          // document.getElementById(component).disabled = false;
+        }
+    }
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType] && document.getElementById(addressType + unique)) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType + unique).value = val;
+        }
+        }
+
+        if (place.geometry.location) {
+            var lat = place.geometry.location.lat()
+            document.getElementById('lat' + unique).value = lat;
+            var lng = place.geometry.location.lng()
+            document.getElementById('lng' + unique).value = lng;
+        }
+      }
+
+      google.maps.event.addDomListener(window, "load", initAutocomplete);
+
+      function geolocate() {
                 if (navigator.geolocation) {
                   navigator.geolocation.getCurrentPosition(function(position) {
                     var geolocation = {
@@ -182,11 +266,6 @@
                 }
               }
 
-        }
-
-      }
-
-
       // Bias the autocomplete object to the user's geographical location,
       // as supplied by the browser's 'navigator.geolocation' object.
       
@@ -194,12 +273,12 @@
 
     
 
-    <script type="text/javascript" src="static/secrets.js"></script>
+    <!-- <script type="text/javascript" src="static/secrets.js"></script>
     <script> var mykey = secrets['google']
-    </script>
+    </script>-->
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key="+mykey+"&libraries=places&callback=initAutocomplete" async defer></script>-->
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbfRUK_bM7e4QVJHDPEenirnKshFaJX44&libraries=places&callback=initAutocomplete" async defer></script>
+    
 
     
 

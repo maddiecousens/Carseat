@@ -65,11 +65,11 @@ def view_rideform():
 
     return render_template('rideform.html')
 
-# @app.route('/googletest', methods=["GET"])
-# def google_test():
-#     """  """
+@app.route('/googletest', methods=["GET"])
+def google_test():
+    """  """
 
-#     return render_template('googletest4.html')
+    return render_template('googletest.html')
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
@@ -78,34 +78,65 @@ def process_rideform():
     # ADD: logged-in check
     user = session['current_user']
 
+    import pdb; pdb.set_trace()
+
+    # ImmutableMultiDict([('administrative_area_level_1', u'CA'), 
+    #     ('start-address', u'Hackbright Academy, Sutter Street, San Francisco, CA, United States'), 
+    #     ('start-address', u"Raley's, Emerald Bay Road, South Lake Tahoe, CA, United States"), 
+    #     ('date2', u'11/03/2016 1:00 AM'), 
+    #     ('postal_code', u'94109'), 
+    #     ('seats', u'2'), 
+    #     ('luggage', u'1 small bag'), 
+    #     ('date1', u'11/02/2016 10:00 PM'), 
+    #     ('postal_code2', u'96150'), 
+    #     ('street_number', u'683'), 
+    #     ('street_number', u'1040'),
+    #     ('locality', u'San Francisco'),
+    #     ('country', u''), ('route', u'Sutter Street'),
+    #     ('administrative_area_level_1_2', u'CA'),
+    #     ('cartype', u'Honda'),
+    #     ('comments', u'will b fun'),
+    #     ('country2', u''),
+    #     ('cost', u'15.00'),
+    #     ('locality2', u'South Lake Tahoe'),
+    #     ('route2', u'Emerald Bay Road')])
+('lat2', u'37.9295204'), ('lat', u'37.9366486') ('lng', u'-122.35954190000001')('lng2', u'-122.32238519999999')])
+
     ###### Store Auto Completed Addresses ########
 
-    # start_address = request.form.get('start-streetaddress')
-    # start_city = request.form.get('start-city')
-    # start_state = request.form.get('start-state')
-    # start_zip = request.form.get('start-zip')
+    start_lat = request.form.get('lat')
+    start_long = request.form.get('lng')
+    start_number = request.form.get('street_number')
+    start_street = request.form.get('route')
+    start_city = request.form.get('locality')
+    start_state = request.form.get('administrative_area_level_1')
+    start_zip = request.form.get('postal_code')
 
-    # end_address = request.form.get('end-streetaddress')
-    # end_city = request.form.get('end-city')
-    # end_state = request.form.get('end-state')
-    # end_zip = request.form.get('end-zip')
+    end_lat = request.form.get('lat2')
+    end_long = request.form.get('lng2')
+    end_number = request.form.get('street_number2')
+    end_street = request.form.get('route2')
+    end_city = request.form.get('locality2')
+    end_state = request.form.get('administrative_area_level_12')
+    end_zip = request.form.get('postal_code2')
+
 
     ##### Other Data ######
 
-    # cost = request.form.get('cost')
-    # seats = request.form.get('seats')
+    cost = request.form.get('cost')
+    seats = request.form.get('seats')
 
-    # car_type = request.form.get('cartype')
-    # luggage = request.form.get('luggage')
-    # comments = request.form.get('comments')
+    car_type = request.form.get('cartype')
+    luggage = request.form.get('luggage')
+    comments = request.form.get('comments')
 
     # date1 = request.form.get('date1')
     # date2 = request.form.get('date2')
 
     ####### PARSE datetime from datetimepicker ########
 
-    # start_timestamp = datetime.strptime(request.form.get('date1'),'%m/%d/%y')
-    # end_timestamp = datetime.strptime(request.form.get('date1'),'%m/%d/%y')
+    start_time = datetime.strptime(request.form.get('date1'), "%m/%d/%Y %I:%M %p")
+    end_time = datetime.strptime(request.form.get('date2'), "%m/%d/%Y %I:%M %p")
 
     ######## Convert to UTC #########
 
@@ -128,6 +159,7 @@ def process_rideform():
     #             start_lat=start_lat,
     #             start_long=start_long,
     #             start_number= start_number,
+
     #             start_street=start_street,
     #             start_state=start_state,
     #             start_zip=start_zip,
