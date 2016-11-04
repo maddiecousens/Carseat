@@ -51,7 +51,7 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Starting Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" name="start-address"
+                        <input type="text" class="form-control autocomplete" id="startingpoint"name="start-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Ending Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" name="start-address"
+                        <input type="text" class="form-control autocomplete" id="endingpoint" name="start-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
@@ -181,21 +181,27 @@
                   });
                 }
               }
+
         }
 
       }
 
-
-      console.log(autocomplete);
 
       // Bias the autocomplete object to the user's geographical location,
       // as supplied by the browser's 'navigator.geolocation' object.
       
     </script>
 
-    <script type="text/javascript" src="secrets.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key="+secrets['google']+"&libraries=places&callback=initAutocomplete"
-        async defer></script>
+    
+
+    <script type="text/javascript" src="static/secrets.js"></script>
+    <script> var mykey = secrets['google']
+    </script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key="+mykey+"&libraries=places&callback=initAutocomplete" async defer></script>-->
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbfRUK_bM7e4QVJHDPEenirnKshFaJX44&libraries=places&callback=initAutocomplete" async defer></script>
+
+    
 
 
 

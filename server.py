@@ -65,66 +65,61 @@ def view_rideform():
 
     return render_template('rideform.html')
 
-@app.route('/googletest', methods=["GET"])
-def google_test():
-    """  """
+# @app.route('/googletest', methods=["GET"])
+# def google_test():
+#     """  """
 
-    return render_template('googletest4.html')
+#     return render_template('googletest4.html')
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
     """ Add new ride to database """
-    # import pdb; pdb.set_trace()
-    # return request.form.get('luggage')
+    
+    # ADD: logged-in check
+    user = session['current_user']
 
+    ###### Store Auto Completed Addresses ########
 
-    # if session.get('current_user')):
+    # start_address = request.form.get('start-streetaddress')
+    # start_city = request.form.get('start-city')
+    # start_state = request.form.get('start-state')
+    # start_zip = request.form.get('start-zip')
 
-        # Get driver from who is logged in
-    # driver = session['current_user']
+    # end_address = request.form.get('end-streetaddress')
+    # end_city = request.form.get('end-city')
+    # end_state = request.form.get('end-state')
+    # end_zip = request.form.get('end-zip')
 
-    start_address = request.form.get('start-streetaddress')
-    start_city = request.form.get('start-city')
-    start_state = request.form.get('start-state')
-    start_zip = request.form.get('start-zip')
+    ##### Other Data ######
 
-    end_address = request.form.get('end-streetaddress')
-    end_city = request.form.get('end-city')
-    end_state = request.form.get('end-state')
-    end_zip = request.form.get('end-zip')
-
-    cost = request.form.get('cost')
-    seats = request.form.get('seats')
-
-    car_type = request.form.get('cartype')
-    luggage = request.form.get('luggage')
-    comments = request.form.get('comments')
-
-    date1 = request.form.get('date1')
-    date2 = request.form.get('date2')
-
-    # return request.form.get('date1')
-
-
-    # start_lat = #geocode
-    # start_long = #geocode
-    # start_number = #geocode
-    # start_street = #geocode
-    # start_state = #geocode
-    # start_zip = #geocode
-
-    # end_lat = #geocode
-    # end_long = #geocode
-    # end_number = #geocode
-    # end_street = #geocode
-    # end_state = #geocode
-    # end_zip = #geocode
-
-    # start_timestamp = #parse
-    # end_timestamp = #parse
-    # parse date
-    # date = datetime.strptime(request.form.get('date'),'%m/%d/%y')
+    # cost = request.form.get('cost')
     # seats = request.form.get('seats')
+
+    # car_type = request.form.get('cartype')
+    # luggage = request.form.get('luggage')
+    # comments = request.form.get('comments')
+
+    # date1 = request.form.get('date1')
+    # date2 = request.form.get('date2')
+
+    ####### PARSE datetime from datetimepicker ########
+
+    # start_timestamp = datetime.strptime(request.form.get('date1'),'%m/%d/%y')
+    # end_timestamp = datetime.strptime(request.form.get('date1'),'%m/%d/%y')
+
+    ######## Convert to UTC #########
+
+    # if state in []
+    #     tz = 
+    # if state in[]
+    #     tz =
+    # timezone = state_to_timezone(state)
+
+    # leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
+    # leaving_tz = date_from.replace(timezone)
+    # leaving_utc = leaving_tz.to('utc')
+
+    ######## Create Ride Instance ############
 
     # ride = Ride(driver=driver,
     #             seats=seats,
@@ -158,32 +153,7 @@ def process_rideform():
 
     # flash("Ride added to DB")
 
-
-#     return redirect('/profile/{}'.format(driver))
-
-#     date_form = request.form.get('datetimething')
-#     if state in []
-#         tz = 
-#     if state in[]
-#         tz =
-#     timezone = state_to_timezone(state)
-
-
-#     leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
-#     leaving_tz = date_from.replace(timezone)
-#     leaving_utc = leaving_tz.to('utc')
-
-# arizona = pytz.timezone('US/Arizona')
-# central = pytz.timezone('US/Central')
-# eastern = pytz.timezone('US/Eastern')
-# US/Hawaii
-# US/Mountain
-# US/Pacific
-
-
-
-
-# tznames = pytz.country_timezones['us']
+    return redirect('/profile/{}'.format(user)) 
 
 
 
