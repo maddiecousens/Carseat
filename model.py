@@ -8,22 +8,6 @@ db = SQLAlchemy()
 ##############################################################################
 # Database Models
 
-# class User(db.Model):
-#     """User of the site. Can be driver (as of now)"""
-
-#     __tablename__ = "users"
-
-#     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     name = db.Column(db.String(100), nullable=False)
-#     email = db.Column(db.String(64), nullable=True)
-#     password = db.Column(db.String(64), nullable=True)
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#         return "<User user_id=%s, email=%s, password=%s>" % (self.user_id, 
-#                                             self.email, self.password)
-
 class User(db.Model):
     """User of the site. Can be driver (as of now)"""
 
@@ -43,30 +27,6 @@ class User(db.Model):
 
         return "<User user_id=%s, name = %s, email=%s, password=%s>" % (self.user_id, 
                                             self.first_name, self.email, self.password)
-
-#grep for user.name--> replace with first_name, last_name
-
-
-# class Ride(db.Model):
-#     """A specific ride"""
-
-#     __tablename__ = "rides"
-
-#     ride_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     driver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-#     start_location = db.Column(db.String(100), nullable=False)
-#     end_location = db.Column(db.String(100), nullable=False)
-#     date = db.Column(db.DateTime, nullable=False)
-#     seats = db.Column(db.Integer, nullable=False)
-
-#     user = db.relationship("User",
-#                             backref=db.backref("rides_offered"))
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
-#             self.driver, self.start_location, self.end_location, self.date)
 
 class Ride(db.Model):
     """A specific ride"""
@@ -100,8 +60,7 @@ class Ride(db.Model):
     # Date/Time
     start_timestamp = db.Column(db.DateTime, nullable=False)
     end_timestamp = db.Column(db.DateTime, nullable=False)
-    # start_date = db.Column(db.Date, nullable=False) #is there a date only object?
-    # end_date = db.Column(db.Date, nullable=False) # is there a date only object?
+   
     
     #Details
     mileage = db.Column(db.Float(24), nullable=True) 
