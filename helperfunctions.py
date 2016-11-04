@@ -1,13 +1,11 @@
-
-
-def state_to_timzone(state):
+def state_to_timezone(state):
       state2timezone = { 'AK': 'US/Alaska',
                          'AL': 'US/Central',
                          'AR': 'US/Central',
-                         'AS': 'US/Samoa', 
-                         'AZ': 'US/Mountain', 
-                         'CA': 'US/Pacific', 
-                         'CO': 'US/Mountain', 
+                         'AS': 'US/Samoa',
+                         'AZ': 'US/Mountain',
+                         'CA': 'US/Pacific',
+                         'CO': 'US/Mountain',
                          'CT': 'US/Eastern', 
                          'DC': 'US/Eastern', 
                          'DE': 'US/Eastern', 

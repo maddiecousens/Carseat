@@ -2,6 +2,8 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy_utils import ArrowType
+import arrow
 
 db = SQLAlchemy()
 
@@ -40,7 +42,7 @@ class Ride(db.Model):
 
     # Start Location
     start_lat = db.Column(db.Float(24), nullable=False)
-    start_long = db.Column(db.Float(24), nullable=False)
+    start_lng = db.Column(db.Float(24), nullable=False)
     start_name = db.Column(db.String(200), nullable=True)
     start_number = db.Column(db.String(50), nullable=True)
     start_street = db.Column(db.String(100), nullable=True)
@@ -49,7 +51,7 @@ class Ride(db.Model):
     start_zip = db.Column(db.Integer, nullable=False)
     # End Location
     end_lat = db.Column(db.Float(24), nullable=False)
-    end_long = db.Column(db.Float(24), nullable=False)
+    end_lng = db.Column(db.Float(24), nullable=False)
     end_name = db.Column(db.String(200), nullable=True)
     end_number = db.Column(db.String(50), nullable=True)
     end_street = db.Column(db.String(100), nullable=True)

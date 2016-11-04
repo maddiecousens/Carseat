@@ -14,8 +14,8 @@ from datetime import datetime
 import geocoder
 
 import arrow
-
-import helperfunctions
+import pytz
+from helperfunctions import state_to_timezone
 
 
 
@@ -77,47 +77,28 @@ def process_rideform():
     
     # ADD: logged-in check
     user = session['current_user']
+    driver = session['current_user']
 
-    import pdb; pdb.set_trace()
-
-    # ImmutableMultiDict([('administrative_area_level_1', u'CA'), 
-    #     ('start-address', u'Hackbright Academy, Sutter Street, San Francisco, CA, United States'), 
-    #     ('start-address', u"Raley's, Emerald Bay Road, South Lake Tahoe, CA, United States"), 
-    #     ('date2', u'11/03/2016 1:00 AM'), 
-    #     ('postal_code', u'94109'), 
-    #     ('seats', u'2'), 
-    #     ('luggage', u'1 small bag'), 
-    #     ('date1', u'11/02/2016 10:00 PM'), 
-    #     ('postal_code2', u'96150'), 
-    #     ('street_number', u'683'), 
-    #     ('street_number', u'1040'),
-    #     ('locality', u'San Francisco'),
-    #     ('country', u''), ('route', u'Sutter Street'),
-    #     ('administrative_area_level_1_2', u'CA'),
-    #     ('cartype', u'Honda'),
-    #     ('comments', u'will b fun'),
-    #     ('country2', u''),
-    #     ('cost', u'15.00'),
-    #     ('locality2', u'South Lake Tahoe'),
-    #     ('route2', u'Emerald Bay Road')])
-('lat2', u'37.9295204'), ('lat', u'37.9366486') ('lng', u'-122.35954190000001')('lng2', u'-122.32238519999999')])
+    # import pdb; pdb.set_trace()
 
     ###### Store Auto Completed Addresses ########
 
+    start_string = request.form.get('start-address')
     start_lat = request.form.get('lat')
-    start_long = request.form.get('lng')
+    start_lng = request.form.get('lng')
     start_number = request.form.get('street_number')
     start_street = request.form.get('route')
     start_city = request.form.get('locality')
     start_state = request.form.get('administrative_area_level_1')
     start_zip = request.form.get('postal_code')
 
+    end_string = request.form.get('end-address')
     end_lat = request.form.get('lat2')
-    end_long = request.form.get('lng2')
+    end_lng = request.form.get('lng2')
     end_number = request.form.get('street_number2')
     end_street = request.form.get('route2')
     end_city = request.form.get('locality2')
-    end_state = request.form.get('administrative_area_level_12')
+    end_state = request.form.get('administrative_area_level_1_2')
     end_zip = request.form.get('postal_code2')
 
 
@@ -140,50 +121,64 @@ def process_rideform():
 
     ######## Convert to UTC #########
 
-    # if state in []
-    #     tz = 
-    # if state in[]
-    #     tz =
-    # timezone = state_to_timezone(state)
+    # Parse date from form
+    leaving = arrow.get(request.form.get('date1'), 'MM/DD/YYYY h:mm A')
+    # arriving = arrow.get(request.form.get('date2'), 'MM/DD/YYYY h:mm A')
 
-    # leaving = arrow.get(now_string, 'YYYY/M/D HH:mm:ss')
-    # leaving_tz = date_from.replace(timezone)
-    # leaving_utc = leaving_tz.to('utc')
+    # Get starting and leaving timezones via Arrow library
+    tz_leaving = state_to_timezone(start_state)
+    tz_arriving = state_to_timezone(end_state)
+
+    # Add timezones to Arrow objects
+    # leaving_with_tz = start_time.replace(tzinfo=tz_leaving)
+    # arriving_with_tz = end_time.replace(tzinfo=tz_arriving)
+
+    leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
+    arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
+
+    
+
+    # Convert to UTC
+    # leaving_utc = leaving_with_tz.to('utc')
+    # arriving_utc = arriving_with_tz.to('utc')
+
+    leaving_utc = leaving_with_tz.astimezone(pytz.utc)
+    arriving_utc = arriving_with_tz.astimezone(pytz.utc)
 
     ######## Create Ride Instance ############
 
-    # ride = Ride(driver=driver,
-    #             seats=seats,
-    #             cost=cost,
-    #             # starting location
-    #             start_lat=start_lat,
-    #             start_long=start_long,
-    #             start_number= start_number,
+    ride = Ride(driver=driver,
+                seats=seats,
+                cost=cost,
+                # starting location
+                start_lat=start_lat,
+                start_lng=start_lng, #eventually change to lng
+                start_number=start_number,
+                start_street=start_street,
+                start_city=start_city,
+                start_state=start_state,
+                start_zip=start_zip,
+                # ending location
+                end_lat=end_lat,
+                end_lng=end_lng,
+                end_number=end_number,
+                end_street=end_street,
+                end_city=end_city,
+                end_state=end_state,
+                end_zip=end_zip,
+                #details
+                start_timestamp=leaving_utc,
+                end_timestamp=arriving_utc,
 
-    #             start_street=start_street,
-    #             start_state=start_state,
-    #             start_zip=start_zip,
-    #             # ending location
-    #             end_lat=end_lat,
-    #             end_long=end_long,
-    #             end_number=end_number,
-    #             end_street=end_street,
-    #             end_state=end_state,
-    #             end_zip=end_zip,
-    #             #details
-    #             start_timestamp=start_timestamp,
-    #             end_timestamp=end_timestamp,
-    #             start_location=start_location, 
-    #             end_location=end_location, 
-    #             car_type=car_type,
-    #             luggage=luggage,
-    #             comments=comments
-    #            )
+                car_type=car_type,
+                luggage=luggage,
+                comments=comments
+               )
 
-    # db.session.add(ride)
-    # db.session.commit()
+    db.session.add(ride)
+    db.session.commit()
 
-    # flash("Ride added to DB")
+    flash("Ride added to DB")
 
     return redirect('/profile/{}'.format(user)) 
 

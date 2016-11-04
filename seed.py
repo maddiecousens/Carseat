@@ -10,7 +10,7 @@ from datetime import datetime
 import csv
 
 import geocoder
-# import pytz
+import pytz
 
 def example_data():
     """Create some sample data."""
@@ -58,11 +58,24 @@ def example_data():
         reader.next()
         for row in reader:
             start_lat = row[3]
-            start_long = row[4]
+            start_lng = row[4]
             end_lat = row[5]
-            end_long = row[6]
-            g_start = geocoder.google('{}, {}'.format(start_lat, start_long))
-            g_end = geocoder.google('{}, {}'.format(end_lat, end_long))
+            end_lng = row[6]
+            g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
+            print '\n\n'
+            print g_start.city, ' --- ', g_start
+            print '\n\n'
+            g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
+            print '\n\n'
+            print g_end.city, ' --- ', g_start
+            print '\n\n'
+
+            start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
+            start_aware = start_time.replace(tzinfo=pytz.timezone('US/Pacific'))
+            end_time = datetime.strptime(row[8],'%m/%d/%Y %H:%M:%S')
+            end_aware = end_time.replace(tzinfo=pytz.timezone('US/Pacific'))
+            start_utc = start_aware.astimezone(pytz.utc)
+            end_utc = end_aware.astimezone(pytz.utc)
 
             ride = Ride(driver = row[0],
                         seats = row[1],
@@ -70,7 +83,7 @@ def example_data():
 
                         # Start Location
                         start_lat = start_lat,
-                        start_long = start_long,
+                        start_lng = start_lng,
                         start_number = g_start.housenumber,
                         start_street = g_start.street,
                         start_city = g_start.city,
@@ -79,7 +92,7 @@ def example_data():
 
                         # End Location
                         end_lat = end_lat,
-                        end_long = end_long,
+                        end_lng = end_lng,
                         end_number = g_end.housenumber,
                         end_street = g_end.street,
                         end_city = g_end.city,
@@ -87,8 +100,8 @@ def example_data():
                         end_zip = g_end.postal,
 
                         # Date/Time
-                        start_timestamp = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S'),
-                        end_timestamp = datetime.strptime(row[8],'%m/%d/%Y %H:%M:%S'),
+                        start_timestamp=start_utc,
+                        end_timestamp=end_utc,
                         
                         #Details
                         # pickup_window = datetime.strptime(row[24],'%M'),
