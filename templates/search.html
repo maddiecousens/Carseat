@@ -10,12 +10,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
-
 <!-- 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
  -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+
 
 {% endblock %}
 
@@ -24,36 +24,37 @@
     To Do:
     - Don't show rides you are the driver for!!! Or indicate them in some way
 </div>
-
-<!-- Eventually turn into an ajax request -->
 <form action="/search">
-    <div class="form-group">
-        <div class="row">
-            <div class="col-xs-12 col-sm-6">
-                <div class="input-group">
-                    <label for="starting">Starting Destination</label>
-                    <input type="text" class="form-control" id="autocomplete"name="start-address"
-                    aria-describedby="starting destination" placeholder="Enter Starting Location" required>
-                </div>
-            </div>
-            <div>
-               <!--  <input type="text" id="street_number" name="street_number"></input>
-                <input type="text" id="route" name="route"></input> -->
-                <input type="hidden" id="locality" name="locality"></input>
-                <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-                <input type="hidden" id="postal_code" name="postal_code"></input>
-                <input type="hidden" id="lat" name="lat"></input>
-                <input type="hidden" id="lng" name="lng"></input>        
+<div class="row form-inline">
+        <fieldset>
+
+            <div class="col-md-12">
+                <label for="start-address">Enter Your Destination</label>
             </div>
 
-            <div class="col-xs-12 col-sm-6">
-                <div class="input-group">
-                    <label for="ending">Ending Destination</label>
-                    <input type="text" class="form-control" id="autocomplete2" name="end-address"
-                    aria-describedby="ending destination" placeholder="Enter Ending Location" required>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="autocomplete" name="start-address"
+                    aria-describedby="starting destination" placeholder="Enter Starting Location" required>
+                <div>
+                   <!--  <input type="text" id="street_number" name="street_number"></input>
+                    <input type="text" id="route" name="route"></input> -->
+                    <input type="hidden" id="locality" name="locality"></input>
+                    <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+                    <input type="hidden" id="postal_code" name="postal_code"></input>
+                    <input type="hidden" id="lat" name="lat"></input>
+                    <input type="hidden" id="lng" name="lng"></input>        
                 </div>
             </div>
-            <div>
+
+            <div class="form-group">
+                <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+            </div>
+
+            <div class="form-group">
+                <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
+                aria-describedby="ending destination" placeholder="Enter Ending Location" required> 
+                <div>
                    <!--  <input type="text" id="street_number2" name="street_number"></input>
                     <input type="text" id="route2" name="route2"></input> -->
                     <input type="hidden" id="locality2" name="locality2"></input>
@@ -61,9 +62,16 @@
                     <input type="hidden" id="postal_code2" name="postal_code2"></input>
                     <input type="hidden" id="lat2" name="lat2"></input>
                     <input type="hidden" id="lng2" name="lng2"></input>
-                </div>
-        </div>
-        <script>
+                </div>             
+            </div>
+        <!-- submit button -->
+        <button type="submit" class="btn btn-primary" style="display:none">Submit</button>
+    </div>
+
+        </fieldset>
+        </form>
+
+<script>
             var placeSearch, autocomplete, autocomplete2;
 
       var componentForm = {
@@ -133,7 +141,7 @@
         }
       }
 
-      // google.maps.event.addDomListener(window, "load", initAutocomplete);
+      google.maps.event.addDomListener(window, "load", initAutocomplete);
 
       function geolocate() {
                 if (navigator.geolocation) {
@@ -156,13 +164,6 @@
       
 
         </script>
-
-        <br>
-        <!-- submit button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-
-    </div>
-</form>
 
 
 
