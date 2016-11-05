@@ -46,9 +46,9 @@ def search_rides():
         rides = Ride.query.options(db.joinedload('user')).all()
         return render_template('search.html', rides=rides)
 
-    # If user enters search terms, show rides based off search terms
+    # If user enters search terms, show rides based off search terms  
     else:
-
+ 
         ### At some point remove other arguments for this GET request
 
         # Eventually add miles as an input field
