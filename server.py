@@ -48,14 +48,28 @@ def search_rides():
 
     # If user enters search terms, show rides based off search terms
     else:
-        start = request.args.get('starting')
-        starting = geocoder.google(start, components="country:US").city
 
-        end = request.args.get('ending')
+        ### At some point remove other arguments for this GET request
+
+        # Eventually add miles as an input field
+        miles = 25
+        deg = miles_to_degrees(miles)
+
+        start_lat = float(request.args.get('lat'))
+        start_lng = float(request.args.get('lng'))
+        end_lat = float(request.args.get('lat2'))
+        end_lng = float(request.args.get('lng2'))
         
-        ending = geocoder.google(end, components="country:US").city
-
-        rides = Ride.query.options(db.joinedload('user')).filter(Ride.start_city == starting, Ride.end_city == ending).all()
+        rides = (Ride.query.options(db.joinedload('user'))
+                          .filter(((Ride.start_lat < str(start_lat + deg)) &
+                            (Ride.start_lat > str(start_lat - deg))) &
+                           ((Ride.start_lng < str(start_lng + deg)) &
+                            (Ride.start_lng > str(start_lng - deg))) &
+                           ((Ride.end_lat < str(end_lat + deg)) &
+                            (Ride.end_lat > str(end_lat - deg))) &
+                           ((Ride.end_lng < str(end_lng + deg)) &
+                            (Ride.end_lng > str(end_lng - deg))))
+                    .all())
         
         return render_template('search.html', rides=rides)
 
@@ -78,8 +92,6 @@ def process_rideform():
     # ADD: logged-in check
     user = session['current_user']
     driver = session['current_user']
-
-    # import pdb; pdb.set_trace()
 
     ###### Store Auto Completed Addresses ########
 
@@ -354,6 +366,9 @@ def request_approval():
 # def ride_details():
 #     return render_template('details.html', ride_id=ride_id)
 
+def miles_to_degrees(miles):
+    MILE_TO_DEGREE = 69.0
+    return miles / MILE_TO_DEGREE
 
 if __name__ == '__main__':
     # Debug for DebugToolbarExtension. Also so server restarts when changes made
