@@ -23,6 +23,7 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
     member_since = db.Column(db.DateTime, default=datetime.now())
+    image = db.Column(db.String(200), nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
