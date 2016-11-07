@@ -49,7 +49,7 @@ class Ride(db.Model):
     start_street = db.Column(db.String(100), nullable=True)
     start_city = db.Column(db.String(50), nullable=False)
     start_state = db.Column(db.String(15), nullable=False) #add validation
-    start_zip = db.Column(db.Integer, nullable=False)
+    start_zip = db.Column(db.String(10), nullable=True)
     # End Location
     end_lat = db.Column(db.Float(24), nullable=False)
     end_lng = db.Column(db.Float(24), nullable=False)
@@ -58,7 +58,7 @@ class Ride(db.Model):
     end_street = db.Column(db.String(100), nullable=True)
     end_city = db.Column(db.String(50), nullable=False)
     end_state = db.Column(db.String(15), nullable=False) #add validation
-    end_zip = db.Column(db.Integer, nullable=False)
+    end_zip = db.Column(db.String(10), nullable=True)
 
     # Date/Time
     start_timestamp = db.Column(db.DateTime, nullable=False)

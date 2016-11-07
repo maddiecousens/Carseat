@@ -62,13 +62,6 @@ def example_data():
             end_lat = row[5]
             end_lng = row[6]
             g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
-            print '\n\n'
-            print g_start.city, ' --- ', g_start
-            print '\n\n'
-            g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
-            print '\n\n'
-            print g_end.city, ' --- ', g_start
-            print '\n\n'
 
             start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
             start_aware = start_time.replace(tzinfo=pytz.timezone('US/Pacific'))

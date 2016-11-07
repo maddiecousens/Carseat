@@ -58,9 +58,6 @@ def search_rides():
                 ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
             else:
                 ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
-            # ride.start_timestamp = arrow.get(ride.start_timestamp).humanize()
-            # print '\n\n'
-            # print ride.start_timestamp
  
         return render_template('search.html', rides=rides)
 
@@ -115,7 +112,7 @@ def view_rideform():
 def google_test():
     """  """
 
-    return render_template('googletest.html')
+    return render_template('slider.html')
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
@@ -149,14 +146,13 @@ def process_rideform():
     ##### Other Data ######
 
     cost = request.form.get('cost')
-    seats = request.form.get('seats')
-
-    car_type = request.form.get('cartype')
+    seats = int(request.form.get('seats'))
+    
     luggage = request.form.get('luggage')
     comments = request.form.get('comments')
-
-    # date1 = request.form.get('date1')
-    # date2 = request.form.get('date2')
+    pickup_window = request.form.get('pickup-window')
+    detour = request.form.get('detour')
+    car_type = request.form.get('cartype')
 
     ####### PARSE datetime from datetimepicker ########
 
@@ -191,6 +187,8 @@ def process_rideform():
 
     ######## Create Ride Instance ############
 
+    # import pdb; pdb.set_trace()
+
     ride = Ride(driver=driver,
                 seats=seats,
                 cost=cost,
@@ -216,7 +214,9 @@ def process_rideform():
 
                 car_type=car_type,
                 luggage=luggage,
-                comments=comments
+                comments=comments,
+                pickup_window=pickup_window,
+                detour=detour
                )
 
     db.session.add(ride)
@@ -274,7 +274,7 @@ def login_process():
 
 @app.route('/logout', methods=["GET"])
 def logout_form():
-    """ Temporary logout form """
+    """ Log user out"""
 
     del session['current_user']
     flash("You've been logged out")
@@ -311,10 +311,6 @@ def user_profile(user_id):
 
     user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)
     rides_offered = user.rides_offered
-    # request_objects = []
-    # for ride in rides_offered:
-    #     if ride.requests:
-    #         request_objects.append
 
     rides_taking = user.rides_taking
 
