@@ -88,114 +88,147 @@
   <br>
 
   <table class="table table-hover">
+    {% if rides %}
+
+    {% for ride in rides %}
 
     <tbody>
       <tr> 
         <td class="col-xs-2" style="padding-right:20px; border-right: 1px solid #ccc;">
           <div class="row">
-            <img class="img-responsive" src="https://65.media.tumblr.com/avatar_66b336c742ea_128.png" alt="driver image" width="100" height="100">
+            <img class="img-responsive" src="{{ ride.user.image }}" alt="driver image" width="100" height="100">
           </div>
 
           <div class="row">
             <div>
-              Driver Name
+              <h5>{{ ride.user.first_name }}</h5>
             </div>
             <div>
-              <button>Request</button>
+              <form action="/request-seats" method="POST">
+                <div class="input-group">
+                  <select class="form-control" name='seats' style="width:auto;">
+                    {% for i in range(ride.seats) %}
+                    <option value={{ i+1 }}>{{ i+1 }}</option>
+                    {% endfor %}<span>
+                  <input type="hidden" name="ride_id" value={{ride.ride_id}}></input>
+                  <input class="btn btn-default" type="submit" value="Request Seats"></span>
+                </div>
+              </form>
             </div>
           </div>
         </td>
 
         <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;">
           <div class="row">
-            Date: Tomorrow
+            <h4>{{ ride.start_timestamp }}</h4>
           </div>
 
           <div class="row">
-            route --> route
+            <h5>{{ ride.start_city }}, {{ ride.start_state }} 
+              <span class="glyphicon glyphicon-arrow-right"></span>
+                 {{ ride.end_city }}, {{ ride.end_state }}</h5>
           </div>
 
           <div class="row">
-            <span class="glyphicon glyphicon-unchecked" style="color:green"></span>
-            <span>Starting Location</span>
+            <p>
+              <span class="glyphicon glyphicon-unchecked" style="color:green"></span>
+              <span>
+                
+                {% if ride.start_name is not none %}
+
+                {{ ride.start_name }}
+
+                {% endif %}
+
+                {% if (ride.start_number is not none) and (ride.start_street is not none) %}
+
+                {{ ride.start_number }} {{ ride.start_street }}, 
+
+                {% endif %}
+
+                {% if ride.start_city is not none %}
+                {{ ride.start_city }}, 
+                {% endif %}
+
+                {% if ride.start_state is not none %}
+                {{ ride.start_state }}, 
+                {% endif %}
+
+                {% if ride.start_zip is not none %}
+                {{ ride.start_zip }}
+                {% endif %}
+             </span>
+            </p>
           </div>
 
           <div class="row">
-            <span class="glyphicon glyphicon-unchecked" style="color:red"></span><span>Ending Location</span>
+            <p>
+              <span class="glyphicon glyphicon-unchecked" style="color:red"></span>
+              <span>
+              {% if ride.end_name is not none %}
+
+                {{ ride.end_name }}
+
+                {% endif %}
+
+                {% if (ride.end_number is not none) and (ride.end_street is not none) %}
+
+                {{ ride.end_number }} {{ ride.end_street }}, 
+
+                {% endif %}
+
+                {% if ride.end_city is not none %}
+                {{ ride.end_city }}, 
+                {% endif %}
+
+                {% if ride.end_state is not none %}
+                {{ ride.end_state }}, 
+                {% endif %}
+
+                {% if ride.end_zip is not none %}
+                {{ ride.end_zip }}
+                {% endif %}
+              </span>
+            </p>
           </div>
         </td>
 
         <td class="col-xs-2" style="padding-left:20px;">
           <div class="row">
-            <span class="glyphicon glyphicon-usd"></span><span>15</span>
+            <span><h1>${{ ride.cost }}</h1></span>
           </div>
 
           <div class="row">
-          per passenger
+          <h4><small><i>per passenger</i><small></h4>
           </div>
 
           <div class="row">
-            <span class="glyphicon glyphicon-heart" title="Detours"></span>
-            <span class="glyphicon glyphicon-start" title="Luggage"></span>
-            <span class="glyphicon glyphicon-start-empty" title="Flexible pickup"></span>
+            <h4>{{ ride.seats }} Seats Left</h4>
+          </div>
+
+          <div class="row">
+            <!-- <div class="text-center"> -->
+            <a href="#" data-toggle="tooltip" title="Hooray!">
+              <span class="glyphicon glyphicon-heart col-xs-4" title="HI">
+              </span></a>
+
+            <span class="glyphicon glyphicon-star col-xs-4"></span>
+            <span class="glyphicon glyphicon-star-empty col-xs-4"></span>
+
+          <!-- </div> -->
           </div>
         </td>
       </tr>
-
-      
-    </tbody>
-  </table>
-
-    <table class="table table-hover">
-
-  {% if rides %}
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Driver</th>
-          <th>From</th>
-          <th>Time</th>
-          <th>To</th>
-          <th>Time</th>
-          <th>Seats</th>
-          <th>Cost</th>
-          <th>Request</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for ride in rides %}
-        <tr>
-          <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
-          <td>{{ ride.user.first_name }} {{ ride.user.last_name }}</td>
-          <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
-          <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
-          <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
-          <td>{{ ride.end_timestamp.strftime('%H:%M')}}</td>
-          <td>{{ ride.seats }}</td>
-          <td>{{ ride.cost }}</td>
-          <td>
-              <form action="/request-seats" method="POST">
-                  <select name='seats'>
-                      {% for i in range(ride.seats) %}
-                      <option value={{ i+1 }}>{{ i+1 }}</option>
-                      {% endfor %}
-                  </select>
-                  <input type="hidden" name="ride_id" value={{ride.ride_id}}></input>
-                  <input type="submit" value="Request Seats">
-              </form>
-
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-
-  {% else %}
+    {% endfor %}
+    {% else %}
 
   <p>No upcoming rides for that search</p>
 
   {% endif %}
-  </div></div>
+
+
+    </tbody>
+  </table>
     
 
 <script>

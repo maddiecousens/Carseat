@@ -9,7 +9,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Ride, Rider, Request, connect_db, db
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 import geocoder
 
@@ -43,7 +43,25 @@ def search_rides():
 
     # If user clicks 'All Rides' from NavBar, show all rides
     if request.args.get('query'):
-        rides = Ride.query.options(db.joinedload('user')).all()
+        rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
+        
+
+        for ride in rides:
+            # print '\n {} type" {} \n'.format(ride.start_name, type(ride.start_name))
+            tz = state_to_timezone(ride.start_state)
+            ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+            if ride.start_timestamp.date() == date.today():
+                ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+
+            elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
+                ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+            else:
+                ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+            # ride.start_timestamp = arrow.get(ride.start_timestamp).humanize()
+            # print '\n\n'
+            # print ride.start_timestamp
+ 
         return render_template('search.html', rides=rides)
 
     # If user enters search terms, show rides based off search terms  
@@ -69,7 +87,20 @@ def search_rides():
                             (Ride.end_lat > str(end_lat - deg))) &
                            ((Ride.end_lng < str(end_lng + deg)) &
                             (Ride.end_lng > str(end_lng - deg))))
-                    .all())
+                    .order_by(Ride.start_timestamp).all())
+
+        for ride in rides:
+            tz = state_to_timezone(ride.start_state)
+            ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+            if ride.start_timestamp.date() == date.today():
+                ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+
+            elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
+                ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+            else:
+                ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+
         
         return render_template('search.html', rides=rides)
 
