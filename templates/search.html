@@ -199,24 +199,53 @@
           </div>
 
           <div class="row">
-          <h4><small><i>per passenger</i><small></h4>
+            <h4><small><i>per passenger</i><small></h4>
+            </div>
+
+            <div class="row">
+              <h4>{{ ride.seats }} Seats Left</h4>
+            </div>
+
+           <!--  Luggage, Detours -->
+            <div class="row">
+              <!-- luggage -->
+              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="You are allowd to bring 1 {{ ride.luggage }} suitcase">
+                <span class="glyphicon glyphicon-heart col-xs-4" style="font-size:2em;"></span>
+              </a>
+
+              <!-- Flexible Picup -->
+              {% if ride.pickup_window == "flexible" %}
+              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver">
+                <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
+              </a>
+
+              {% elif ride.pickup_window != "No" %}
+              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Pickup time is flexible in a {{ ride.pickup_window }} window">
+                <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
+              </a>
+
+              {% endif %}
+
+              {% if ride.detour == "flexible" %}
+
+              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours">
+                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
+              </a>
+
+              {% elif ride.detour != "No" %}
+
+              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Driver is open to a {{ ride.detour }} detour">
+                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
+              </a>
+
+              {% endif %}
+
+
+              
+            </div>  
+            <script> $("a.my-tool-tip").tooltip(); </script>
           </div>
 
-          <div class="row">
-            <h4>{{ ride.seats }} Seats Left</h4>
-          </div>
-
-          <div class="row">
-            <!-- <div class="text-center"> -->
-            <a href="#" data-toggle="tooltip" title="Hooray!">
-              <span class="glyphicon glyphicon-heart col-xs-4" title="HI">
-              </span></a>
-
-            <span class="glyphicon glyphicon-star col-xs-4"></span>
-            <span class="glyphicon glyphicon-star-empty col-xs-4"></span>
-
-          <!-- </div> -->
-          </div>
         </td>
       </tr>
     {% endfor %}

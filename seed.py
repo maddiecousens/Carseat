@@ -107,7 +107,9 @@ def example_data():
                         # pickup_window = datetime.strptime(row[24],'%M'),
                         car_type = row[9],
                         luggage =  row[10],
-                        comments = row[11]
+                        comments = row[11],
+                        pickup_window = row[12],
+                        detour = row[13]
                         )
     
             db.session.add(ride)

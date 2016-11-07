@@ -66,11 +66,12 @@ class Ride(db.Model):
    
     
     #Details
-    mileage = db.Column(db.Float(24), nullable=True) 
-    # pickup_window = db.Column(db.Time, nullable=True) 
-    car_type = db.Column(db.String(100), nullable=True)  # would there be a way to validate this? API?
+    mileage = db.Column(db.Float(24), nullable=True)   # would there be a way to validate this? API?
     luggage =  db.Column(db.String(50), nullable=True) #number for now.. drop down js
     comments = db.Column(db.Text, nullable=True) #db.Text field??
+    pickup_window = db.Column(db.String(50), nullable=True) 
+    detour = db.Column(db.String(50), nullable=True) 
+    car_type = db.Column(db.String(100), nullable=True)
 
 
     user = db.relationship("User",

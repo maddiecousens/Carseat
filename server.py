@@ -104,6 +104,7 @@ def search_rides():
         
         return render_template('search.html', rides=rides)
 
+
 @app.route('/post-ride', methods=["GET"])
 def view_rideform():
     """ Form to post new ride """

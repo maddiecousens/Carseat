@@ -23,6 +23,7 @@
 
 {% block content %}
 
+
 <!-- Jquery -->
 
 
@@ -33,16 +34,17 @@
     Add flexible pickup window
 </div>
 
-<form action="/post-ride" method="post">
+<form action="/post-ride" method="post" id="ride-form">
     <div class="form-group">
 
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-2">
                     <label for="seats">Seats Available</label>
-                    <div class="input-group col-xs-2">
-                        <input type="text" class="form-control" id="seats" name="seats"
-                        aria-describedby="seats" placedholder="Seats Available" required>
-                    </div>
+                    <select class="form-control" name="seats">
+                        {% for i in range(7) %}
+                        <option value={{ i+1 }}>{{ i+1 }}</option>
+                        {% endfor %}<span>
+                    </select>
                 </div>
             </div>
 
@@ -54,7 +56,7 @@
                     <div class="input-group col-xs-2">
                         <span class="input-group-addon">$</span>
                         <input type="number" class="form-control" id="cost" name="cost"
-                        aria-describedby="cost" placedholder="Ex: 15.00" required>
+                        aria-describedby="cost" placedholder="Ex: 15.00" min="1.00" required>
                     </div>
                 </div>
             </div>
@@ -145,25 +147,54 @@
         
 
                 <br> 
+                <div class="row">
+                    <div class="col-xs-2">
+                        <label for="luggage">Maxiumum luggage per person</label>
+                        <select class="form-control" d="luggage" name="luggage"
+                            aria-describedby="luggage" placedholder="" required>
+                            <option value="small">small</option>
+                            <option value="medium">medium</option>
+                            <option value="large">large</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="row">
-                    <div class="col-xs-8">
-                        <label for="luggage">How much luggage can each passenger bring?</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="luggage" name="luggage"
-                            aria-describedby="luggage" placedholder="" required>
-                        </div>
+                    <div class="col-xs-2">
+                        <label for="pickup-window">Pickup Flexibilty</label>
+                        <select class="form-control" d="pickup-window" name="pickup-window"
+                            aria-describedby="pickup-window" placedholder="" required>
+                            <option value="No">No flexibility</option>
+                            <option value="15 min">In a 15 min window</option>
+                            <option value="30 min">In a 30 min window</option>
+                            <option value="1 hour">In a 1 hour window</option>
+                            <option value="2 hour">In a 1 hour window</option>
+                            <option value="flexible">Vert flexible, discuss</option>
+                        </select>
                     </div>
                 </div>
 
                 <br>
 
                 <div class="row">
+                    <div class="col-xs-2">
+                        <label for="pickup-window">Possible Detour</label>
+                        <select class="form-control" d="pickup-window" name="pickup-window"
+                            aria-describedby="pickup-window" placedholder="" required>
+                            <option value="No">No detour</option>
+                            <option value="15 min">15 min</option>
+                            <option value="30 min">30 min</option>
+                            <option value="flexible">Flexible, discuss</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-xs-8">
                         <label for="comments">Comments</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="comments" name="comments"
-                            aria-describedby="comments" placedholder="" required>
+                            <textarea form="ride-form" class="form-control" id="comments" name="comments"
+                            aria-describedby="comments" placedholder="" required></textarea>
                         </div>
                     </div>
                 </div>
