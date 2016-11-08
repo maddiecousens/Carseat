@@ -280,11 +280,6 @@
 
   {% endif %}
 
-
-    </tbody>
-  </table>
-    
-
 <script>
 
   var placeSearch, autocomplete, autocomplete2;
@@ -418,34 +413,10 @@
 
   } );
 
-  // Event Listener/Handler for toggling of Cost Attr
-  var mydata;
-  $(function() {
 
-
-    function replaceResults(data) {
-      mydata = data;
-      console.log(data);
-    }
-
-    function newSearch(evt) {
-      $.get('/jsontest.json', replaceResults);
-    }
-
-    $('.ui-slider-handle').on('mouseup', newSearch);
-
-    // function(evt) {
-    //       $.get('/jsontest.json'), function(data) {
-    //         console.log(data)
-    //       }
-
-    //       console.log($('.slider-time').val());
-    //     })
-
-  });
 </script>
 
-
+<script type="text/javascript" src="static/search.js"></script>
 
 
 

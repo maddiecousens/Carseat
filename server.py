@@ -161,20 +161,22 @@ def json_test():
             temp_dict[attr] = getattr(ride, attr)
 
         temp_dict['user_first_name'] = ride.user.first_name
-        temp_dict['ride.user_image'] = ride.user.image
+        temp_dict['user_image'] = ride.user.image
 
         tz = state_to_timezone(ride.start_state)
         ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
 
         if ride.start_timestamp.date() == date.today():
-            ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+            temp_dict['start_timestamp'] = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
 
         elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
-            ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+            temp_dict['start_timestamp'] = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
         else:
-            ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+            temp_dict['start_timestamp'] = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
         
         json_list.append(temp_dict)
+
+    print json_list[0]
 
     return jsonify(json_list)
 
