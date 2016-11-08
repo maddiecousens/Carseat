@@ -12,58 +12,11 @@
 <!-- bootstrap datepicker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
-
 <!-- 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
  -->
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
-  <script>
-  $( function() {
-    $( "#slider-range-max" ).slider({
-      range: "max",
-      min: 0,
-      max: 1440,
-      step: 15,
-      value: 750,
-      slide: function( event, ui ) {
-        var hours1 = Math.floor(ui.value / 60);
-        var minutes1 = ui.value - (hours1 * 60);
-
-        if (hours1.length == 1) hours1 = '0' + hours1;
-        if (minutes1.length == 1) minutes1 = '0' + minutes1;
-        if (minutes1 == 0) minutes1 = '00';
-        if (hours1 >= 12) {
-            if (hours1 == 12) {
-                hours1 = hours1;
-                minutes1 = minutes1 + " PM";
-            } else {
-                hours1 = hours1 - 12;
-                minutes1 = minutes1 + " PM";
-            }
-        } else {
-            hours1 = hours1;
-            minutes1 = minutes1 + " AM";
-        }
-        if (hours1 == 0) {
-            hours1 = 12;
-            minutes1 = minutes1;
-        }
-        $('.slider-time').html(hours1 + ':' + minutes1);
-        $('.slider-time').val(hours1 + ':' + minutes1);
-
-
-    }
-});
-
-  } );
-
-$(function() {
-  $('.ui-slider-handle').on('mouseup', function(evt) {
-        console.log($('.slider-time').val());
-      })
-});
-  </script>
 
 
 
@@ -333,98 +286,144 @@ $(function() {
     
 
 <script>
-            var placeSearch, autocomplete, autocomplete2;
 
-      var componentForm = {
-        // street_number: 'long_name',
-        // route: 'long_name',
-        locality: 'long_name',
-        administrative_area_level_1: 'short_name',
-        postal_code: 'short_name'
-      };
+  var placeSearch, autocomplete, autocomplete2;
 
-       var options = {
-          types: ['(cities)'],
-          componentRestrictions: {country: "us"}
-         };
+  var componentForm = {
+    // street_number: 'long_name',
+    // route: 'long_name',
+    locality: 'long_name',
+    administrative_area_level_1: 'short_name',
+    postal_code: 'short_name'
+  };
 
-      function initAutocomplete() {
-        // Create the autocomplete object, restricting the search to geographical
-        // location types.
-        autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */
-            (document.getElementById('autocomplete')), options);
+ var options = {
+    types: ['(cities)'],
+    componentRestrictions: {country: "us"}
+   };
 
-        autocomplete.addListener('place_changed', function() {
-            fillInAddress(autocomplete, "");
-        });
+  function initAutocomplete() {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */
+        (document.getElementById('autocomplete')), options);
 
-        autocomplete2 = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */
-            (document.getElementById('autocomplete2')), options); // what does ** @type mean
+    autocomplete.addListener('place_changed', function() {
+        fillInAddress(autocomplete, "");
+    });
 
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
-        
-        autocomplete2.addListener('place_changed', function() {
-            fillInAddress(autocomplete2, "2");
-        });               // look up the place_changed listener
-      
+    autocomplete2 = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */
+        (document.getElementById('autocomplete2')), options); // what does ** @type mean
+
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    
+    autocomplete2.addListener('place_changed', function() {
+        fillInAddress(autocomplete2, "2");
+    });               // look up the place_changed listener
+  
+  }
+
+  function fillInAddress(autocomplete, unique) {
+    // Get the place details from the autocomplete object.
+
+    var place = autocomplete.getPlace();
+
+    for (var component in componentForm) {
+      if(!!document.getElementById(component + unique)) {
+        document.getElementById(component + unique).value = '';
+      // document.getElementById(component).disabled = false;
       }
-
-      function fillInAddress(autocomplete, unique) {
-        // Get the place details from the autocomplete object.
-
-        var place = autocomplete.getPlace();
-
-        for (var component in componentForm) {
-          if(!!document.getElementById(component + unique)) {
-            document.getElementById(component + unique).value = '';
-          // document.getElementById(component).disabled = false;
-        }
     }
 
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-          var addressType = place.address_components[i].types[0];
-          if (componentForm[addressType] && document.getElementById(addressType + unique)) {
-            var val = place.address_components[i][componentForm[addressType]];
-            document.getElementById(addressType + unique).value = val;
-        }
-        }
-
-        if (place.geometry.location) {
-            var lat = place.geometry.location.lat()
-            document.getElementById('lat' + unique).value = lat;
-            var lng = place.geometry.location.lng()
-            document.getElementById('lng' + unique).value = lng;
-        }
+    for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (componentForm[addressType] && document.getElementById(addressType + unique)) {
+        var val = place.address_components[i][componentForm[addressType]];
+        document.getElementById(addressType + unique).value = val;
       }
+    }
 
-      google.maps.event.addDomListener(window, "load", initAutocomplete);
+    if (place.geometry.location) {
+        var lat = place.geometry.location.lat()
+        document.getElementById('lat' + unique).value = lat;
+        var lng = place.geometry.location.lng()
+        document.getElementById('lng' + unique).value = lng;
+    }
+  }
 
-      function geolocate() {
-                if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(function(position) {
-                    var geolocation = {
-                      lat: position.coords.latitude,
-                      lng: position.coords.longitude
-                    };
-                    var circle = new google.maps.Circle({
-                      center: geolocation,
-                      radius: position.coords.accuracy
-                    });
-                    autocomplete.setBounds(circle.getBounds());
-                  });
-                }
-              }
+  google.maps.event.addDomListener(window, "load", initAutocomplete);
 
-      // Bias the autocomplete object to the user's geographical location,
-      // as supplied by the browser's 'navigator.geolocation' object.
-      
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  function geolocate() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
+    }
+  }
 
-        </script>
+</script>
+
+<script>
+  $( function() {
+
+    $( "#slider-range-max" ).slider({
+      range: "max",
+      min: 0,
+      max: 1440,
+      step: 15,
+      value: 750,
+      slide: function( event, ui ) {
+        var hours1 = Math.floor(ui.value / 60);
+        var minutes1 = ui.value - (hours1 * 60);
+
+        if (hours1.length == 1) hours1 = '0' + hours1;
+        if (minutes1.length == 1) minutes1 = '0' + minutes1;
+        if (minutes1 == 0) minutes1 = '00';
+        if (hours1 >= 12) {
+            if (hours1 == 12) {
+                hours1 = hours1;
+                minutes1 = minutes1 + " PM";
+            } else {
+                hours1 = hours1 - 12;
+                minutes1 = minutes1 + " PM";
+            }
+        } else {
+            hours1 = hours1;
+            minutes1 = minutes1 + " AM";
+        }
+        if (hours1 == 0) {
+            hours1 = 12;
+            minutes1 = minutes1;
+        }
+        $('.slider-time').html(hours1 + ':' + minutes1);
+        $('.slider-time').val(hours1 + ':' + minutes1);
+      }
+    });
+
+  } );
+
+  // Event Listener/Handler for toggling of Cost Attr
+  $(function() {
+    $('.ui-slider-handle').on('mouseup', function(evt) {
+          console.log($('.slider-time').val());
+        })
+  });
+</script>
 
 
 
