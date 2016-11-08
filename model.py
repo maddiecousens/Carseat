@@ -39,7 +39,7 @@ class Ride(db.Model):
     ride_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     driver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     seats = db.Column(db.Integer, nullable=False)
-    cost = db.Column(db.Numeric, nullable=False) #look into this datatype
+    cost = db.Column(db.Integer, nullable=False) #look into this datatype
 
     # Start Location
     start_lat = db.Column(db.Float(24), nullable=False)

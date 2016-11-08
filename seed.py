@@ -62,6 +62,7 @@ def example_data():
             end_lat = row[5]
             end_lng = row[6]
             g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
+            g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
 
             start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
             start_aware = start_time.replace(tzinfo=pytz.timezone('US/Pacific'))
@@ -70,27 +71,27 @@ def example_data():
             start_utc = start_aware.astimezone(pytz.utc)
             end_utc = end_aware.astimezone(pytz.utc)
 
-            ride = Ride(driver = row[0],
-                        seats = row[1],
-                        cost = row[2],
+            ride = Ride(driver=row[0],
+                        seats=row[1],
+                        cost=row[2],
 
                         # Start Location
-                        start_lat = start_lat,
-                        start_lng = start_lng,
-                        start_number = g_start.housenumber,
-                        start_street = g_start.street,
-                        start_city = g_start.city,
-                        start_state = g_start.state,
-                        start_zip = g_start.postal,
+                        start_lat=start_lat,
+                        start_lng=start_lng,
+                        start_number=g_start.housenumber,
+                        start_street=g_start.street,
+                        start_city=g_start.city,
+                        start_state=g_start.state,
+                        start_zip=g_start.postal,
 
                         # End Location
-                        end_lat = end_lat,
-                        end_lng = end_lng,
-                        end_number = g_end.housenumber,
-                        end_street = g_end.street,
-                        end_city = g_end.city,
-                        end_state = g_end.state,
-                        end_zip = g_end.postal,
+                        end_lat=end_lat,
+                        end_lng=end_lng,
+                        end_number=g_end.housenumber,
+                        end_street=g_end.street,
+                        end_city=g_end.city,
+                        end_state=g_end.state,
+                        end_zip=g_end.postal,
 
                         # Date/Time
                         start_timestamp=start_utc,

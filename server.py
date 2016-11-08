@@ -108,6 +108,84 @@ def view_rideform():
 
     return render_template('rideform.html')
 
+@app.route('/jsontest.json')
+def json_test():
+    """testing json output"""
+    rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
+
+    # Get attribute list (they are the same for ever object so just pulling
+    #   from first object)
+    attributes = ([attr for attr in dir(rides[0]) if not attr.startswith('__')
+                                                 and not attr.startswith('_')
+                                                 and not attr.startswith('metadata')
+                                                 and not attr.startswith('query')
+                                                 and not attr.startswith('query_class')])
+
+    attributes = ['car_type',
+                 'comments',
+                 'cost',
+                 'detour',
+                 'driver',
+                 'end_city',
+                 'end_lat',
+                 'end_lng',
+                 'end_name',
+                 'end_number',
+                 'end_state',
+                 'end_street',
+                 'end_timestamp',
+                 'end_zip',
+                 'luggage',
+                 'mileage',
+                 'pickup_window',
+                 'ride_id',
+                 'seats',
+                 'start_city',
+                 'start_lat',
+                 'start_lng',
+                 'start_name',
+                 'start_number',
+                 'start_state',
+                 'start_street',
+                 'start_timestamp',
+                 'start_zip']
+
+    # Instantiate list
+    json_list = []
+
+    # iterate over rides and add to temp_dict
+    for ride in rides:
+
+        temp_dict = {}
+        for attr in attributes:
+            temp_dict[attr] = getattr(ride, attr)
+
+        temp_dict['user_first_name'] = ride.user.first_name
+        temp_dict['ride.user_image'] = ride.user.image
+
+        tz = state_to_timezone(ride.start_state)
+        ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+        if ride.start_timestamp.date() == date.today():
+            ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+
+        elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
+            ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
+        else:
+            ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+        
+        json_list.append(temp_dict)
+
+    return jsonify(json_list)
+
+def sqlalchemy_to_json(object):
+    pass
+    # ride = Ride.query.all()
+    # for ride in rides:
+
+
+
+
 @app.route('/googletest', methods=["GET"])
 def google_test():
     """  """
