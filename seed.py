@@ -64,12 +64,24 @@ def example_data():
             g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
             g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
 
+            # start time from seed file
             start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
-            start_aware = start_time.replace(tzinfo=pytz.timezone('US/Pacific'))
+
+            # localize to US/Pacific
+            start_time_aware = pytz.timezone("US/Pacific").localize(start_time)
+
+            # Normalize to UTC
+            start_time_utc = pytz.utc.normalize(start_time_aware)
+
+            # end time from seed file
             end_time = datetime.strptime(row[8],'%m/%d/%Y %H:%M:%S')
-            end_aware = end_time.replace(tzinfo=pytz.timezone('US/Pacific'))
-            start_utc = start_aware.astimezone(pytz.utc)
-            end_utc = end_aware.astimezone(pytz.utc)
+
+            # localize to US/Pacific
+            end_time_aware = pytz.timezone("US/Pacific").localize(end_time)
+
+            # Normalize to UTC
+            end_time_utc = pytz.utc.normalize(end_time_aware)
+
 
             ride = Ride(driver=row[0],
                         seats=row[1],
@@ -94,8 +106,8 @@ def example_data():
                         end_zip=g_end.postal,
 
                         # Date/Time
-                        start_timestamp=start_utc,
-                        end_timestamp=end_utc,
+                        start_timestamp=start_time_utc,
+                        end_timestamp=end_time_utc,
                         
                         #Details
                         # pickup_window = datetime.strptime(row[24],'%M'),

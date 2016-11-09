@@ -4,6 +4,7 @@ from jinja2 import StrictUndefined
 
 from flask import (Flask, jsonify, render_template, redirect, 
                    request, flash, session)
+from sqlalchemy import cast, Time
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -47,9 +48,12 @@ def search_rides():
         
 
         for ride in rides:
-            # print '\n {} type" {} \n'.format(ride.start_name, type(ride.start_name))
+
             tz = state_to_timezone(ride.start_state)
-            ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+            utc = ride.start_timestamp.replace(tzinfo=pytz.utc)
+
+            ride.start_timestamp = pytz.timezone('US/Pacific').normalize(utc)
 
             if ride.start_timestamp.date() == date.today():
                 ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
@@ -57,7 +61,8 @@ def search_rides():
             elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
                 ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
             else:
-                ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+                ride.start_timestamp = ride.start_timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
+                print '\n\nride.start_timestamp_after_strf:{}\n\n'.format(ride.start_timestamp)
  
         return render_template('search.html', rides=rides)
 
@@ -88,7 +93,10 @@ def search_rides():
 
         for ride in rides:
             tz = state_to_timezone(ride.start_state)
-            ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+            utc = ride.start_timestamp.replace(tzinfo=pytz.utc)
+
+            ride.start_timestamp = pytz.timezone('US/Pacific').normalize(utc)
 
             if ride.start_timestamp.date() == date.today():
                 ride.start_timestamp = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
@@ -96,7 +104,8 @@ def search_rides():
             elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
                 ride.start_timestamp = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
             else:
-                ride.start_timestamp = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+                ride.start_timestamp = ride.start_timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
+                print '\n\nride.start_timestamp_after_strf:{}\n\n'.format(ride.start_timestamp)
 
         
         return render_template('search.html', rides=rides)
@@ -108,9 +117,18 @@ def view_rideform():
 
     return render_template('rideform.html')
 
-@app.route('/jsontest.json')
+@app.route('/search-time.json')
 def json_test():
     """testing json output"""
+
+    start_time = request.args.get("start")
+
+    start_time = datetime.strptime(start_time, '%I:%M %p')
+
+    print '\n\n{}\n\n'.format(start_time)
+
+    db.session.query(Ride).filter(cast(Ride.start_timestamp, Time) >  datetime.utcnow().time()).all()
+
     rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
 
     # Get attribute list (they are the same for ever object so just pulling
@@ -163,8 +181,14 @@ def json_test():
         temp_dict['user_first_name'] = ride.user.first_name
         temp_dict['user_image'] = ride.user.image
 
+        # Get timezone for state
         tz = state_to_timezone(ride.start_state)
-        ride.start_timestamp = ride.start_timestamp.replace(tzinfo=pytz.timezone(tz))
+
+        # make ride.start_timestamp aware that it is in UTC time
+        utc = ride.start_timestamp.replace(tzinfo=pytz.utc)
+
+        # convert ride.start_timestamp to the local time
+        ride.start_timestamp = pytz.timezone(tz).normalize(utc)
 
         if ride.start_timestamp.date() == date.today():
             temp_dict['start_timestamp'] = "Today, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
@@ -172,7 +196,7 @@ def json_test():
         elif ride.start_timestamp.date() == (date.today() + timedelta(days=1)):
             temp_dict['start_timestamp'] = "Tomorrow, {}".format(ride.start_timestamp.strftime('%-I:%M %p'))
         else:
-            temp_dict['start_timestamp'] = ride.start_timestamp.date().strftime('%A, %b %d, %Y %-I:%M %p')
+            temp_dict['start_timestamp'] = ride.start_timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
         
         json_list.append(temp_dict)
 
@@ -241,29 +265,29 @@ def process_rideform():
 
     ######## Convert to UTC #########
 
-    # Parse date from form
-    leaving = arrow.get(request.form.get('date1'), 'MM/DD/YYYY h:mm A')
-    # arriving = arrow.get(request.form.get('date2'), 'MM/DD/YYYY h:mm A')
-
     # Get starting and leaving timezones via Arrow library
     tz_leaving = state_to_timezone(start_state)
     tz_arriving = state_to_timezone(end_state)
 
-    # Add timezones to Arrow objects
-    # leaving_with_tz = start_time.replace(tzinfo=tz_leaving)
-    # arriving_with_tz = end_time.replace(tzinfo=tz_arriving)
+    # Localize timezones
 
-    leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
-    arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
+    leaving_with_tz = pytz.timezone(tz_leaving).localize(start_time) 
+    arriving_with_tz = pytz.timezone(tz_arriving).localize(end_time)   
+
+
+    # leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
+    # arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
 
     
 
     # Convert to UTC
-    # leaving_utc = leaving_with_tz.to('utc')
-    # arriving_utc = arriving_with_tz.to('utc')
 
-    leaving_utc = leaving_with_tz.astimezone(pytz.utc)
-    arriving_utc = arriving_with_tz.astimezone(pytz.utc)
+    leaving_utc = pytz.utc.normalize(leaving_with_tz)
+    arriving_utc = pytz.utc.normalize(arriving_with_tz)
+  
+
+    # leaving_utc = leaving_with_tz.astimezone(pytz.utc)
+    # arriving_utc = arriving_with_tz.astimezone(pytz.utc)
 
     ######## Create Ride Instance ############
 

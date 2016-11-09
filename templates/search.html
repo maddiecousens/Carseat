@@ -26,9 +26,10 @@
 <div class="container">
   <div class="well">
     To Do:
-    - Don't show rides you are the driver for!!!
-    - Adjust enter stroke for search
-    - Sync of reverse button
+    - Don't show rides you are the driver for!!!<br>
+    - Adjust enter stroke for search<br>
+    - Sync of reverse button<br>
+    - REverse geocode if only city, state?<br>
   </div>
 
   <form action="/search">
@@ -234,18 +235,18 @@
            <!--  Luggage, Detours -->
             <div class="row">
               <!-- luggage -->
-              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="You are allowd to bring 1 {{ ride.luggage }} suitcase">
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="You are allowd to bring 1 {{ ride.luggage }} suitcase">
                 <span class="glyphicon glyphicon-heart col-xs-4" style="font-size:2em;"></span>
               </a>
 
               <!-- Flexible Picup -->
               {% if ride.pickup_window == "flexible" %}
-              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver">
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver">
                 <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
               </a>
 
               {% elif ride.pickup_window != "No" %}
-              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Pickup time is flexible in a {{ ride.pickup_window }} window">
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is flexible in a {{ ride.pickup_window }} window">
                 <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
               </a>
 
@@ -253,13 +254,13 @@
 
               {% if ride.detour == "flexible" %}
 
-              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours">
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours">
                 <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
               </a>
 
               {% elif ride.detour != "No" %}
 
-              <a class='my-tool-tip' data-toggle="tooltip" data-placement="left" title="Driver is open to a {{ ride.detour }} detour">
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is open to a {{ ride.detour }} detour">
                 <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
               </a>
 
@@ -268,7 +269,7 @@
 
               
             </div>  
-            <script> $("a.my-tool-tip").tooltip(); </script>
+            
           </div>
 
         </td>
@@ -279,6 +280,12 @@
   <p>No upcoming rides for that search</p>
 
   {% endif %}
+
+  </table>
+</tbody>
+
+
+<script> $("a.my-tool-tip").tooltip(); </script>
 
 <script>
 
@@ -409,7 +416,7 @@
         $('.slider-time').val(hours1 + ':' + minutes1);
       }
     });
-    $(".slider-time").val( $("#slider-range-max").slider("value") );
+    $(".slider-time").val( "10:00 AM" );
 
   } );
 

@@ -1,23 +1,25 @@
+"use strict";
+
 $(function() {
 
 
 function htmlSeats(seats){
-    console.log('got into htmlSeats')
+    // console.log('got into htmlSeats')
     var seatOptions;
-    for (i = 0; i < seats; i++) {
-        console.log('htmlSeats i' + i)
+    for (var i = 0; i < seats; i++) {
+        // console.log('htmlSeats i' + i)
 
         seatOptions += ('<option value=' + (i+1) + '>' + (i+1)
                         + '</option> \
-                            <span>')
-        console.log(seatOptions);
+                            <span>');
+        // console.log(seatOptions);
     }
 
     return seatOptions;
 }
 
 
-function htmlRow(ride){
+function htmlRow(ride) {
     console.log('inside htmlRow');
     var row = '<tbody> \
       <tr> \
@@ -37,11 +39,12 @@ function htmlRow(ride){
             <div> \
               <form action="/request-seats" method="POST"> \
                 <div class="input-group"> \
-                  <select class="form-control" name="seats" style="width:auto;">'
-
+                  <select class="form-control" name="seats" style="width:auto;">';
+    
     row += htmlSeats(ride.seats);
 
-    row = row + '<input type="hidden" name="ride_id" value="' + ride.ride_id
+
+    row += '<input type="hidden" name="ride_id" value="' + ride.ride_id
             + '"></input><input class="btn btn-default" type="submit" value="Request Seats"></span> \
             </div> \
                   </form> \
@@ -68,13 +71,127 @@ function htmlRow(ride){
               <div class="row"> \
                 <p> \
                   <span class="glyphicon glyphicon-unchecked" style="color:green"></span> \
-                  <span>'
-        // if (ride.start_name != null) {
+                  <span>';
 
-        // }
+        if (ride.start_name != null) {
+            row += ride.start_name;
+        }
+        if (ride.start_number != null && ride.start_street != null) {
+            row += ride.start_number + " " + ride.start_street + ", ";
+        }
+        if (ride.start_city != null) {
+            row += ride.start_city + ", ";
+        }
+        if (ride.start_state != null) {
+            if (ride.start_zip) {
+                row += ride.start_state + ", ";
+            }
+            else {
+                row += ride.start_state;
+            }
+        }
+        if (ride.start_zip != null) {
+            row += ride.start_zip;
+        }
+
+        row += '</span> \
+            </p> \
+          </div> \
+          <div class="row"> \
+            <p> \
+              <span class="glyphicon glyphicon-unchecked" style="color:red"></span> \
+              <span>'
+
+        if (ride.end_name != null) {
+            row += ride.end_name;
+        }
+
+        if (ride.end_number != null && ride.end_street != null) {
+            row += ride.end_number + " " + ride.end_street + ", ";
+        }
+        if (ride.end_city != null) {
+            row += ride.end_city + ", ";
+        }
+        if (ride.end_state != null) {
+            if (ride.end_zip) {
+                row += ride.end_state + ", ";
+            }
+            else {
+                row += ride.end_state;
+            }
+        }
+        if (ride.end_zip != null) {
+            row += ride.end_zip;
+        }
+
+        row += '</span> \
+            </p> \
+          </div> \
+        </td> \
+        <td class="col-xs-2" style="padding-left:20px;"> \
+          <div class="row"> \
+            <span><h1>$'
+            + ride.cost
+            + '</h1></span> \
+          </div> \
+          <div class="row"> \
+            <h4><small><i>per passenger</i><small></h4> \
+            </div> \
+            <div class="row"> \
+              <h4>'
+            + ride.seats
+            + ' Seats Left</h4> \
+            </div> \
+            <div class="row"> \
+              <a class="my-tool-tip" data-toggle="tooltip" \
+              data-placement="left" title="You are allowd to bring 1 '
+            + ride.luggage
+            + ' suitcase"> \
+               <span class="glyphicon glyphicon-heart col-xs-4" \
+               style="font-size:2em;"></span> \
+                          </a>';
+
+        if (ride.pickup_window === "flexible") {
+            row += '<a class="my-tool-tip" data-toggle="tooltip" \
+            data-placement="left" title="Pickup time is very flexible, \
+            discuss with driver"> \
+            <span class="glyphicon glyphicon-star col-xs-4" \
+            style="font-size:2em;"></span> \
+              </a>';
+        }
+        else if (ride.pickup_window !== 'No') {
+            row += '<a class="my-tool-tip" data-toggle="tooltip" \
+            data-placement="left" title="Pickup time is flexible in a '
+            + ride.pickup_window
+            + ' window">=<span class="glyphicon glyphicon-star col-xs-4" \
+                style="font-size:2em;"></span> \
+              </a>';
+        }
+
+        if (ride.detour == "flexible") {
+            row += '<a class="my-tool-tip" data-toggle="tooltip" \
+            data-placement="left" title="Driver is very flexible with detours"> \
+            <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"> \
+            </span> \
+              </a>';
+        }
+        else if (ride.detour !== 'No') {
+            row += '<a class="my-tool-tip" data-toggle="tooltip" \
+            data-placement="left" title="Driver is open to a '
+            + ride.detour
+            + ' detour"> \
+                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span> \
+              </a>';
+        }
+
+        row += '</div> \
+                  </div> \
+                </td> \
+              </tr>';
+
+    console.log('i made a row!');
 
     return row;
-
 }
 
     // Function to build html
@@ -84,21 +201,35 @@ function htmlRow(ride){
         
         // Start building html
         var html = '<table class="table table-hover">';
-        console.log(html);
+        // console.log(html);
 
         // For every ride in JSON, call htmlRow
-        for (i = 0; i < data.length; i++) {
-            console.log('buildHtml i ' + i);
 
-            html += htmlRow(data[i]);
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                console.log('buildHtml i ' + i);
+                // console.log(data[i]);
+                html += htmlRow(data[i]);
+
+                // html += htmlRow(data[i]);
+            }
+
+            html += '</table></tbody>';
+
+            console.log(html);
         }
-        console.log(html);
+        else {
+            html += '<p>No upcoming rides for that search</p>';
+        }
     }
 
 
     // Event Handler, AJAX
     function newSearch(evt) {
-      $.get('/jsontest.json', buildHTML);
+        
+        var data = {start: $('.slider-time').val()};
+        // console.log(time);
+        $.get('/search-time.json', data, buildHTML);
     }
 
     // Event Listener on toggle
