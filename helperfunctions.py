@@ -57,9 +57,13 @@ def state_to_timezone(state):
                          'WI': 'US/Central',
                          'WV': 'US/Eastern',
                          'WY': 'US/Mountain',
-                           '': 'US/Pacific',
+                          '' : 'US/Pacific',
                           '--': 'US/Pacific'}
 
-      timezone = state2timezone.get(state)
+     timezone = state2timezone.get(state)
       
-      return timezone
+     return timezone
+     
+def miles_to_degrees(miles):
+    MILE_TO_DEGREE = 69.0
+    return miles / MILE_TO_DEGREE
