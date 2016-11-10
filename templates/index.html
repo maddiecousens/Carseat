@@ -10,12 +10,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
-
 <!-- 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
  -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+
 
 {% endblock %}
 
@@ -42,8 +42,9 @@
                 </div>
             </div>
             <div>
-               <!--  <input type="text" id="street_number" name="street_number"></input>
-                <input type="text" id="route" name="route"></input> -->
+                <!-- <input type="text" id="street_number" name="street_number"></input> -->
+                <input type="text" id="searchstring" name="searchstring"></input>
+                <!-- <input type="text" id="route" name="route"></input> -->
                 <input type="text" id="locality" name="locality"></input>
                 <input type="text" id="administrative_area_level_1" name="administrative_area_level_1"></input>
                 <input type="text" id="postal_code" name="postal_code"></input>
@@ -61,8 +62,9 @@
                 </div>
             </div>
                 <div>
-                   <!--  <input type="text" id="street_number2" name="street_number"></input>
-                    <input type="text" id="route2" name="route2"></input> -->
+                    <!-- <input type="text" id="street_number2" name="street_number"></input> -->
+                    <input type="text" id="searchstring2" name="searchstring2"></input>
+                    <!-- <input type="text" id="route2" name="route2"></input> -->
                     <input type="text" id="locality2" name="locality2"></input>
                     <input type="text" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
                     <input type="text" id="postal_code2" name="postal_code2"></input>
@@ -81,17 +83,17 @@
         postal_code: 'short_name'
       };
 
-       var options = {
-          types: ['(cities)'],
-          componentRestrictions: {country: "us"}
-         };
+       // var options = {
+       //    types: ['(cities)'],
+       //    componentRestrictions: {country: "us"}
+       //   };
 
       function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */
-            (document.getElementById('autocomplete')), options);
+            (document.getElementById('autocomplete')));
 
         autocomplete.addListener('place_changed', function() {
             fillInAddress(autocomplete, "");
@@ -99,7 +101,7 @@
 
         autocomplete2 = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */
-            (document.getElementById('autocomplete2')), options); // what does ** @type mean
+            (document.getElementById('autocomplete2'))); // what does ** @type mean
 
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
@@ -130,6 +132,8 @@
             var val = place.address_components[i][componentForm[addressType]];
             document.getElementById(addressType + unique).value = val;
         }
+        var searchstring = document.getElementById('autocomplete' + unique).value
+        document.getElementById('searchstring' + unique).value = searchstring
         }
 
         if (place.geometry.location) {
@@ -140,7 +144,7 @@
         }
       }
 
-      // google.maps.event.addDomListener(window, "load", initAutocomplete);
+      google.maps.event.addDomListener(window, "load", initAutocomplete);
 
       function geolocate() {
                 if (navigator.geolocation) {

@@ -10,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Ride, Rider, Request, connect_db, db
 
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, time
 
 import geocoder
 
@@ -46,7 +46,10 @@ def search_rides():
     if request.args.get('query'):
         rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
         
-
+        # Passing so Jinja can diffentiate between searching all rides and
+        #    searching by terms
+        start_search={ "term": "all"}
+        end_search={}
         for ride in rides:
 
             tz = state_to_timezone(ride.start_state)
@@ -64,7 +67,9 @@ def search_rides():
                 ride.start_timestamp = ride.start_timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
                 print '\n\nride.start_timestamp_after_strf:{}\n\n'.format(ride.start_timestamp)
  
-        return render_template('search.html', rides=rides)
+        return render_template('search.html', rides=rides
+                                            , start_search=start_search
+                                            , end_search=end_search)
 
     # If user enters search terms, show rides based off search terms  
     else:
@@ -75,10 +80,27 @@ def search_rides():
         miles = 25
         deg = miles_to_degrees(miles)
 
+        start_search_term = request.args.get('searchstring')
+        end_search_term = request.args.get('searchstring2')
+        start_state = request.args.get('administrative_area_level_1')
+        end_state = request.args.get('administrative_area_level_1_2')
+        
+
         start_lat = float(request.args.get('lat'))
         start_lng = float(request.args.get('lng'))
         end_lat = float(request.args.get('lat2'))
         end_lng = float(request.args.get('lng2'))
+
+        start_search = {"term" : start_search_term,
+                        "state" : start_state,
+                        "lat" : start_lat,
+                        "lng" : start_lng
+                       }
+        end_search = {"term" : end_search_term,
+                        "state" : end_state,
+                        "lat" : end_lat,
+                        "lng" : end_lng
+                       }
         
         rides = (Ride.query.options(db.joinedload('user'))
                           .filter(((Ride.start_lat < str(start_lat + deg)) &
@@ -107,8 +129,9 @@ def search_rides():
                 ride.start_timestamp = ride.start_timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
                 print '\n\nride.start_timestamp_after_strf:{}\n\n'.format(ride.start_timestamp)
 
-        
-        return render_template('search.html', rides=rides)
+        return render_template('search.html', rides=rides
+                                            , start_search=start_search
+                                            , end_search=end_search)
 
 
 @app.route('/post-ride', methods=["GET"])
@@ -121,23 +144,82 @@ def view_rideform():
 def json_test():
     """testing json output"""
 
-    start_time = request.args.get("start")
+    # Put the search terms within the search.html page
+    # use the search parameters to re-search.
+    #   possible routes to need to add it from:
+    # clicking 'all rides'
+    # searching from index
 
-    start_time = datetime.strptime(start_time, '%I:%M %p')
 
-    print '\n\n{}\n\n'.format(start_time)
+    start_term = request.args.get('start_term')
 
-    db.session.query(Ride).filter(cast(Ride.start_timestamp, Time) >  datetime.utcnow().time()).all()
+    if start_term == 'all':
 
-    rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
+        start_time = request.args.get("start")
+        start_time_notz = datetime.strptime(start_time, '%I:%M %p')
+        start_time_aware = pytz.timezone("US/Pacific").localize(start_time_notz)
+        start_time_utc = pytz.utc.normalize(start_time_aware)
+        start_time = start_time_utc.time()
+
+
+        print "\n\nstart term eqals all whut\n\n"
+        rides = (Ride.query.options(db.joinedload('user'))
+                          .filter(cast(Ride.start_timestamp, Time) > start_time)
+                    .order_by(Ride.start_timestamp).all())
+
+
+    else:
+
+        start_time = request.args.get("start")
+
+        start_state = request.args.get("state")
+        start_lat = float(request.args.get('start_lat'))
+        start_lng = float(request.args.get('start_lng'))
+        end_lat = float(request.args.get('end_lat'))
+        end_lng = float(request.args.get('end_lng'))
+
+        start_time_notz = datetime.strptime(start_time, '%I:%M %p')
+        start_time_aware = pytz.timezone("US/Pacific").localize(start_time_notz)
+        start_time_utc = pytz.utc.normalize(start_time_aware)
+        start_time = start_time_utc.time()
+
+        print '\n\n{}\n\n'.format(start_time)
+        # db.session.query(Ride).filter(cast(Ride.start_timestamp, Time) >  datetime.utcnow().time()).all()
+
+        miles = 25
+        deg = miles_to_degrees(miles)
+        
+        rides = (Ride.query.options(db.joinedload('user'))
+                          .filter(((Ride.start_lat < str(start_lat + deg)) &
+                                   (Ride.start_lat > str(start_lat - deg))) &
+                                  ((Ride.start_lng < str(start_lng + deg)) &
+                                   (Ride.start_lng > str(start_lng - deg))) &
+                                  ((Ride.end_lat < str(end_lat + deg)) &
+                                  (Ride.end_lat > str(end_lat - deg))) &
+                                 ((Ride.end_lng < str(end_lng + deg)) &
+                                  (Ride.end_lng > str(end_lng - deg))) &
+                                 (cast(Ride.start_timestamp, Time) > start_time))
+                    .order_by(Ride.start_timestamp).all())
+        print '\n\n'
+        print rides
+
+    # rides = Ride.query.filter((cast(Ride.start_timestamp, Time) < datetime.utcnow().time()),
+
+
+
+
+    #     .all()
+
+
+    # rides = Ride.query.options(db.joinedload('user')).order_by(Ride.start_timestamp).all()
 
     # Get attribute list (they are the same for ever object so just pulling
     #   from first object)
-    attributes = ([attr for attr in dir(rides[0]) if not attr.startswith('__')
-                                                 and not attr.startswith('_')
-                                                 and not attr.startswith('metadata')
-                                                 and not attr.startswith('query')
-                                                 and not attr.startswith('query_class')])
+    # attributes = ([attr for attr in dir(rides[0]) if not attr.startswith('__')
+    #                                              and not attr.startswith('_')
+    #                                              and not attr.startswith('metadata')
+    #                                              and not attr.startswith('query')
+    #                                              and not attr.startswith('query_class')])
 
     attributes = ['car_type',
                  'comments',
@@ -169,9 +251,10 @@ def json_test():
                  'start_zip']
 
     # Instantiate list
-    json_list = []
 
     # iterate over rides and add to temp_dict
+    
+    json_list = []
     for ride in rides:
 
         temp_dict = {}
@@ -200,7 +283,6 @@ def json_test():
         
         json_list.append(temp_dict)
 
-    print json_list[0]
 
     return jsonify(json_list)
 

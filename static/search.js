@@ -216,19 +216,28 @@ function htmlRow(ride) {
 
             html += '</table></tbody>';
 
-            console.log(html);
+            // console.log(html);
         }
         else {
             html += '<p>No upcoming rides for that search</p>';
         }
+        console.log(html);
+        $('#results').empty().append(html);
     }
-
 
     // Event Handler, AJAX
     function newSearch(evt) {
         
-        var data = {start: $('.slider-time').val()};
-        // console.log(time);
+        var data = {start: $('.slider-time').val(),
+                    start_state: $('#administrative_area_level_1').val(),
+                    start_term: $('#searchstring').val(),
+                    start_lat: $('#lat').val(),
+                    start_lng: $('#lng').val(),
+                    end_lat: $('#lat2').val(),
+                    end_lng: $('#lng2').val()
+
+        };
+        console.log($('.slider-time').val());
         $.get('/search-time.json', data, buildHTML);
     }
 
