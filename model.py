@@ -82,6 +82,7 @@ class Ride(db.Model):
 
         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
             self.driver, self.start_city, self.end_city, self.start_timestamp)
+        
 
 class Rider(db.Model):
     """Association table. Users taking Rides"""
@@ -128,49 +129,6 @@ class Request(db.Model):
 
         return "<Requests id={}, ride_id={}, requester={}, seats={}>".format(self.id, 
             self.ride_id, self.requester, self.seats)
-
-# class Request(db.Model):
-#     """Pending Requests"""
-
-#     id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
-#     ride_id = db.Column(db.Integer, nullable=False, db.ForeignKey('riders.ride_id'))
-#     user_id = db.Column(db.Integer, nullable=False, db.ForeignKey('users.user_id'))
-#     seats = db.Column(db.Integer, nullable=False)
-
-#  id | ride_id | user_id | seats 
-# ----+---------+---------+-------
-#   1 |       1 |       3 |     2
-#   2 |       1 |       4 |     2
-#   3 |       2 |       1 |     1
-#   4 |       2 |       4 |     1
-# (4 rows)
-
-# rideshare=# select * from users;
-#  user_id |  name  |  email  | password 
-# ---------+--------+---------+----------
-#        1 | Maddie | maddie@ | doge1
-#        2 | Ahmad  | ahmad@  | doge2
-#        3 | Carl   | carl@   | doge3
-#        4 | Lexie  | lexie@  | doge4
-# (4 rows)
-
-#  ride_id | driver | start_location | end_location |            date            | seats 
-# ---------+--------+----------------+--------------+----------------------------+-------
-#        1 |      1 | SF             | Tahoe        | 2016-10-31 22:47:41.647222 |     4
-#        2 |      2 | SF             | LA           | 2016-10-31 22:47:41.647333 |     4
-#        3 |      1 | NY             | SF           | 2016-11-05 00:00:00        |     5
-#        4 |      2 | SF             | Tahoe        | 2016-12-25 00:00:00        |     5
-
-
-
-
-
-
-
-
-
-
-
 
 
 ##############################################################################

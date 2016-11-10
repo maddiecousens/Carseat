@@ -2,22 +2,19 @@
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, jsonify, render_template, redirect, 
-                   request, flash, session)
+from flask import (Flask, jsonify, render_template, redirect, request, flash, 
+                   session)
 from sqlalchemy import cast, Time
-
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Ride, Rider, Request, connect_db, db
 
 from datetime import datetime, date, timedelta, time
+import pytz
 
 import geocoder
 
-import arrow
-import pytz
 from helperfunctions import state_to_timezone
-
 
 
 app = Flask(__name__)
@@ -37,6 +34,10 @@ def index():
     """ Homepage """
 
     return render_template('index.html')
+
+##################################                               
+####### Searching Routes #########
+##################################
 
 @app.route('/search')
 def search_rides():
@@ -132,13 +133,6 @@ def search_rides():
         return render_template('search.html', rides=rides
                                             , start_search=start_search
                                             , end_search=end_search)
-
-
-@app.route('/post-ride', methods=["GET"])
-def view_rideform():
-    """ Form to post new ride """
-
-    return render_template('rideform.html')
 
 @app.route('/search-time.json')
 def json_test():
@@ -291,7 +285,9 @@ def sqlalchemy_to_json(object):
     # ride = Ride.query.all()
     # for ride in rides:
 
-
+##################################                               
+######### Testing Route ##########
+##################################
 
 
 @app.route('/googletest', methods=["GET"])
@@ -299,6 +295,16 @@ def google_test():
     """  """
 
     return render_template('slider.html')
+
+##################################                               
+######## Post Ride Form ##########
+##################################
+
+@app.route('/post-ride', methods=["GET"])
+def view_rideform():
+    """ Form to post new ride """
+
+    return render_template('rideform.html')
 
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
@@ -347,7 +353,7 @@ def process_rideform():
 
     ######## Convert to UTC #########
 
-    # Get starting and leaving timezones via Arrow library
+    # Get starting and leaving timezones via Helper Functions
     tz_leaving = state_to_timezone(start_state)
     tz_arriving = state_to_timezone(end_state)
 
@@ -412,7 +418,9 @@ def process_rideform():
 
     return redirect('/profile/{}'.format(user)) 
 
-
+##################################                               
+##### Login/Logout/Register ######
+##################################
 
 @app.route('/login', methods=["GET"])
 def view_login():
@@ -488,6 +496,10 @@ def register():
     flash("You have been added as a user. Please login")
 
     return redirect("login")
+
+##################################                               
+#### Profile Page + Requests #####
+##################################
 
 
 @app.route('/profile/<user_id>', methods=["GET"])
@@ -575,10 +587,7 @@ def request_approval():
     path = '/profile/{}'.format(current_user)
     return redirect(path)
 
-#### Future Routes ####
-# @app.route('/details/<rideid>')
-# def ride_details():
-#     return render_template('details.html', ride_id=ride_id)
+
 
 def miles_to_degrees(miles):
     MILE_TO_DEGREE = 69.0
