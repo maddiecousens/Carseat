@@ -29,7 +29,8 @@
     - Don't show rides you are the driver for!!!<br>
     - Adjust enter stroke for search<br>
     - Sync of reverse button<br>
-    - REverse geocode if only city, state?<br>
+    - Reverse geocode if only city, state?<br>
+    - Have autofill be real values that you can delete <br>
   </div>
 
   <form action="/search">
@@ -40,12 +41,10 @@
           <label for="start-address">Enter Your Destination</label>
         </div>
 
-      
-
           {% if start_search["term"] == 'all' %}
           <div class="form-group">
           <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" placeholder="Enter Starting Location" required>
+            aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location" required>
 
           <div>
             <input type="text" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
@@ -66,7 +65,7 @@
 
         <div class="form-group">
           <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" placeholder="Enter Ending Location" required> 
+          aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location" required> 
           <div>
               <input type="text" id="searchstring2" name="searchstring2"></input>
              <!--  <input type="text" id="street_number2" name="street_number"></input>
@@ -82,7 +81,7 @@
         {% else %}
           <div class="form-group">
           <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" placeholder="{{ start_search["term"] }}" required>
+            aria-describedby="starting destination" onFocus="geolocate()" placeholder="{{ start_search["term"] }}" required>
 
           <div>
             <input type="text" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
@@ -104,7 +103,7 @@
 
         <div class="form-group">
           <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" placeholder="{{ end_search["term"] }}" required> 
+          aria-describedby="ending destination" onFocus="geolocate()" placeholder="{{ end_search["term"] }}" required> 
           <div>
               <input type="text" id="searchstring2" name="searchstring2" value="{{ end_search["term"] }}"></input>
              <!--  <input type="text" id="street_number2" name="street_number"></input>
@@ -140,10 +139,6 @@
     <div class="row col-xs-4" id="slider-range-max"></div>
   </div>
   
-
-  
-
-
   <br>
 
   <table class="table table-hover" id="results">
@@ -220,9 +215,6 @@
                 {% if ride.start_zip is not none %}
                 {{ ride.start_zip }}
                 {% endif %}
-
-
-
 
              </span>
             </p>
@@ -332,144 +324,9 @@
 
 <script> $("a.my-tool-tip").tooltip(); </script>
 
-<script>
-
-  var placeSearch, autocomplete, autocomplete2;
-
-  var componentForm = {
-    // street_number: 'long_name',
-    // route: 'long_name',
-    locality: 'long_name',
-    administrative_area_level_1: 'short_name',
-    postal_code: 'short_name'
-  };
-
- var options = {
-    types: ['(cities)'],
-    componentRestrictions: {country: "us"}
-   };
-
-  function initAutocomplete() {
-    // Create the autocomplete object, restricting the search to geographical
-    // location types.
-    autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */
-        (document.getElementById('autocomplete')), options);
-
-    autocomplete.addListener('place_changed', function() {
-        fillInAddress(autocomplete, "");
-    });
-
-    autocomplete2 = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */
-        (document.getElementById('autocomplete2')), options); // what does ** @type mean
-
-    // When the user selects an address from the dropdown, populate the address
-    // fields in the form.
-    
-    autocomplete2.addListener('place_changed', function() {
-        fillInAddress(autocomplete2, "2");
-    });               // look up the place_changed listener
-  
-  }
-
-  function fillInAddress(autocomplete, unique) {
-    // Get the place details from the autocomplete object.
-
-    var place = autocomplete.getPlace();
-
-    for (var component in componentForm) {
-      if(!!document.getElementById(component + unique)) {
-        document.getElementById(component + unique).value = '';
-      // document.getElementById(component).disabled = false;
-      }
-    }
-
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-    for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
-      if (componentForm[addressType] && document.getElementById(addressType + unique)) {
-        var val = place.address_components[i][componentForm[addressType]];
-        document.getElementById(addressType + unique).value = val;
-      }
-    }
-
-    if (place.geometry.location) {
-        var lat = place.geometry.location.lat()
-        document.getElementById('lat' + unique).value = lat;
-        var lng = place.geometry.location.lng()
-        document.getElementById('lng' + unique).value = lng;
-    }
-  }
-
-  google.maps.event.addDomListener(window, "load", initAutocomplete);
-
-  // Bias the autocomplete object to the user's geographical location,
-  // as supplied by the browser's 'navigator.geolocation' object.
-  function geolocate() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var geolocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        var circle = new google.maps.Circle({
-          center: geolocation,
-          radius: position.coords.accuracy
-        });
-        autocomplete.setBounds(circle.getBounds());
-      });
-    }
-  }
-
-</script>
-
-<script>
-  $( function() {
-
-    $( "#slider-range-max" ).slider({
-      range: "max",
-      min: 0,
-      max: 1440,
-      step: 15,
-      value: 750,
-      slide: function( event, ui ) {
-        var hours1 = Math.floor(ui.value / 60);
-        var minutes1 = ui.value - (hours1 * 60);
-
-        if (hours1.length == 1) hours1 = '0' + hours1;
-        if (minutes1.length == 1) minutes1 = '0' + minutes1;
-        if (minutes1 == 0) minutes1 = '00';
-        if (hours1 >= 12) {
-            if (hours1 == 12) {
-                hours1 = hours1;
-                minutes1 = minutes1 + " PM";
-            } else {
-                hours1 = hours1 - 12;
-                minutes1 = minutes1 + " PM";
-            }
-        } else {
-            hours1 = hours1;
-            minutes1 = minutes1 + " AM";
-        }
-        if (hours1 == 0) {
-            hours1 = 12;
-            minutes1 = minutes1;
-        }
-        $('.slider-time').html(hours1 + ':' + minutes1);
-        $('.slider-time').val(hours1 + ':' + minutes1);
-      }
-    });
-    $(".slider-time").val( "10:00 AM" );
-
-  } );
-
-
-</script>
-
+<script type="text/javascript" src="static/autocomplete.js"></script>
+<script type="text/javascript" src="static/search_time_toggle.js"></script>
 <script type="text/javascript" src="static/search.js"></script>
-
 
 
 {% endblock %}
