@@ -193,7 +193,11 @@ def view_rideform():
 def process_rideform():
     """ Add new ride to database """
     
-    # ADD: logged-in check
+    ###############
+    ## to do: 
+    ##- Add logged in check
+    ##- DON'T ADD TO DB IF THE FIELDS ARE BLANK!!!
+    ################
     user = session['current_user']
     driver = session['current_user']
 
@@ -234,35 +238,11 @@ def process_rideform():
     start_time = datetime.strptime(request.form.get('date1'), "%m/%d/%Y %I:%M %p")
     end_time = datetime.strptime(request.form.get('date2'), "%m/%d/%Y %I:%M %p")
 
-    ######## Convert to UTC #########
-
-    # Get starting and leaving timezones via Helper Functions
+    # Convert to utc
 
     start_time = to_utc_datetime(start_state, start_time)
     end_time = to_utc_datetime(end_state, end_time)
 
-    # tz_leaving = state_to_timezone(start_state)
-    # tz_arriving = state_to_timezone(end_state)
-
-    # # Localize timezones
-
-    # leaving_with_tz = pytz.timezone(tz_leaving).localize(start_time) 
-    # arriving_with_tz = pytz.timezone(tz_arriving).localize(end_time)   
-
-
-    # # leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
-    # # arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
-
-    
-
-    # # Convert to UTC
-
-    # leaving_utc = pytz.utc.normalize(leaving_with_tz)
-    # arriving_utc = pytz.utc.normalize(arriving_with_tz)
-  
-
-    # leaving_utc = leaving_with_tz.astimezone(pytz.utc)
-    # arriving_utc = arriving_with_tz.astimezone(pytz.utc)
 
     ######## Create Ride Instance ############
 
