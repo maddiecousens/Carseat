@@ -25,8 +25,11 @@
 <div class="page-header">
     <h1>Find your next Seat</h1>
 </div>
+<div class="container">
 <div class="well">
-    Enter a starting and ending destination to look for rides. TODO: Add autocomplete!! Just click 'All Rides for now'
+    To Do:<br>
+    - Fix login/register... FB oAuth<br>
+    - Circle radius search
 </div>
 
 
@@ -43,13 +46,13 @@
             </div>
             <div>
                 <!-- <input type="text" id="street_number" name="street_number"></input> -->
-                <input type="text" id="searchstring" name="searchstring"></input>
+                <input type="hidden" id="searchstring" name="searchstring"></input>
                 <!-- <input type="text" id="route" name="route"></input> -->
-                <input type="text" id="locality" name="locality"></input>
-                <input type="text" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-                <input type="text" id="postal_code" name="postal_code"></input>
-                <input type="text" id="lat" name="lat"></input>
-                <input type="text" id="lng" name="lng"></input>        
+                <input type="hidden" id="locality" name="locality"></input>
+                <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+                <input type="hidden" id="postal_code" name="postal_code"></input>
+                <input type="hidden" id="lat" name="lat"></input>
+                <input type="hidden" id="lng" name="lng"></input>        
             </div>
 
 
@@ -63,13 +66,13 @@
             </div>
                 <div>
                     <!-- <input type="text" id="street_number2" name="street_number"></input> -->
-                    <input type="text" id="searchstring2" name="searchstring2"></input>
+                    <input type="hidden" id="searchstring2" name="searchstring2"></input>
                     <!-- <input type="text" id="route2" name="route2"></input> -->
-                    <input type="text" id="locality2" name="locality2"></input>
-                    <input type="text" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
-                    <input type="text" id="postal_code2" name="postal_code2"></input>
-                    <input type="text" id="lat2" name="lat2"></input>
-                    <input type="text" id="lng2" name="lng2"></input>
+                    <input type="hidden" id="locality2" name="locality2"></input>
+                    <input type="hidden" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
+                    <input type="hidden" id="postal_code2" name="postal_code2"></input>
+                    <input type="hidden" id="lat2" name="lat2"></input>
+                    <input type="hidden" id="lng2" name="lng2"></input>
                 </div>
         </div>
 
@@ -79,6 +82,7 @@
 
     </div>
 </form>
+</div>
 
 <script type="text/javascript" src="static/autocomplete.js"></script>
 

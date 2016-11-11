@@ -3,7 +3,7 @@
 {% block Title %} Home {% endblock %}
 
 {% block content %}
-
+<div class="container">
 <h1>User Details</h1>
     <p>
         Name: {{ user.first_name }} {{ user.last_name }}
@@ -11,9 +11,10 @@
     <p>
         Email: {{ user.email }}
     </p>
+    <div class="well">To Do<br> - Add pending ride requests<br> - Fix time display</div>
 
 {% if rides_offered %}
-<div class="container">
+
     <table class="table table-hover">
     <h2>Approve/Deny Ride Requests</h2>
     <thead>

@@ -25,12 +25,13 @@
 {% block content %}
 <div class="container">
   <div class="well">
-    To Do:
+    To Do:<br>
     - Don't show rides you are the driver for!!!<br>
     - Adjust enter stroke for search<br>
     - Sync of reverse button<br>
     - Reverse geocode if only city, state?<br>
     - Have autofill be real values that you can delete <br>
+    - Add distance/maps
   </div>
 
   <form action="/search">
@@ -135,8 +136,10 @@
   <br>
 
   <div id="time-slider">
-    <label for="slider-range-max">Time Range: <span class="slider-time">10:00 AM</span></label>
-    <div class="row col-xs-4" id="slider-range-max"></div>
+        <div> <h5>Leaving after: <span class="slider-time">10:00 AM</span></h5></div>
+
+<!--     <label for="slider-range-max">Time Range: <span class="slider-time">10:00 AM</span></label>
+ -->    <div class="row col-xs-4" id="slider-range-max"></div>
   </div>
   
   <br>
