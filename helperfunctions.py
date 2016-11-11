@@ -63,7 +63,93 @@ def state_to_timezone(state):
      timezone = state2timezone.get(state)
       
      return timezone
-     
+
 def miles_to_degrees(miles):
     MILE_TO_DEGREE = 69.0
     return miles / MILE_TO_DEGREE
+
+
+
+
+
+
+
+# def to_utc(state, start_time):
+#     """Convert unaware time to UTC"""
+#      # Convert time to datetime object without tz
+#      start_time_notz = datetime.strptime(start_time, '%I:%M %p')
+#      # Get timezone of ride's starting state
+#      tz = state_to_timezone(state)
+#      # Localize to timezone of state the ride is leaving from
+#      start_time_aware = pytz.timezone(tz).localize(start_time_notz)
+#      # Normalize to UTC in order to search DB
+#      start_time_utc = pytz.utc.normalize(start_time_aware)
+#      # Use time() method to create a time only object
+#      return start_time_utc.time()
+
+# def to_local(state, timestamp):
+#      """Convert UTC to local time"""
+#      # Use state from database to determine timezone
+#      tz = state_to_timezone(state)
+#      # Convert timestamp from db to be aware that it is in utc
+#      utc = timestamp.replace(tzinfo=pytz.utc)
+#      # Convert start_timestamp attribute to timezone of state
+#      local = pytz.timezone(tz).normalize(utc)
+
+#      return local
+
+# def to_time_string(timestamp):
+#      # If ride is today, adjust attribute to indicate
+#      if timestamp.date() == date.today():
+#           datetime = "Today, {}".format(timestamp.strftime('%-I:%M %p'))
+
+#      # If ride is tomorrow, adjust attribute to indicate
+#      elif timestamp.date() == (date.today() + timedelta(days=1):
+#           datetime = "Tomorrow, {}".format(timestamp.strftime('%-I:%M %p'))
+#      # Otherwise change attribute to formatted timestamp string
+#      else:
+#           datetime = timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
+
+#      return datetime
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

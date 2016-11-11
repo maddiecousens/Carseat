@@ -3,6 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy_utils import ArrowType
+from sqlalchemy import cast, Time
 import arrow
 
 db = SQLAlchemy()
@@ -82,6 +83,45 @@ class Ride(db.Model):
 
         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
             self.driver, self.start_city, self.end_city, self.start_timestamp)
+
+    @classmethod
+    def get_rides(cls, **kwargs):
+        """Get rides depending on varying search parameters"""
+
+        q = cls.query.options(db.joinedload('user'))
+
+        if 'deg' in kwargs:
+            deg = float(kwargs.get('deg'))
+            start_lat = float(kwargs.get('start_lat'))
+            start_lng = float(kwargs.get('start_lng'))
+            end_lat = float(kwargs.get('end_lat'))
+            end_lng = float(kwargs.get('end_lng'))
+
+            q = q.filter(
+                        ( (cls.start_lat < str(start_lat + deg)) &
+                          (cls.start_lat > str(start_lat - deg))
+                        ) &
+                        ( (cls.start_lng < str(start_lng + deg)) &
+                          (cls.start_lng > str(start_lng - deg))
+                        ) &
+                        ( (cls.end_lat < str(end_lat + deg)) &
+                          (cls.end_lat > str(end_lat - deg))
+                        ) &
+                        ( (cls.end_lng < str(end_lng + deg)) &
+                          (cls.end_lng > str(end_lng - deg))
+                        ))
+
+        # If start_time is in kwargs, the client has toggle the start time on
+        #   the search results page
+        if 'start_time' in kwargs:
+
+            start_time = kwargs.get('start_time')
+            q = q.filter(cast(cls.start_timestamp, Time) > start_time)
+
+        rides = q.order_by(cls.start_timestamp).all()
+
+        return rides
+
         
 
 class Rider(db.Model):
@@ -139,7 +179,7 @@ def connect_db(app):
 
     # Configure connection to PostgreSQL
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///rideshare'
-    app.config['SQLALCHEMY_ECHO'] = True
+    # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
