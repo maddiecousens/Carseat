@@ -10,12 +10,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
-
 <!-- 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script> -->
+
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
- -->
+
 
 {% endblock %}
 
@@ -75,6 +75,7 @@
                 </div>
             </div>
             <div>
+            <input type="text" id="searchstring" name="searchstring"></input>
             <input type="text" id="street_number" name="street_number"></input>
             <input type="text" id="route" name="route"></input>
             <input type="text" id="locality" name="locality"></input>
@@ -97,6 +98,7 @@
             </div>
 
             <div>
+            <input type="text" id="searchstring2" name="searchstring"></input>
             <input type="text" id="street_number2" name="street_number"></input>
             <input type="text" id="route2" name="route2"></input>
             <input type="text" id="locality2" name="locality2"></input>
@@ -221,18 +223,6 @@
     </script>
 
     <script type="text/javascript" src="static/autocomplete.js"></script>
-
-    
-<!-- 
-     <script type="text/javascript" src="static/secrets.js"></script>
-    <script> var mykey = secrets['google']
-    </script>
-     <script src="https://maps.googleapis.com/maps/api/js?key="+secrets['google'+"&libraries=places&callback=initAutocomplete" async defer></script>
-    
-     -->
-
-    
-
 
 
         <!-- submit button -->

@@ -78,7 +78,6 @@ def search_rides():
 
         # Convert miles to lat/lng degrees
         deg = miles_to_degrees(miles)
-        print deg
         
         # Get search terms lat/lng
         start_lat = float(request.args.get('lat'))
@@ -130,11 +129,13 @@ def json_test():
         ## to do: start_state should really be the users timezone, since rides could
         ## significantly vary by timezone when searching all rides. ADJUST
         ################
-        # Call to_utc to get utc version of time, depending on start_state
-        start_time = to_utc(start_state, start_time)
+        # Call to_utc_time to get utc version of time, depending on start_state
+        start_time = to_utc_time(start_state, start_time)
+        print '\n\n{}\n\n'.format(start_time)
 
         # Search all rides that are leaving after selected time
         rides = Ride.get_rides(start_time=start_time)
+        print '\n\n{}\n\n'.format(rides)
 
     # If there are specific search terms entered
     else:
@@ -142,8 +143,8 @@ def json_test():
         start_time = request.args.get("start")
         start_state = request.args.get("start_state")
 
-        # Call to_utc to get utc version of time, depending on start_state
-        start_time = to_utc(start_state, start_time)
+        # Call to_utc_time to get utc version of time, depending on start_state
+        start_time = to_utc_time(start_state, start_time)
 
         # Get Search Term's lat/lng's
         start_lat = float(request.args.get('start_lat'))
@@ -236,24 +237,28 @@ def process_rideform():
     ######## Convert to UTC #########
 
     # Get starting and leaving timezones via Helper Functions
-    tz_leaving = state_to_timezone(start_state)
-    tz_arriving = state_to_timezone(end_state)
 
-    # Localize timezones
+    start_time = to_utc_datetime(start_state, start_time)
+    end_time = to_utc_datetime(end_state, end_time)
 
-    leaving_with_tz = pytz.timezone(tz_leaving).localize(start_time) 
-    arriving_with_tz = pytz.timezone(tz_arriving).localize(end_time)   
+    # tz_leaving = state_to_timezone(start_state)
+    # tz_arriving = state_to_timezone(end_state)
+
+    # # Localize timezones
+
+    # leaving_with_tz = pytz.timezone(tz_leaving).localize(start_time) 
+    # arriving_with_tz = pytz.timezone(tz_arriving).localize(end_time)   
 
 
-    # leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
-    # arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
+    # # leaving_with_tz = start_time.replace(tzinfo=pytz.timezone(tz_leaving))
+    # # arriving_with_tz = end_time.replace(tzinfo=pytz.timezone(tz_arriving))
 
     
 
-    # Convert to UTC
+    # # Convert to UTC
 
-    leaving_utc = pytz.utc.normalize(leaving_with_tz)
-    arriving_utc = pytz.utc.normalize(arriving_with_tz)
+    # leaving_utc = pytz.utc.normalize(leaving_with_tz)
+    # arriving_utc = pytz.utc.normalize(arriving_with_tz)
   
 
     # leaving_utc = leaving_with_tz.astimezone(pytz.utc)
@@ -283,8 +288,8 @@ def process_rideform():
                 end_state=end_state,
                 end_zip=end_zip,
                 #details
-                start_timestamp=leaving_utc,
-                end_timestamp=arriving_utc,
+                start_timestamp=start_time,
+                end_timestamp=end_time,
 
                 car_type=car_type,
                 luggage=luggage,
@@ -525,19 +530,30 @@ def sqlalchemy_to_json(rides):
 
     return json_list
 
-def to_utc(state, start_time):
+def to_utc_time(state, start_time):
     """Convert unaware time to UTC"""
     # Convert time to datetime object without tz
     start_time_notz = datetime.strptime(start_time, '%I:%M %p')
     # Get timezone of ride's starting state
     tz = state_to_timezone(state)
-    print '\n\n{}////{}\n\n'.format(len(state), tz)
     # Localize to timezone of state the ride is leaving from
     start_time_aware = pytz.timezone(tz).localize(start_time_notz)
     # Normalize to UTC in order to search DB
     start_time_utc = pytz.utc.normalize(start_time_aware)
     # Use time() method to create a time only object
     return start_time_utc.time()
+
+def to_utc_datetime(state, timestamp):
+    """Convert datetime object to utc datetime object"""
+    tz = state_to_timezone(state)
+
+    # Localize timezone
+    timestamp_aware = pytz.timezone(tz).localize(timestamp) 
+
+    # Convert to utc
+    timestamp_utc = pytz.utc.normalize(timestamp_aware)
+
+    return timestamp_utc
 
 def to_local(state, timestamp):
     """Convert UTC to local time"""
@@ -552,17 +568,23 @@ def to_local(state, timestamp):
 
 def to_time_string(timestamp):
     # If ride is today, adjust attribute to indicate
-    if timestamp.date() == date.today():
-        datetime = "Today, {}".format(timestamp.strftime('%-I:%M %p'))
+    ###############
+    ## to do: compare to user's TZ not US/Pacific
+    ################
+
+    today = datetime.now(pytz.timezone('US/Pacific')).date()
+
+    if timestamp.date() == today:
+        datetime_str = "Today, {}".format(timestamp.strftime('%-I:%M %p'))
 
     # If ride is tomorrow, adjust attribute to indicate
-    elif timestamp.date() == (date.today() + timedelta(days=1)):
-        datetime = "Tomorrow, {}".format(timestamp.strftime('%-I:%M %p'))
+    elif timestamp.date() == (today + timedelta(days=1)):
+        datetime_str = "Tomorrow, {}".format(timestamp.strftime('%-I:%M %p'))
     # Otherwise change attribute to formatted timestamp string
     else:
-        datetime = timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
+        datetime_str = timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
 
-    return datetime
+    return datetime_str
 
 
 if __name__ == '__main__':
