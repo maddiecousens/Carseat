@@ -48,7 +48,7 @@
             aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location" required>
 
           <div>
-            <input type="text" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
+            <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
            <!--  <input type="text" id="street_number" name="street_number"></input>
             <input type="text" id="route" name="route"></input> -->
             <input type="hidden" id="locality" name="locality"></input>
@@ -63,14 +63,14 @@
         </div>
 
         <div class="form-group">
-          <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
         </div>
 
         <div class="form-group">
           <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
           aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location" required> 
           <div>
-              <input type="text" id="searchstring2" name="searchstring2"></input>
+              <input type="hidden" id="searchstring2" name="searchstring2"></input>
              <!--  <input type="text" id="street_number2" name="street_number"></input>
               <input type="text" id="route2" name="route2"></input> -->
               <input type="hidden" id="locality2" name="locality2"></input>
@@ -84,10 +84,10 @@
         {% else %}
           <div class="form-group">
           <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" onFocus="geolocate()" placeholder="{{ start_search["term"] }}" required>
+            aria-describedby="starting destination" onFocus="geolocate()" value="{{ start_search["term"] }}" required>
 
           <div>
-            <input type="text" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
+            <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
 
            <!--  <input type="text" id="street_number" name="street_number"></input>
             <input type="text" id="route" name="route"></input> -->
@@ -101,14 +101,14 @@
         </div>
 
         <div class="form-group">
-          <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
         </div>
 
         <div class="form-group">
           <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" onFocus="geolocate()" placeholder="{{ end_search["term"] }}" required> 
+          aria-describedby="ending destination" onFocus="geolocate()" value="{{ end_search["term"] }}" required> 
           <div>
-              <input type="text" id="searchstring2" name="searchstring2" value="{{ end_search["term"] }}"></input>
+              <input type="hidden" id="searchstring2" name="searchstring2" value="{{ end_search["term"] }}"></input>
              <!--  <input type="text" id="street_number2" name="street_number"></input>
               <input type="text" id="route2" name="route2"></input> -->
               <input type="hidden" id="locality2" name="locality2"></input>
@@ -340,6 +340,7 @@
 <script type="text/javascript" src="static/search_cost_toggle.js"></script>
 <script type="text/javascript" src="static/search_date.js"></script>
 <script type="text/javascript" src="static/search.js"></script>
+<script type="text/javascript" src="static/reverse_input.js"></script>
 <script type="text/javascript" src="static/user_location.js"></script>
 
 
