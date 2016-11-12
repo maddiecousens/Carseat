@@ -135,12 +135,17 @@
   </div>
   <br>
 
-  <div id="time-slider">
-        <div> <h5>Leaving after: <span class="slider-time">10:00 AM</span></h5></div>
+  <div class="row">
+    <div class="col-xs-4">
+        <h5>Leaving after: <span class="slider-time"></span></h5>
+        <div  id="slider-range-max"></div>
+    </div>
 
-<!--     <label for="slider-range-max">Time Range: <span class="slider-time">10:00 AM</span></label>
- -->    <div class="row col-xs-4" id="slider-range-max"></div>
+    <div class="col-xs-4">
+      <h5>Rides less than: <span class="slider-cost"></span></h5>
+      <div id="slider-range-max-cost"></div>
   </div>
+</div>
   
   <br>
 
@@ -329,6 +334,7 @@
 
 <script type="text/javascript" src="static/autocomplete.js"></script>
 <script type="text/javascript" src="static/search_time_toggle.js"></script>
+<script type="text/javascript" src="static/search_cost_toggle.js"></script>
 <script type="text/javascript" src="static/search.js"></script>
 
 

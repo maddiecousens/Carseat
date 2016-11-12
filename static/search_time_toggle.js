@@ -7,7 +7,7 @@ $( function() {
       min: 0,
       max: 1440,
       step: 15,
-      value: 750,
+      value: 0,
       slide: function( event, ui ) {
         var hours1 = Math.floor(ui.value / 60);
         var minutes1 = ui.value - (hours1 * 60);
@@ -35,6 +35,7 @@ $( function() {
         $('.slider-time').val(hours1 + ':' + minutes1);
       }
     });
-    $(".slider-time").val( "10:00 AM" );
+    $(".slider-time").html( "12:00 AM" );
+    $(".slider-time").val( "12:00 AM" );
 
   } );

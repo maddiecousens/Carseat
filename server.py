@@ -124,6 +124,8 @@ def json_test():
 
         # Grab the ride leaving time toggled by Client
         start_time = request.args.get("start")
+        cost = request.args.get("cost")
+        print '\n\n{}\n\n'.format(cost)
         start_state = ("CA")
         ###############
         ## to do: start_state should really be the users timezone, since rides could
@@ -131,26 +133,27 @@ def json_test():
         ################
         # Call to_utc_time to get utc version of time, depending on start_state
         start_time = to_utc_time(start_state, start_time)
-        print '\n\n{}\n\n'.format(start_time)
+        # print '\n\n{}\n\n'.format(start_time)
 
         # Search all rides that are leaving after selected time
-        rides = Ride.get_rides(start_time=start_time)
-        print '\n\n{}\n\n'.format(rides)
+        rides = Ride.get_rides(start_time=start_time, cost=cost)
+        # print '\n\n{}\n\n'.format(rides)
 
     # If there are specific search terms entered
     else:
         # Grab the ride leaving time and state toggled by Client
         start_time = request.args.get("start")
+        cost = request.args.get("cost")
         start_state = request.args.get("start_state")
 
         # Call to_utc_time to get utc version of time, depending on start_state
         start_time = to_utc_time(start_state, start_time)
 
         # Get Search Term's lat/lng's
-        start_lat = float(request.args.get('start_lat'))
-        start_lng = float(request.args.get('start_lng'))
-        end_lat = float(request.args.get('end_lat'))
-        end_lng = float(request.args.get('end_lng'))
+        start_lat = request.args.get('start_lat')
+        start_lng = request.args.get('start_lng')
+        end_lat = request.args.get('end_lat')
+        end_lng = request.args.get('end_lng')
 
         # Eventually add miles as an input field
         miles = 25
@@ -160,7 +163,7 @@ def json_test():
 
         # Search all rides for given lat/lng that are leaving after selected time
         rides = Ride.get_rides(deg=deg, start_lat=start_lat, start_lng=start_lng,
-                               end_lat=end_lat, end_lng=end_lng, start_time=start_time)
+                               end_lat=end_lat, end_lng=end_lng, start_time=start_time, cost=cost)
 
     json_list = sqlalchemy_to_json(rides)
 

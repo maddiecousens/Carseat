@@ -118,6 +118,11 @@ class Ride(db.Model):
             start_time = kwargs.get('start_time')
             q = q.filter(cast(cls.start_timestamp, Time) > start_time)
 
+        if 'cost' in kwargs:
+            cost = int(kwargs.get('cost'))
+            q = q.filter(cls.cost < cost)
+            # print '\n\n{},{}\n\n'.format(cost, q)
+
         rides = q.order_by(cls.start_timestamp).all()
 
         return rides

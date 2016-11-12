@@ -218,6 +218,7 @@ $(function() {
         
         // Create data object to pass in AJAX call
         var data = {start: $('.slider-time').val(),
+                    cost: $('.slider-cost').val(),
                     start_state: $('#administrative_area_level_1').val(),
                     start_term: $('#searchstring').val(),
                     start_lat: $('#lat').val(),
@@ -227,12 +228,18 @@ $(function() {
 
         };
         console.log($('.slider-time').val());
+        console.log($('.slider-cost').val());
         // Ajax call
         $.get('/search-time.json', data, buildHTML);
     }
 
     // Add Event listener on toggle
-    $('.ui-slider-handle').on('mouseup', newSearch);
+    // $('.ui-slider-handle').on('mouseup', newSearch);
+    // $('#slider-range-max').on('mouseup', newSearch);
+
+    $( '#slider-range-max' ).on( "slidechange", newSearch );
+    $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
+    // $( '#slider-range-max-cost' ).on( "slidechange", function() {alert('hi')} );
 
 
   });
