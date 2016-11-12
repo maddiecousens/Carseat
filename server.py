@@ -129,6 +129,7 @@ def json_test():
         cost = request.args.get("cost")
         date_to = request.args.get("date_to")
         date_from = request.args.get("date_from")
+        print '\n\n{},{}\n\n'.format(date_to, date_from)
 
         user_lat = request.args.get('user_lat')
         user_lng = request.args.get('user_lng')
@@ -553,10 +554,10 @@ def to_utc_time(state, start_time):
     # Use time() method to create a time only object
     return start_time_utc.time()
 
-def to_utc_date(state, date):
+def to_utc_date(state, date_str):
 
     # Convert date string into datetime object without tz
-    date_notz = datetime.strptime(date, '%m/%d/%Y')
+    date_notz = datetime.strptime(date_str, '%m/%d/%Y')
     # Get timezone of starting state or user's state
     tz = state_to_timezone(state)
     # Localize to timezone of state the ride is leaving from
@@ -564,7 +565,7 @@ def to_utc_date(state, date):
     # Normalize to UTC in order to search DB
     date_utc = pytz.utc.normalize(date_aware)
     # Use time() method to create a time only object
-    return start_time_utc.date()
+    return date_utc.date()
 
 
 def to_utc_datetime(state, timestamp):

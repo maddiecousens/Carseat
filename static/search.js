@@ -225,7 +225,7 @@ $(function() {
                     start_lng: $('#lng').val(),
                     end_lat: $('#lat2').val(),
                     end_lng: $('#lng2').val(),
-                    date_from: $('from').val(),
+                    date_from: $('#from').val(),
                     date_to: $('#to').val(),
                     user_lat: $('#user_lat').val(),
                     user_lng: $('#user_lng').val()
