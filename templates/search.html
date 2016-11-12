@@ -55,7 +55,9 @@
             <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
             <input type="hidden" id="postal_code" name="postal_code"></input>
             <input type="hidden" id="lat" name="lat"></input>
-            <input type="hidden" id="lng" name="lng"></input>        
+            <input type="hidden" id="lng" name="lng"></input>
+            <input type="hidden" id="user_lat" name="user_lat" value="34.0522"></input>
+            <input type="hidden" id="user_lng" name="user_lng" value="118.2437"></input>       
           </div>
 
         </div>
@@ -144,8 +146,14 @@
     <div class="col-xs-4">
       <h5>Rides less than: <span class="slider-cost"></span></h5>
       <div id="slider-range-max-cost"></div>
+    </div>
+      <div class="col-xs-4">
+      <label for="from">From</label>
+      <input type="text" id="from" name="from">
+      <label for="to">to</label>
+      <input type="text" id="to" name="to">
+    </div>
   </div>
-</div>
   
   <br>
 
@@ -335,7 +343,9 @@
 <script type="text/javascript" src="static/autocomplete.js"></script>
 <script type="text/javascript" src="static/search_time_toggle.js"></script>
 <script type="text/javascript" src="static/search_cost_toggle.js"></script>
+<script type="text/javascript" src="static/search_date.js"></script>
 <script type="text/javascript" src="static/search.js"></script>
+<script type="text/javascript" src="static/user_location.js"></script>
 
 
 {% endblock %}

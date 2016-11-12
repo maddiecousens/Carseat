@@ -62,6 +62,8 @@ def search_rides():
             ## to do: should really be the users timezone, since rides could
             ## significantly vary by timezone when searching all rides. ADJUST
             ################
+
+
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
 
             ride.start_timestamp = to_time_string(ride.start_timestamp)
@@ -125,8 +127,17 @@ def json_test():
         # Grab the ride leaving time toggled by Client
         start_time = request.args.get("start")
         cost = request.args.get("cost")
-        print '\n\n{}\n\n'.format(cost)
-        start_state = ("CA")
+        date_to = request.args.get("date_to")
+        date_from = request.args.get("date_from")
+
+        user_lat = request.args.get('user_lat')
+        user_lng = request.args.get('user_lng')
+        # Get start state from User's coordinates. If not provided, default to 
+        #   CA. This is used for searching database by date or time, it converts
+        #   the date or time into the users timezone. Used for filtering.
+        start_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
+        # print '\n\n{}\n\n'.format(start_state)
+        
         ###############
         ## to do: start_state should really be the users timezone, since rides could
         ## significantly vary by timezone when searching all rides. ADJUST
@@ -135,8 +146,15 @@ def json_test():
         start_time = to_utc_time(start_state, start_time)
         # print '\n\n{}\n\n'.format(start_time)
 
+        date_to = to_utc_date(start_state, date_to)
+        date_from = to_utc_date(start_state, date_from)
+        print '\n\n{},{}\n\n'.format(date_to, date_from)
+
         # Search all rides that are leaving after selected time
-        rides = Ride.get_rides(start_time=start_time, cost=cost)
+        rides = Ride.get_rides(start_time=start_time,
+                               cost=cost,
+                               date_to=date_to,
+                               date_from=date_from)
         # print '\n\n{}\n\n'.format(rides)
 
     # If there are specific search terms entered
@@ -154,6 +172,8 @@ def json_test():
         start_lng = request.args.get('start_lng')
         end_lat = request.args.get('end_lat')
         end_lng = request.args.get('end_lng')
+        date_to = request.args.get("date_to")
+        date_from = request.args.get("date_from")
 
         # Eventually add miles as an input field
         miles = 25
@@ -162,8 +182,15 @@ def json_test():
         deg = miles_to_degrees(miles)
 
         # Search all rides for given lat/lng that are leaving after selected time
-        rides = Ride.get_rides(deg=deg, start_lat=start_lat, start_lng=start_lng,
-                               end_lat=end_lat, end_lng=end_lng, start_time=start_time, cost=cost)
+        rides = Ride.get_rides(deg=deg, 
+                               start_lat=start_lat,
+                               start_lng=start_lng,
+                               end_lat=end_lat,
+                               end_lng=end_lng,
+                               start_time=start_time,
+                               cost=cost,
+                               date_to=date_to,
+                               date_from=date_from)
 
     json_list = sqlalchemy_to_json(rides)
 
@@ -525,6 +552,20 @@ def to_utc_time(state, start_time):
     start_time_utc = pytz.utc.normalize(start_time_aware)
     # Use time() method to create a time only object
     return start_time_utc.time()
+
+def to_utc_date(state, date):
+
+    # Convert date string into datetime object without tz
+    date_notz = datetime.strptime(date, '%m/%d/%Y')
+    # Get timezone of starting state or user's state
+    tz = state_to_timezone(state)
+    # Localize to timezone of state the ride is leaving from
+    date_aware = pytz.timezone(tz).localize(date_notz)
+    # Normalize to UTC in order to search DB
+    date_utc = pytz.utc.normalize(date_aware)
+    # Use time() method to create a time only object
+    return start_time_utc.date()
+
 
 def to_utc_datetime(state, timestamp):
     """Convert datetime object to utc datetime object"""

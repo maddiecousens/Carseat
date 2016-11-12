@@ -224,7 +224,11 @@ $(function() {
                     start_lat: $('#lat').val(),
                     start_lng: $('#lng').val(),
                     end_lat: $('#lat2').val(),
-                    end_lng: $('#lng2').val()
+                    end_lng: $('#lng2').val(),
+                    date_from: $('from').val(),
+                    date_to: $('#to').val(),
+                    user_lat: $('#user_lat').val(),
+                    user_lng: $('#user_lng').val()
 
         };
         console.log($('.slider-time').val());
@@ -239,6 +243,7 @@ $(function() {
 
     $( '#slider-range-max' ).on( "slidechange", newSearch );
     $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
+    $( '#to' ).on( "change", newSearch );
     // $( '#slider-range-max-cost' ).on( "slidechange", function() {alert('hi')} );
 
 
