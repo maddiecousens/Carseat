@@ -3,7 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy_utils import ArrowType
-from sqlalchemy import cast, Time
+from sqlalchemy import cast, Time, Date
 import arrow
 
 db = SQLAlchemy()
@@ -122,6 +122,19 @@ class Ride(db.Model):
             cost = int(kwargs.get('cost'))
             q = q.filter(cls.cost < cost)
             # print '\n\n{},{}\n\n'.format(cost, q)
+
+        if ('date_from' in kwargs and 'date_to' in kwargs):
+            date_from = kwargs.get('date_from')
+            date_to = kwargs.get('date_to')
+
+            q = (q.filter((cast(cls.start_timestamp, Date) >= date_from) &
+                         (cast(cls.start_timestamp, Date) <= date_to)))
+
+        if ('date_from' in kwargs and 'date_to' not in kwargs):
+            date_from = kwargs.get('date_from')
+            
+            q = q.filter((cast(cls.start_timestamp, Date) >= date_from))
+
 
         rides = q.order_by(cls.start_timestamp).all()
 
