@@ -14,6 +14,8 @@ var reverseInput = function() {
     var old_ss2 = $('#searchstring2').val();
     $('#searchstring2').val($('#searchstring').val());
     $('#searchstring').val(old_ss2);
+
+    newSearch();
 }
 
 $('#reverse').on('click', reverseInput)

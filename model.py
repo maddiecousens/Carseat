@@ -123,14 +123,15 @@ class Ride(db.Model):
             q = q.filter(cls.cost < cost)
             # print '\n\n{},{}\n\n'.format(cost, q)
 
-        if ('date_from' in kwargs and 'date_to' in kwargs):
+        if (kwargs.get('date_from') and kwargs.get('date_to')):
+            print '\n\nas searched in db: {},{}\n\n'.format(kwargs.get('date_from'),kwargs.get('date_to'))
             date_from = kwargs.get('date_from')
             date_to = kwargs.get('date_to')
 
             q = (q.filter((cast(cls.start_timestamp, Date) >= date_from) &
                          (cast(cls.start_timestamp, Date) <= date_to)))
 
-        if ('date_from' in kwargs and 'date_to' not in kwargs):
+        if (kwargs.get('date_from') and not(kwargs.get('date_to'))):
             date_from = kwargs.get('date_from')
             
             q = q.filter((cast(cls.start_timestamp, Date) >= date_from))

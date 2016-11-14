@@ -215,7 +215,22 @@ $(function() {
 
     // Event Handler, AJAX
     function newSearch(evt) {
-        
+
+        // If user doesn't enter a from date, make it todays date
+        var today = new Date()
+        var today_string = (today.getMonth() 
+                        + '/' 
+                        + today.getDay() 
+                        + '/' 
+                        + today.getFullYear())
+
+        if ($('#from').val()) {
+            var date_from = $('#from').val()
+        } else {
+            var date_from = today_string
+        }
+
+      
         // Create data object to pass in AJAX call
         var data = {start: $('.slider-time').val(),
                     cost: $('.slider-cost').val(),
@@ -225,7 +240,7 @@ $(function() {
                     start_lng: $('#lng').val(),
                     end_lat: $('#lat2').val(),
                     end_lng: $('#lng2').val(),
-                    date_from: $('#from').val(),
+                    date_from: date_from,
                     date_to: $('#to').val(),
                     user_lat: $('#user_lat').val(),
                     user_lng: $('#user_lng').val()
@@ -237,14 +252,33 @@ $(function() {
         $.get('/search-time.json', data, buildHTML);
     }
 
-    // Add Event listener on toggle
-    // $('.ui-slider-handle').on('mouseup', newSearch);
-    // $('#slider-range-max').on('mouseup', newSearch);
+    var reverseInput = function() {
+        var old_auto2 = $('#autocomplete2').val();
+        $('#autocomplete2').val($('#autocomplete').val());
+        $('#autocomplete').val(old_auto2);
+
+        var old_lat2 = $('#lat2').val();
+        $('#lat2').val($('#lat').val());
+        $('#lat').val(old_lat2);
+
+        var old_lng2 = $('#lng2').val();
+        $('#lng2').val($('#lng').val());
+        $('#lng').val(old_lng2);
+
+        var old_ss2 = $('#searchstring2').val();
+        $('#searchstring2').val($('#searchstring').val());
+        $('#searchstring').val(old_ss2);
+
+        newSearch();
+    }
 
     $( '#slider-range-max' ).on( "slidechange", newSearch );
     $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
     $( '#to' ).on( "change", newSearch );
-    // $( '#slider-range-max-cost' ).on( "slidechange", function() {alert('hi')} );
+    $( '#from' ).on( "change", newSearch );
+
+
+    $('#reverse').on('click', reverseInput)
 
 
   });
