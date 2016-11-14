@@ -53,8 +53,6 @@ def search_rides():
         
         # Create dicts to hold search parameters that will be added to html 
         #   and Utilized by AJAX when search results are toggled.
-        start_search = { "term": "all"}
-        end_search={}
 
         for ride in rides:
             # Convert to local time for start state
@@ -68,9 +66,7 @@ def search_rides():
 
             ride.start_timestamp = to_time_string(ride.start_timestamp)
  
-        return render_template('search.html', rides=rides,
-                                              start_search=start_search,
-                                              end_search=end_search)
+        return render_template('search.html', rides=rides)
 
     # If user enters search terms, show rides based off search terms
     else:
@@ -117,94 +113,57 @@ def search_rides():
 def json_test():
     """Return new ride results"""
 
-    # Grab the start search term from AJAX request
+    #Get location search terms
+
     start_term = request.args.get('start_term')
+    end_term = request.args.get('end_term')
 
-    # If this term is 'all', that means user has not specified specific search
-    #   location paramenters. Query entire database
-    if start_term == 'all':
+    user_lat = request.args.get('user_lat')
+    user_lng = request.args.get('user_lng')
 
-        # Grab the ride leaving time toggled by Client
-        start_time = request.args.get("start")
-        cost = request.args.get("cost")
-        date_from = request.args.get("date_from")
-        date_to = request.args.get("date_to")
-        
-        print '\n\n from AJAX: {},{}\n'.format(date_from, date_to)
+    start_lat = request.args.get('start_lat')
+    start_lng = request.args.get('start_lng')
+    end_lat = request.args.get('end_lat')
+    end_lng = request.args.get('end_lng')
+    start_state = request.args.get("start_state")
 
-        user_lat = request.args.get('user_lat')
-        user_lng = request.args.get('user_lng')
-        # Get start state from User's coordinates. If not provided, default to 
-        #   CA. This is used for searching database by date or time, it converts
-        #   the date or time into the users timezone. Used for filtering.
-        start_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
-        print '\n\n{}\n\n'.format(start_state)
-        
-        ###############
-        ## to do: start_state should really be the users timezone, since rides could
-        ## significantly vary by timezone when searching all rides. ADJUST
-        ################
-        # Call to_utc_time to get utc version of time, depending on start_state
-        start_time = to_utc_time(start_state, start_time)
-        # print '\n\n{}\n\n'.format(start_time)
+    # Get search toggles (time, cost, date)
 
-        # If user entered a from and to date
-        if date_from and date_to:
-            date_to = to_utc_date(start_state, date_to)
-            date_from = to_utc_date(start_state, date_from)
-            print '\n\n from AJAX, utc: {},{}\n'.format(date_from, date_to)
+    start_time = request.args.get("start")
+    cost = request.args.get("cost")
 
-            # Search all rides that are leaving after selected time
-            rides = Ride.get_rides(start_time=start_time,
-                                   cost=cost,
-                                   date_to=date_to,
-                                   date_from=date_from)
-            
-        #If user just enters a from date bound    
-        if date_from and not(date_to):
-            date_from = to_utc_date(start_state, date_from)
-            print '\n\n from AJAX, utc: {},{}\n'.format(date_from, date_to)
+    date_from = request.args.get("date_from")
+    date_to = request.args.get("date_to")
 
-            # Search all rides that are leaving after selected time
-            rides = Ride.get_rides(start_time=start_time,
-                                   cost=cost,
-                                   date_from=date_from)
+    if date_from:
+        date_from = to_utc_date(start_state, date_from)
 
-    # If there are specific search terms entered
+    if date_to:
+        date_to = to_utc_date(start_state, date_to)
+
+
+    # Convert miles to lat/lng degrees
+    deg = miles_to_degrees(25)
+
+    # If no location is specified
+    if not(start_term) and not(end_term):
+        client_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
+        start_time = to_utc_time(client_state, start_time)
     else:
-        # Grab the ride leaving time and state toggled by Client
-        start_time = request.args.get("start")
-        cost = request.args.get("cost")
-        start_state = request.args.get("start_state")
-
-        # Call to_utc_time to get utc version of time, depending on start_state
         start_time = to_utc_time(start_state, start_time)
 
-        # Get Search Term's lat/lng's
-        start_lat = request.args.get('start_lat')
-        start_lng = request.args.get('start_lng')
-        end_lat = request.args.get('end_lat')
-        end_lng = request.args.get('end_lng')
-        date_to = request.args.get("date_to")
-        date_from = request.args.get("date_from")
 
-        # Eventually add miles as an input field
-        miles = 25
 
-        # Convert miles to lat/lng degrees
-        deg = miles_to_degrees(miles)
-
-        # Search all rides for given lat/lng that are leaving after selected time
-        rides = Ride.get_rides(deg=deg, 
-                               start_lat=start_lat,
-                               start_lng=start_lng,
-                               end_lat=end_lat,
-                               end_lng=end_lng,
-                               start_time=start_time,
-                               cost=cost,
-                               date_to=date_to,
-                               date_from=date_from)
-
+    rides = Ride.get_rides(deg=deg, 
+                           start_lat=start_lat,
+                           start_lng=start_lng,
+                           end_lat=end_lat,
+                           end_lng=end_lng,
+                           start_time=start_time,
+                           cost=cost,
+                           date_to=date_to,
+                           date_from=date_from)
+     
     json_list = sqlalchemy_to_json(rides)
 
     return jsonify(json_list)

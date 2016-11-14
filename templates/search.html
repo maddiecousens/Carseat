@@ -42,49 +42,10 @@
           <label for="start-address">Enter Your Destination</label>
         </div>
 
-          {% if start_search["term"] == 'all' %}
+          {% if start_search is defined %}
           <div class="form-group">
           <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location" required>
-
-          <div>
-            <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
-           <!--  <input type="text" id="street_number" name="street_number"></input>
-            <input type="text" id="route" name="route"></input> -->
-            <input type="hidden" id="locality" name="locality"></input>
-            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-            <input type="hidden" id="postal_code" name="postal_code"></input>
-            <input type="hidden" id="lat" name="lat"></input>
-            <input type="hidden" id="lng" name="lng"></input>
-            <input type="hidden" id="user_lat" name="user_lat" value="34.0522"></input>
-            <input type="hidden" id="user_lng" name="user_lng" value="118.2437"></input>       
-          </div>
-
-        </div>
-
-        <div class="form-group">
-          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
-        </div>
-
-        <div class="form-group">
-          <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location" required> 
-          <div>
-              <input type="hidden" id="searchstring2" name="searchstring2"></input>
-             <!--  <input type="text" id="street_number2" name="street_number"></input>
-              <input type="text" id="route2" name="route2"></input> -->
-              <input type="hidden" id="locality2" name="locality2"></input>
-              <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2"></input>
-              <input type="hidden" id="postal_code2" name="postal_code2"></input>
-              <input type="hidden" id="lat2" name="lat2"></input>
-              <input type="hidden" id="lng2" name="lng2"></input>
-          </div>             
-        </div>
-
-        {% else %}
-          <div class="form-group">
-          <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" onFocus="geolocate()" value="{{ start_search["term"] }}" required>
+            aria-describedby="starting destination" onFocus="geolocate()" value="{{ start_search["term"] }}">
 
           <div>
             <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
@@ -106,7 +67,7 @@
 
         <div class="form-group">
           <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" onFocus="geolocate()" value="{{ end_search["term"] }}" required> 
+          aria-describedby="ending destination" onFocus="geolocate()" value="{{ end_search["term"] }}"> 
           <div>
               <input type="hidden" id="searchstring2" name="searchstring2" value="{{ end_search["term"] }}"></input>
              <!--  <input type="text" id="street_number2" name="street_number"></input>
@@ -119,6 +80,46 @@
           </div>             
         </div>
 
+        {% else %}
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="autocomplete" name="start-address"
+            aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location">
+
+          <div>
+            <input type="hidden" id="searchstring" name="searchstring" value=""></input>
+           <!--  <input type="text" id="street_number" name="street_number"></input>
+            <input type="text" id="route" name="route"></input> -->
+            <input type="hidden" id="locality" name="locality"></input>
+            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+            <input type="hidden" id="postal_code" name="postal_code"></input>
+            <input type="hidden" id="lat" name="lat"></input>
+            <input type="hidden" id="lng" name="lng"></input>
+            <input type="hidden" id="user_lat" name="user_lat" value="34.0522"></input>
+            <input type="hidden" id="user_lng" name="user_lng" value="118.2437"></input>       
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
+        </div>
+
+        <div class="form-group">
+          <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
+          aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location"> 
+          <div>
+              <input type="hidden" id="searchstring2" name="searchstring2" value=""></input>
+             <!--  <input type="text" id="street_number2" name="street_number"></input>
+              <input type="text" id="route2" name="route2"></input> -->
+              <input type="hidden" id="locality2" name="locality2"></input>
+              <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2"></input>
+              <input type="hidden" id="postal_code2" name="postal_code2"></input>
+              <input type="hidden" id="lat2" name="lat2"></input>
+              <input type="hidden" id="lng2" name="lng2"></input>
+          </div>             
+        </div>
+          
         {% endif %}
 
     <!-- submit button -->

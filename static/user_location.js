@@ -9,8 +9,8 @@ function success(pos) {
 
   $('#user_lat').val(crd.latitude);
   $('#user_lng').val(crd.longitude);
-  console.log($('#user_lat').val());
-  console.log($('#user_lng').val());
+  // console.log($('#user_lat').val());
+  // console.log($('#user_lng').val());
 
 };
 

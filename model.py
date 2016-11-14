@@ -84,18 +84,18 @@ class Ride(db.Model):
         return "<Ride ride_id={}, driver={}, start={}, end={}, date={}>".format(self.ride_id, 
             self.driver, self.start_city, self.end_city, self.start_timestamp)
 
+
     @classmethod
     def get_rides(cls, **kwargs):
         """Get rides depending on varying search parameters"""
 
+
         q = cls.query.options(db.joinedload('user'))
 
-        if 'deg' in kwargs:
+        if kwargs.get('start_lat'):
             deg = float(kwargs.get('deg'))
             start_lat = float(kwargs.get('start_lat'))
             start_lng = float(kwargs.get('start_lng'))
-            end_lat = float(kwargs.get('end_lat'))
-            end_lng = float(kwargs.get('end_lng'))
 
             q = q.filter(
                         ( (cls.start_lat < str(start_lat + deg)) &
@@ -103,7 +103,13 @@ class Ride(db.Model):
                         ) &
                         ( (cls.start_lng < str(start_lng + deg)) &
                           (cls.start_lng > str(start_lng - deg))
-                        ) &
+                        ))
+
+        if kwargs.get('end_lat'):
+            deg = float(kwargs.get('deg'))
+            end_lat = float(kwargs.get('end_lat'))
+            end_lng = float(kwargs.get('end_lng'))
+            q = q.filter(
                         ( (cls.end_lat < str(end_lat + deg)) &
                           (cls.end_lat > str(end_lat - deg))
                         ) &
@@ -111,36 +117,28 @@ class Ride(db.Model):
                           (cls.end_lng > str(end_lng - deg))
                         ))
 
-        # If start_time is in kwargs, the client has toggle the start time on
-        #   the search results page
-        if 'start_time' in kwargs:
 
+        if kwargs.get('date_from'):
+            date_from = kwargs.get('date_from')
+
+            q = q.filter((cast(cls.start_timestamp, Date) >= date_from))
+
+        if kwargs.get('date_to'):
+            date_to = kwargs.get('date_to')
+            
+            q = q.filter((cast(cls.start_timestamp, Date) >= date_to))
+
+        if kwargs.get('start_time'):
             start_time = kwargs.get('start_time')
             q = q.filter(cast(cls.start_timestamp, Time) > start_time)
 
-        if 'cost' in kwargs:
+        if kwargs.get('cost'):
             cost = int(kwargs.get('cost'))
             q = q.filter(cls.cost < cost)
-            # print '\n\n{},{}\n\n'.format(cost, q)
-
-        if (kwargs.get('date_from') and kwargs.get('date_to')):
-            print '\n\nas searched in db: {},{}\n\n'.format(kwargs.get('date_from'),kwargs.get('date_to'))
-            date_from = kwargs.get('date_from')
-            date_to = kwargs.get('date_to')
-
-            q = (q.filter((cast(cls.start_timestamp, Date) >= date_from) &
-                         (cast(cls.start_timestamp, Date) <= date_to)))
-
-        if (kwargs.get('date_from') and not(kwargs.get('date_to'))):
-            date_from = kwargs.get('date_from')
-            
-            q = q.filter((cast(cls.start_timestamp, Date) >= date_from))
-
 
         rides = q.order_by(cls.start_timestamp).all()
 
         return rides
-
         
 
 class Rider(db.Model):

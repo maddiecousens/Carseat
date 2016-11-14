@@ -1,6 +1,6 @@
 "use strict";
 
-$(function() {
+// $(function() {
 
     // Create seat # drop down, depending on how many seats left
     function htmlSeats(seats){
@@ -232,10 +232,12 @@ $(function() {
 
       
         // Create data object to pass in AJAX call
+        console.log('start_lat:' + $('#lat').val(), 'end_lat:' + $('#lat2').val());
         var data = {start: $('.slider-time').val(),
                     cost: $('.slider-cost').val(),
                     start_state: $('#administrative_area_level_1').val(),
                     start_term: $('#searchstring').val(),
+                    end_term: $('#searchstring2').val(),
                     start_lat: $('#lat').val(),
                     start_lng: $('#lng').val(),
                     end_lat: $('#lat2').val(),
@@ -276,9 +278,11 @@ $(function() {
     $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
     $( '#to' ).on( "change", newSearch );
     $( '#from' ).on( "change", newSearch );
+    // autocomplete.addListener('place_changed', newSearch);
+    // autocomplete2.addListener('place_changed', newSearch);
 
 
     $('#reverse').on('click', reverseInput)
 
 
-  });
+  // });

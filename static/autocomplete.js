@@ -53,6 +53,9 @@ function fillInAddress(autocomplete, unique) {
       var lng = place.geometry.location.lng()
       document.getElementById('lng' + unique).value = lng;
   }
+
+  // call AJAX function in search.js
+  newSearch();
 }
 
 // Bias the autocomplete object to the user's geographical location,
