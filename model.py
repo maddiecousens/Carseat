@@ -140,15 +140,14 @@ class Ride(db.Model):
 
         if kwargs.get('limit'):
             limit_number = int(kwargs.get('limit'))
-            print '\n\n{},type:{}\n\n'.format(limit_number, type(limit_number))
             q = q.limit(limit_number)
 
         if kwargs.get('offset'):
             offset_number = int(kwargs.get('offset'))
-            print '\n\n{},type:{}\n\n'.format(offset_number, type(offset_number))
             q = q.offset(offset_number)
 
         rides = q.all()
+        print '\n\n{}\n\n'.format(rides)
 
         return rides
         

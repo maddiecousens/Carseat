@@ -247,15 +247,19 @@
                     user_lat: $('#user_lat').val(),
                     user_lng: $('#user_lng').val(),
                     limit: $('#dropdownMenu1').text().trim(),
-                    offset: $('#current-page').val()
+                    offset: $('#current-offset').val()
         };
-        console.log($('#current-page').val());
+        console.log($('#current-offset').val());
         // console.log($('.slider-time').val());
         // console.log($('.slider-cost').val());
         // Ajax call
         $.get('/search-time.json', data, buildHTML);
     }
 
+
+    
+
+    // Reverse Button
     var reverseInput = function() {
         var old_auto2 = $('#autocomplete2').val();
         $('#autocomplete2').val($('#autocomplete').val());
@@ -276,56 +280,81 @@
         newSearch();
     }
 
+    // Event Listeners for Toggles
+
+    // Time and Cost Sliders
     $( '#slider-range-max' ).on( "slidechange", newSearch );
     $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
+    //To and From DATE changer
     $( '#to' ).on( "change", newSearch );
     $( '#from' ).on( "change", newSearch );
-    // autocomplete.addListener('place_changed', newSearch);
-    // autocomplete2.addListener('place_changed', newSearch);
-
-
+    // Reverse Button
     $('#reverse').on('click', reverseInput)
 
+
+    
+
+
+    // Click Event Listeners and Handlers for Pagination
+
+    // Changing the results per page
     $('.dropdown-menu a').on('click', function(){    
-    $('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>');
-    newSearch();    
+        $('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>');
+        newSearch();    
     })
 
-
+    // Page Numbers
     var pages = $('.page-number')
-
-    var myFunction = function(evt) {
-        // console.log(evt)
-        var page = evt.srcElement.childNodes[0].data;
-        $('#current-page').val(page);
-        newSearch();
-        
-    };
+    // Initialize Page1 as the active class
+    $('#page-number1').addClass('active')
 
     for (var i = 0; i < pages.length; i++) {
-    pages[i].addEventListener('click', myFunction);
-    }
-    
-    $('#previous').on('click', function(evt) {
-        var current = parseInt($('#current-page').val());
+        pages[i].addEventListener('click', function(evt){
 
-        if (current > 1) {
-            $('#current-page').val(current - 1);
+            var page = parseInt(evt.srcElement.childNodes[0].data);
+            //Remove 'active' class from all page numbers
+            $('.page-number').removeClass('active');
+            // Add active class to Current Page
+            $('#page-number' + page).addClass('active')
+            // Subtracting 1 from page, because offset is 1 minus the page num
+            $('#current-offset').val(page - 1);
+            newSearch();
+    });
+    }
+
+    // Previous button
+    $('#previous').on('click', function(evt) {
+        var current = parseInt($('#current-offset').val());
+
+        if (current > 0) {
+            // Subtract 1 from page offset if not already at 0
+            $('#current-offset').val(current - 1);
+            //Remove 'active' class from all page numbers
+            $('.page-number').removeClass('active');
+            //Add active class to Current Page (current offset bc when 
+                //you go down a page, the previous page is the old offset)
+            $('#page-number' + current).addClass('active')
             
             newSearch();
         }
 
     });
 
+    // Next button
     $('#next').on('click', function(evt) {
-        var current = parseInt($('#current-page').val());
-        var max = parseInt($('#max-page').val());
+        var current = parseInt($('#current-offset').val());
+        var max = parseInt($('#max-offset').val());
 
         if (current < max) {
-            $('#current-page').val(current + 1);
+            // Add 1 from page offset if not already at 0
+            $('#current-offset').val(current + 1);
+            //Remove 'active' class from all page numbers
+            $('.page-number').removeClass('active');
+            //Add active class to Current Page (current +2 bc when 
+                //you go up a page, the page is the old offset plus 2)
+            $('#page-number' + (current + 2)).addClass('active');
             newSearch();
         }
 
     });
-
-  // });
+//to do: adjust hardcoded limit

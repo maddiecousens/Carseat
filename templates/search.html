@@ -157,8 +157,8 @@
     <div class="col-xs-6">
 
       <nav aria-label="Page navigation">
-        <input id="current-page" type="hidden" value="1"></input>
-        <input id="max-page" type="hidden" value="{{ count }}"></input>
+        <input id="current-offset" type="hidden" value="0"></input>
+        <input id="max-offset" type="hidden" value="{{ count - 1 }}"></input>
         <ul class="pagination">
           <li id="previous">
             <a href="#" aria-label="Previous">
