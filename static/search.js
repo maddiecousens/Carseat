@@ -16,7 +16,6 @@
 
     // Create HTML for every Data row
     function htmlRow(ride) {
-        console.log('inside htmlRow');
         var row = '<tbody> \
           <tr> \
             <td class="col-xs-2" style="padding-right:20px; border-right: 1px \
@@ -194,7 +193,7 @@
         
         // Start building HTML
         var html = '<table class="table table-hover">';
-        // console.log(html);
+        
 
         // For every ride in JSON, call htmlRow
 
@@ -232,7 +231,8 @@
 
       
         // Create data object to pass in AJAX call
-        console.log('start_lat:' + $('#lat').val(), 'end_lat:' + $('#lat2').val());
+        // console.log('start_lat:' + $('#lat').val(), 'end_lat:' + $('#lat2').val());
+        
         var data = {start: $('.slider-time').val(),
                     cost: $('.slider-cost').val(),
                     start_state: $('#administrative_area_level_1').val(),
@@ -245,11 +245,13 @@
                     date_from: date_from,
                     date_to: $('#to').val(),
                     user_lat: $('#user_lat').val(),
-                    user_lng: $('#user_lng').val()
-
+                    user_lng: $('#user_lng').val(),
+                    limit: $('#dropdownMenu1').text().trim(),
+                    offset: $('#current-page').val()
         };
-        console.log($('.slider-time').val());
-        console.log($('.slider-cost').val());
+        console.log($('#current-page').val());
+        // console.log($('.slider-time').val());
+        // console.log($('.slider-cost').val());
         // Ajax call
         $.get('/search-time.json', data, buildHTML);
     }
@@ -284,5 +286,46 @@
 
     $('#reverse').on('click', reverseInput)
 
+    $('.dropdown-menu a').on('click', function(){    
+    $('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>');
+    newSearch();    
+    })
+
+
+    var pages = $('.page-number')
+
+    var myFunction = function(evt) {
+        // console.log(evt)
+        var page = evt.srcElement.childNodes[0].data;
+        $('#current-page').val(page);
+        newSearch();
+        
+    };
+
+    for (var i = 0; i < pages.length; i++) {
+    pages[i].addEventListener('click', myFunction);
+    }
+    
+    $('#previous').on('click', function(evt) {
+        var current = parseInt($('#current-page').val());
+
+        if (current > 1) {
+            $('#current-page').val(current - 1);
+            
+            newSearch();
+        }
+
+    });
+
+    $('#next').on('click', function(evt) {
+        var current = parseInt($('#current-page').val());
+        var max = parseInt($('#max-page').val());
+
+        if (current < max) {
+            $('#current-page').val(current + 1);
+            newSearch();
+        }
+
+    });
 
   // });

@@ -136,7 +136,19 @@ class Ride(db.Model):
             cost = int(kwargs.get('cost'))
             q = q.filter(cls.cost < cost)
 
-        rides = q.order_by(cls.start_timestamp).all()
+        q = q.order_by(cls.start_timestamp)
+
+        if kwargs.get('limit'):
+            limit_number = int(kwargs.get('limit'))
+            print '\n\n{},type:{}\n\n'.format(limit_number, type(limit_number))
+            q = q.limit(limit_number)
+
+        if kwargs.get('offset'):
+            offset_number = int(kwargs.get('offset'))
+            print '\n\n{},type:{}\n\n'.format(offset_number, type(offset_number))
+            q = q.offset(offset_number)
+
+        rides = q.all()
 
         return rides
         

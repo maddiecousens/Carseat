@@ -157,18 +157,18 @@
     <div class="col-xs-6">
 
       <nav aria-label="Page navigation">
+        <input id="current-page" type="hidden" value="1"></input>
+        <input id="max-page" type="hidden" value="{{ count }}"></input>
         <ul class="pagination">
-          <li>
+          <li id="previous">
             <a href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li>
+          {% for i in range( (count / 1)|round|int) %}
+          <li class="page-number" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
+          {% endfor %}
+          <li id="next">
           <a href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
@@ -179,11 +179,10 @@
     </div>
 
     <div class="col-xs-6">
-      <div class="dropdown">
+      <div class="dropdown" id="results-per-page">
         <button class="btn btn-default dropdown-toggle" type="button" 
         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" 
-        aria-expanded="true">10
-        <span class="caret"></span>
+        aria-expanded="true">10<span class="caret"></span>
         </button> Results per page
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li><a href="#">10</a></li>

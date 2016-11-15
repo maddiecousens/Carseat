@@ -47,7 +47,8 @@ def search_rides():
     if request.args.get('query'):
 
         # Query database for all rides
-        rides = Ride.get_rides()
+        rides = Ride.get_rides(limit=1)
+        count = int(Ride.query.count())
         # rides = (Ride.query.options(db.joinedload('user'))
         #                    .order_by(Ride.start_timestamp).all())
         
@@ -66,13 +67,14 @@ def search_rides():
 
             ride.start_timestamp = to_time_string(ride.start_timestamp)
  
-        return render_template('search.html', rides=rides)
+        return render_template('search.html', rides=rides, count=count)
 
     # If user enters search terms, show rides based off search terms
     else:
  
         # Eventually add miles as an input field
         miles = 25
+        count = 0
 
         # Convert miles to lat/lng degrees
         deg = miles_to_degrees(miles)
@@ -100,6 +102,7 @@ def search_rides():
                                end_lat=end_lat, end_lng=end_lng)
 
         for ride in rides:
+            count += 1
             # Convert timestamp to local time
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
 
@@ -107,7 +110,8 @@ def search_rides():
 
         return render_template('search.html', rides=rides,
                                               start_search=start_search,
-                                              end_search=end_search)
+                                              end_search=end_search, 
+                                              count=count)
 
 @app.route('/search-time.json')
 def json_test():
@@ -134,6 +138,10 @@ def json_test():
 
     date_from = request.args.get("date_from")
     date_to = request.args.get("date_to")
+
+    limit = request.args.get("limit")
+    offset = request.args.get("offset")
+    print '\n\n{},{}\n\n'.format(limit, offset)
 
     if date_from:
         date_from = to_utc_date(start_state, date_from)
@@ -162,7 +170,9 @@ def json_test():
                            start_time=start_time,
                            cost=cost,
                            date_to=date_to,
-                           date_from=date_from)
+                           date_from=date_from,
+                           limit=1, #################
+                           offset=offset)
      
     json_list = sqlalchemy_to_json(rides)
 
@@ -178,8 +188,8 @@ def json_test():
 @app.route('/googletest', methods=["GET"])
 def google_test():
     """  """
-
-    return render_template('slider.html')
+    count = 6
+    return render_template('slider.html', count=count)
 
 ##################################                               
 ######## Post Ride Form ##########
