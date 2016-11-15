@@ -248,6 +248,7 @@
                     user_lng: $('#user_lng').val(),
                     limit: $('#dropdownMenu1').text().trim(),
                     offset: $('#current-offset').val()
+                    order_by: $('#order-by').val()
         };
         console.log($('#current-offset').val());
         // console.log($('.slider-time').val());
@@ -257,7 +258,8 @@
     }
 
 
-    
+  //add buttons for sorting order by html
+  //sync hidden field to grab $('#order-by').val() from
 
     // Reverse Button
     var reverseInput = function() {

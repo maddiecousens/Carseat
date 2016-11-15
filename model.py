@@ -136,7 +136,17 @@ class Ride(db.Model):
             cost = int(kwargs.get('cost'))
             q = q.filter(cls.cost < cost)
 
-        q = q.order_by(cls.start_timestamp)
+        # q = q.order_by(cls.start_timestamp)
+
+        if kwargs.get('order_by') == 'date':
+            q = q.order_by(cls.start_timestamp)
+
+        if kwargs.get('order_by') == 'time':
+            q = q.order_by(cast(cls.start_timestamp, Time))
+
+        if kwargs.get('order_by') == 'cost':
+            q = q.order_by(cls.cost)
+
 
         if kwargs.get('limit'):
             limit_number = int(kwargs.get('limit'))

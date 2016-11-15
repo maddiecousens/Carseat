@@ -47,7 +47,7 @@ def search_rides():
     if request.args.get('query'):
 
         # Query database for all rides
-        rides = Ride.get_rides(limit=1)
+        rides = Ride.get_rides(limit=1, order_by='cost')
         count = int(Ride.query.count())
         # rides = (Ride.query.options(db.joinedload('user'))
         #                    .order_by(Ride.start_timestamp).all())
