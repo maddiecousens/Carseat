@@ -141,7 +141,7 @@ def json_test():
 
     limit = request.args.get("limit")
     offset = request.args.get("offset")
-    print '\n\n{},{}\n\n'.format(limit, offset)
+    order = request.args.get("order")
 
     if date_from:
         date_from = to_utc_date(start_state, date_from)
@@ -172,7 +172,8 @@ def json_test():
                            date_to=date_to,
                            date_from=date_from,
                            limit=1, #################
-                           offset=offset)
+                           offset=offset,
+                           order=order)
      
     json_list = sqlalchemy_to_json(rides)
 

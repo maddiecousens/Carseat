@@ -154,7 +154,7 @@
   <br>
 
   <div class="row col-xs-12">
-    <div class="col-xs-6">
+    <div class="col-xs-4">
 
       <nav aria-label="Page navigation">
         <input id="current-offset" type="hidden" value="0"></input>
@@ -178,7 +178,7 @@
 
     </div>
 
-    <div class="col-xs-6">
+    <div class="col-xs-4">
       <div class="dropdown" id="results-per-page">
         <button class="btn btn-default dropdown-toggle" type="button" 
         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" 
@@ -191,6 +191,34 @@
         </ul>
       </div>
     </div>
+
+    <div class="btn-group col-xs-4" role="group" aria-label="Order by buttons">
+
+      <button type="button" class="btn btn-default orderbybtn" data-orderby="cost" aria-label="Sort by Price">
+        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+           title="Sort by Price">
+          <span class="glyphicon glyphicon glyphicon-usd" aria-hidden="true"></span>
+        </a>
+      </button>
+
+      <button type="button" class="btn btn-default orderbybtn" data-orderby="time" aria-label="Sort by Departure Time">
+        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+           title="Sort by Departure Time">
+          <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+        </a>
+      </button>
+
+      <button type="button" id="active-orderby-btn" class="btn btn-default orderbybtn" data-orderby="date" aria-label="Sort by Departure Date">
+        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+           title="Sort by Departure Date">
+          <span class="glyphicon glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        </a>
+      </button>
+
+    </div>
+
+
+
   </div>
 
   <table class="table table-hover" id="results">

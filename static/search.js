@@ -247,8 +247,8 @@
                     user_lat: $('#user_lat').val(),
                     user_lng: $('#user_lng').val(),
                     limit: $('#dropdownMenu1').text().trim(),
-                    offset: $('#current-offset').val()
-                    order_by: $('#order-by').val()
+                    offset: $('#current-offset').val(),
+                    order: $('#active-orderby-btn').data('orderby')
         };
         console.log($('#current-offset').val());
         // console.log($('.slider-time').val());
@@ -359,4 +359,27 @@
         }
 
     });
+
+    // Order By Buttons
+    function orderBy(evt) {
+      //Remove 'active-orderby-btn' id from all buttons
+        $('.orderbybtn').removeAttr('id','active-orderby-btn');
+        // Add active-orderby-btn id to selection
+        $(this).attr('id','active-orderby-btn');
+        console.log($('#active-orderby-btn').data('orderby'));
+
+        newSearch();
+
+        $('#current-offset').val(0);
+            //Remove 'active' class from all page numbers
+        $('.page-number').removeClass('active');
+    //Add active class to Current Page (current +2 bc when 
+        //you go up a page, the page is the old offset plus 2)
+        $('#page-number' + (1)).addClass('active');
+
+        
+
+    }
+
+    $('.orderbybtn').on('click', orderBy)
 //to do: adjust hardcoded limit

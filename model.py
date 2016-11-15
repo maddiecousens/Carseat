@@ -138,13 +138,13 @@ class Ride(db.Model):
 
         # q = q.order_by(cls.start_timestamp)
 
-        if kwargs.get('order_by') == 'date':
+        if kwargs.get('order') == 'date':
             q = q.order_by(cls.start_timestamp)
 
-        if kwargs.get('order_by') == 'time':
+        if kwargs.get('order') == 'time':
             q = q.order_by(cast(cls.start_timestamp, Time))
 
-        if kwargs.get('order_by') == 'cost':
+        if kwargs.get('order') == 'cost':
             q = q.order_by(cls.cost)
 
 
