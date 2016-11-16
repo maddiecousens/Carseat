@@ -18,6 +18,22 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
 
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        /*height: 100%;*/
+        height:20em;
+        width: 20em;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      /*html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }*/
+</style>
+
 
 
 {% endblock %}
@@ -130,6 +146,9 @@
     </div>
   </form>
 
+<!--   <div class="row">
+  <div id="map"></div>
+</div> -->
   <br>
 
   <div class="well row col-xs-12">
@@ -337,12 +356,12 @@
           </div>
 
           <div class="row">
-            <button type="button" id="view-route-btn" class="btn btn-link">View Route</button>
+            <button type="button" class="btn btn-link view-route-btn">View Route</button>
           </div>
 
-        </td>
+          <div class="add-map-here"></div>
 
-        <div id="addmaphere"></div>
+        </td>
 
         <td class="col-xs-2" style="padding-left:20px;">
           <div class="row">

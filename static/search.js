@@ -166,7 +166,7 @@ var rides, pageCount;
                 </p> \
               </div> \
               <div class="row"> \
-                <button type="button" id="view-route-btn" class="btn btn-link">View Route</button> \
+                <button type="button" class="btn btn-link view-route-btn">View Route</button> \
               </div> \
             </td> \
             <td class="col-xs-2" style="padding-left:20px;"> \
