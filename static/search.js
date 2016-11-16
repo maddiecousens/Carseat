@@ -90,7 +90,7 @@ var rides, pageCount;
                 + ride.end_lat
                 + '" data-endlng="'
                 + ride.end_lng
-                +'> \
+                +'""> \
                     <h4>'
                 + ride.start_timestamp
                 + '</h4> \
