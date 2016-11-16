@@ -27,7 +27,12 @@
   <div class="well">
     To Do:<br>
     - Don't show rides you are the driver for!!!<br>
-    - Add distance/maps
+    - Add distance/maps<br>
+    Issues with Search:<br>
+    - Page count if off. If 11 results, page count is 1<br>
+    - Sort by time, different tz's! what to do! <br>
+    - Removing all address data to re-search doesn't work<br>
+    - Only 43 rides are showing, you can view all ones returned in terminal<br>
   </div>
 
   <form action="/search" id="searchform">
@@ -154,14 +159,14 @@
 
       <nav aria-label="Page navigation">
         <input id="current-offset" type="hidden" value="0"></input>
-        <input id="max-offset" type="hidden" value="{{ count - 1 }}"></input>
+        <input id="max-offset" type="hidden" value="{{ page_count - 1 }}"></input>
         <ul class="pagination">
           <li id="previous">
             <a href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          {% for i in range( (count / limit)|round|int) %}
+          {% for i in range(page_count) %}
           <li class="page-number" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
           {% endfor %}
           <li id="next">

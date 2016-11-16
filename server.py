@@ -48,7 +48,7 @@ def search_rides():
 
         # Query database for all rides
         rides = Ride.get_rides(limit=10, order_by='date')
-        count = int(Ride.query.count())
+        page_count = int(Ride.query.count()) / 10
         # rides = (Ride.query.options(db.joinedload('user'))
         #                    .order_by(Ride.start_timestamp).all())
         
@@ -67,7 +67,7 @@ def search_rides():
 
             ride.start_timestamp = to_time_string(ride.start_timestamp)
  
-        return render_template('search.html', rides=rides, count=count, limit=10)
+        return render_template('search.html', rides=rides, page_count=page_count)
 
     # If user enters search terms, show rides based off search terms
     else:
@@ -156,6 +156,7 @@ def json_test():
     # If no location is specified
     if not(start_term) and not(end_term):
         client_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
+        # print '\n\n{}\n\n'.format(client_state, user_lat, )
         start_time = to_utc_time(client_state, start_time)
     else:
         start_time = to_utc_time(start_state, start_time)
@@ -174,8 +175,20 @@ def json_test():
                            limit=limit, #################
                            offset=offset,
                            order=order)
-     
-    json_list = sqlalchemy_to_json(rides)
+
+    total_count = Ride.get_rides(deg=deg, 
+                               start_lat=start_lat,
+                               start_lng=start_lng,
+                               end_lat=end_lat,
+                               end_lng=end_lng,
+                               start_time=start_time,
+                               cost=cost,
+                               date_to=date_to,
+                               date_from=date_from,
+                               count=True)
+
+    print '\n\n{}\n\n'.format(total_count)
+    json_list = sqlalchemy_to_json(rides, total_count, limit)
 
     return jsonify(json_list)
 
@@ -469,7 +482,7 @@ def request_approval():
 
 ### Helper Functions ###
 
-def sqlalchemy_to_json(rides):
+def sqlalchemy_to_json(rides, total_count, limit):
     """Convert sqlalchemy objects to json"""
 
     attributes = ['car_type',
@@ -504,7 +517,7 @@ def sqlalchemy_to_json(rides):
     # Instantiate list
     json_list = []
 
-    # iterate over rides and add to temp_dict
+    # iterate over  and add to temp_dict
     for ride in rides:
 
         temp_dict = {}
@@ -521,7 +534,11 @@ def sqlalchemy_to_json(rides):
         
         json_list.append(temp_dict)
 
-    return json_list
+    page_count = int(total_count) / int(limit)
+    print '\n\nPage count: {}\n\n'.format(page_count)
+    json_list_final = [{'page_count': page_count}]
+    json_list_final.append(json_list)
+    return json_list_final
 
 def to_utc_time(state, start_time):
     """Convert unaware time to UTC"""

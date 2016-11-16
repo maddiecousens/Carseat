@@ -156,7 +156,10 @@ class Ride(db.Model):
             offset_number = int(kwargs.get('offset'))
             q = q.offset(offset_number)
 
-        rides = q.all()
+        if kwargs.get('count'):
+            rides = q.count()
+        else:
+            rides = q.all()
         print '\n\n{}\n\n'.format(rides)
 
         return rides
