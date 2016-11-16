@@ -47,7 +47,7 @@ def search_rides():
     if request.args.get('query'):
 
         # Query database for all rides
-        rides = Ride.get_rides(limit=1, order_by='cost')
+        rides = Ride.get_rides(limit=10, order_by='date')
         count = int(Ride.query.count())
         # rides = (Ride.query.options(db.joinedload('user'))
         #                    .order_by(Ride.start_timestamp).all())
@@ -67,7 +67,7 @@ def search_rides():
 
             ride.start_timestamp = to_time_string(ride.start_timestamp)
  
-        return render_template('search.html', rides=rides, count=count)
+        return render_template('search.html', rides=rides, count=count, limit=10)
 
     # If user enters search terms, show rides based off search terms
     else:
@@ -171,7 +171,7 @@ def json_test():
                            cost=cost,
                            date_to=date_to,
                            date_from=date_from,
-                           limit=1, #################
+                           limit=limit, #################
                            offset=offset,
                            order=order)
      

@@ -1,6 +1,32 @@
 "use strict";
 
-// $(function() {
+    function pagination() {
+        '<div class="col-xs-4" id="pagination">
+
+      <nav aria-label="Page navigation">
+        <input id="current-offset" type="hidden" value="0"></input>
+        <input id="max-offset" type="hidden" value="{{ count - 1 }}"></input>
+        <ul class="pagination">
+          <li id="previous">
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% for i in range( (count / limit)|round|int) %}
+          <li class="page-number" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
+          {% endfor %}
+          <li id="next">
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>'
+
+
+    }
 
     // Create seat # drop down, depending on how many seats left
     function htmlSeats(seats){
@@ -254,7 +280,10 @@
         // console.log($('.slider-time').val());
         // console.log($('.slider-cost').val());
         // Ajax call
-        $.get('/search-time.json', data, buildHTML);
+        $.get('/search-time.json', data, funciton(){
+            buildHTML(data);
+            pagination(data);
+        });
     }
 
 

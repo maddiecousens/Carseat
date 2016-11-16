@@ -27,10 +27,6 @@
   <div class="well">
     To Do:<br>
     - Don't show rides you are the driver for!!!<br>
-    - Adjust enter stroke for search<br>
-    - Sync of reverse button<br>
-    - Reverse geocode if only city, state?<br>
-    - Have autofill be real values that you can delete <br>
     - Add distance/maps
   </div>
 
@@ -154,7 +150,7 @@
   <br>
 
   <div class="row col-xs-12">
-    <div class="col-xs-4">
+    <div class="col-xs-4" id="pagination">
 
       <nav aria-label="Page navigation">
         <input id="current-offset" type="hidden" value="0"></input>
@@ -165,7 +161,7 @@
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          {% for i in range( (count / 1)|round|int) %}
+          {% for i in range( (count / limit)|round|int) %}
           <li class="page-number" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
           {% endfor %}
           <li id="next">
