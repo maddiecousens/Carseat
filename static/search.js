@@ -165,6 +165,9 @@ var rides, pageCount;
             row += '</span> \
                 </p> \
               </div> \
+              <div class="row"> \
+                <button type="button" id="view-route-btn" class="btn btn-link">View Route</button> \
+              </div> \
             </td> \
             <td class="col-xs-2" style="padding-left:20px;"> \
               <div class="row"> \
