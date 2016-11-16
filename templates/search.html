@@ -23,8 +23,8 @@
        * element that contains the map. */
       #map {
         /*height: 100%;*/
-        height:20em;
-        width: 20em;
+        height: 50em;
+        width: 50em;
       }
       /* Optional: Makes the sample page fill the window. */
       /*html, body {
@@ -242,11 +242,12 @@
   </div>
 
   <table class="table table-hover" id="results">
+    <tbody>
     {% if rides %}
 
     {% for ride in rides %}
 
-    <tbody>
+    
       <tr> 
         <td class="col-xs-2" style="padding-right:20px; border-right: 1px solid #ccc;">
           <div class="row">
@@ -418,10 +419,14 @@
 
         </td>
       </tr>
+
     {% endfor %}
     {% else %}
-
-  <p>No upcoming rides for that search</p>
+  <tr>
+    <td>
+      <p>No upcoming rides for that search</p>
+    </td>
+  </tr>
 
   {% endif %}
 
