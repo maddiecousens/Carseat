@@ -81,7 +81,16 @@ var rides, pageCount;
                   </div> \
                 </td> \
                 <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;"> \
-                  <div class="row"> \
+                  <div class="row ride" '
+                + 'data-startlat="'
+                + ride.start_lat
+                + '" data-startlng="'
+                + ride.start_lng
+                + '" data-endlat="'
+                + ride.end_lat
+                + '" data-endlng="'
+                + ride.end_lng
+                +'> \
                     <h4>'
                 + ride.start_timestamp
                 + '</h4> \
