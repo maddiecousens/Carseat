@@ -357,9 +357,34 @@
             </p>
           </div>
 
+         <!--  {% if ride.mileage is not none %} -->
+
+          <!-- <div class="row">
+            <span class="btn-group">
+              
+              <button type="button" style="display:inline-block;"class="btn btn-link view-route-btn">View Route</button>
+              <h5>{{ ride.mileage }}, Est Travel Time: {{ ride.duration }}</h5>
+            </span>
+          </div> -->
+          <div class="row">
+            <p>
+              <span class="btn-group">
+                <button type="button" style="display:inline-block;"class="btn btn-link view-route-btn">View Route</button>
+                <p>{{ ride.mileage }}, Est Travel Time: {{ ride.duration }}</p>
+              </span>
+            </p>
+          </div>
+            
+              
+              
+        
+        <!--   {% else %}
           <div class="row">
             <button type="button" class="btn btn-link view-route-btn">View Route</button>
           </div>
+          {% endif %} -->
+          
+
 
           <div class="add-map-here"></div>
 
