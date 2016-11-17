@@ -13,6 +13,10 @@ import geocoder
 import pytz
 import time
 
+import os
+import googlemaps
+GOOGLE_KEY = os.environ["GOOGLE_KEY"]
+
 def example_data():
     """Create some sample data."""
 
@@ -61,6 +65,7 @@ def example_data():
     with open('seed-data/rides_seed.csv', 'rb') as ride_data:
         reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
         reader.next()
+        gmaps = googlemaps.Client(key=GOOGLE_KEY)
         for row in reader:
             start_lat = row[3]
             start_lng = row[4]
@@ -70,7 +75,7 @@ def example_data():
             g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
             time.sleep(1)
             g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
-            print '\n\n{}\n\n'.format(g_end.city)
+            # print '\n\n{}\n\n'.format(g_end.city)
 
             # start time from seed file
             start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
@@ -89,6 +94,28 @@ def example_data():
 
             # Normalize to UTC
             end_time_utc = pytz.utc.normalize(end_time_aware)
+
+            try:
+                # starting = "{},{}".format(ride.start_lat, ride.start_lng)
+                # ending = "{},{}".format(ride.end_lat, ride.end_lng)
+                # print '\nstart: {}\nend: {}'.format(starting, ending)
+
+                directions_result = gmaps.directions("{},{}".format(ride.start_lat, ride.start_lng),
+                                                     "{},{}".format(ride.end_lat, ride.end_lng),
+                                                     traffic_model='best_guess',
+                                                     departure_time=ride.start_timestamp)
+
+                duration = directions_result[0]['legs'][0]['duration']['text']
+
+                distance = directions_result[0]['legs'][0]['distance']['text']
+
+                ride.duration = duration
+                ride.mileage = distance
+                print '\n\nduration: {}, mileage{}\n\n'.format(ride.duration, ride.mileage)
+
+            except:
+                print '\n\nDuration/Mileage API Failed\n\n'
+                print "Unexpected error:", sys.exc_info()[0]
 
 
             ride = Ride(driver=row[0],

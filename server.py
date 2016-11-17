@@ -16,6 +16,9 @@ import geocoder
 
 from helperfunctions import state_to_timezone, miles_to_degrees
 
+import os
+import googlemaps
+
 
 app = Flask(__name__)
 
@@ -25,6 +28,8 @@ app.secret_key = "thomothgromoth"
 # Fail if Jinja uses undefined variable
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
+
+GOOGLE_KEY = os.environ["GOOGLE_KEY"]
 
 #############################################################################
 # Routes
@@ -54,6 +59,7 @@ def search_rides():
         
         # Create dicts to hold search parameters that will be added to html 
         #   and Utilized by AJAX when search results are toggled.
+        gmaps = googlemaps.Client(key=GOOGLE_KEY)
 
         for ride in rides:
             # Convert to local time for start state
@@ -65,8 +71,13 @@ def search_rides():
 
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
 
+            # print '\n\n',ride,'\n\n'
+
+            # print '\n**{}\n'.format(ride.start_timestamp)
             ride.start_timestamp = to_time_string(ride.start_timestamp)
- 
+
+            
+            db.session.commit()
         return render_template('search.html', rides=rides, page_count=page_count)
 
     # If user enters search terms, show rides based off search terms
@@ -187,7 +198,7 @@ def json_test():
                                date_from=date_from,
                                count=True)
 
-    print '\n\n{}\n\n'.format(total_count)
+    # print '\n\n{}\n\n'.format(total_count)
     json_list = sqlalchemy_to_json(rides, total_count, limit)
 
     return jsonify(json_list)
@@ -535,7 +546,7 @@ def sqlalchemy_to_json(rides, total_count, limit):
         json_list.append(temp_dict)
 
     page_count = int(total_count) / int(limit)
-    print '\n\nPage count: {}\n\n'.format(page_count)
+    # print '\n\nPage count: {}\n\n'.format(page_count)
     json_list_final = [{'page_count': page_count}]
     json_list_final.append(json_list)
     return json_list_final

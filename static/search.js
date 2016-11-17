@@ -50,8 +50,7 @@ var rides, pageCount;
 
     // Create HTML for every Data row
     function htmlRow(ride) {
-        var row = '<tbody> \
-          <tr> \
+        var row = '<tr> \
             <td class="col-xs-2" style="padding-right:20px; border-right: 1px \
             solid #ccc;"> \
               <div class="row"> \
@@ -168,6 +167,7 @@ var rides, pageCount;
               <div class="row"> \
                 <button type="button" class="btn btn-link view-route-btn">View Route</button> \
               </div> \
+              <div class="add-map-here"></div> \
             </td> \
             <td class="col-xs-2" style="padding-left:20px;"> \
               <div class="row"> \
@@ -245,7 +245,8 @@ var rides, pageCount;
         pagination(pageCount);
         
         // Start building HTML
-        var html = '<table class="table table-hover">';
+        var html = '<table class="table table-hover"> \
+                        <tbody>';
         
 
         // For every ride in JSON, call htmlRow
@@ -263,6 +264,7 @@ var rides, pageCount;
         }
 
         $('#results').empty().append(html);
+        $('.view-route-btn').on("click", initMap);
     }
 
     // Event Handler, AJAX
