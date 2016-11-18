@@ -19,6 +19,8 @@ from helperfunctions import state_to_timezone, miles_to_degrees
 import os
 import googlemaps
 
+import facebook
+
 
 app = Flask(__name__)
 
@@ -59,7 +61,6 @@ def search_rides():
         
         # Create dicts to hold search parameters that will be added to html 
         #   and Utilized by AJAX when search results are toggled.
-        gmaps = googlemaps.Client(key=GOOGLE_KEY)
 
         for ride in rides:
             # Convert to local time for start state
@@ -338,35 +339,37 @@ def fb_login_process():
     fb_userid = request.form.get("id")
     fb_user_accesstoken = request.form.get('access_token')
 
-    # if User.query.filter(User.email == email).first():
+    if User.query.filter(User.fb_userid == fb_userid).first():
 
     #     # Grab user OBJECT
-    #     user = User.query.filter(User.email==email).first()
+        user = User.query.filter(User.fb_userid == fb_userid).one()
+        session['current_user'] = user.user_id
+        print '\n\nadded session\n\n'
 
-    #     db_password = user.password
+    else:
+        print '\n\nfb user id not in db\n\n'
+        # add a new user object, pull their info from fb
 
-    #     # Check if provided pw matches db pw
-    #     if password == db_password:
+        graph = facebook.GraphAPI(fb_user_accesstoken)
+        profile = graph.get_object('me')
+        args = {'fields' : 'id,name,email,picture.width(200).height(200)'}
+        profile = graph.get_object('me', **args)
 
-    #         # Set session cookie to user_id from user OBJECT
-    #         session['current_user'] = user.user_id 
-    #         flash("Logged in as %s" % user.first_name)
-    #         redirect_path = '/profile/{}'.format(user.user_id)
-    #         return redirect(redirect_path) 
+        first_name = profile.get('name').split()[0]
+        last_name = profile.get('name').split()[1]
+        email = profile.get('email')
+        image = profile.get('picture')['data']['url']
 
-    #     # If wrong password, flash message, redirect to login
-    #     else:
-    #         flash("Wrong password!")
-    #         return redirect("/login")
+        print '\n\n',first_name,last_name,email,image,'\n\n'
 
-    # # If email is not in database, flash message, redirect to /login
-    # else:
-    #     flash("Email is not in use.  Please register.")
-    #     return redirect("/login")
-
-
-
-    print '\n\n',fb_userid, fb_user_accesstoken,'\n\n'
+        user = User(fb_userid=fb_userid, first_name=first_name, last_name=last_name,
+                    email=email, image=image)
+        db.session.add(user)
+        db.session.commit()
+        # add user to session
+        user = User.query.filter(User.fb_userid == fb_userid).one()
+        session['current_user'] = user.user_id
+        print '\n\nadded to db and session\n\n'
 
     return "hi"
 

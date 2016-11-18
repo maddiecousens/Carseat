@@ -22,21 +22,21 @@ def example_data():
 
     # In case this is run more than once, empty out existing data
     print "deleting data"
-    # db.drop_all()
-    db.drop(users)
+    db.drop_all()
+    
     db.create_all()
     # User.query.delete()
     # Ride.query.delete()
     # Rider.query.delete()
 
    # Add sample employees and departments
-    maddie = User(user_id=1 ,first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1", image="https://s-media-cache-ak0.pinimg.com/236x/3a/8e/6e/3a8e6eec898c6f3d1c9352503a9c8e37.jpg")
-    ahmad = User(user_id=2 ,first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="doge2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
-    carl = User(user_id=3 ,first_name="Carl", last_name="Tinker", age=51, email="carl@", password="doge3", image="https://i.ytimg.com/vi/BWAK0J8Uhzk/hqdefault.jpg")
-    graham = User(user_id=4 ,first_name="Graham", last_name="Egan", age=27, email="graham@", password="doge4", image="http://67.media.tumblr.com/tumblr_md019wlf781rz4vr8o1_1280.jpg")
-    grom= User(user_id=5 ,first_name="Grom", last_name="Egan", age=27, email="grom@", password="doge5", image="https://s-media-cache-ak0.pinimg.com/originals/84/42/a7/8442a778bf0b163a3c30aefe7a64be61.jpg")
-    thomoth = User(user_id=6 ,first_name="Thomoth", last_name="Egan", age=27, email="thomoth@", password="doge6", image="https://s-media-cache-ak0.pinimg.com/originals/13/44/06/134406e512f3ab5b252df70df541bf56.jpg")
-    lexie = User(user_id=7 ,first_name="Lexie", last_name="Cousens", age=27, email="lexie@", password="doge7", image="http://www.zercustoms.com/news/images/Subaru-dog-driving-lessons-b.jpg")
+    maddie = User(user_id=1, fb_userid="10154085900708339", first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1", image="https://s-media-cache-ak0.pinimg.com/236x/3a/8e/6e/3a8e6eec898c6f3d1c9352503a9c8e37.jpg")
+    ahmad = User(user_id=2, fb_userid="100014268574964", first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="maddie2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
+    carl = User(user_id=3, fb_userid="100014238157245", first_name="Aretha", last_name="Franklin", age=51, email="carl@", password="maddie3", image="https://i.ytimg.com/vi/BWAK0J8Uhzk/hqdefault.jpg")
+    graham = User(user_id=4, fb_userid="100014205218090", first_name="Graham", last_name="Egan", age=27, email="graham@", password="maddie4", image="http://67.media.tumblr.com/tumblr_md019wlf781rz4vr8o1_1280.jpg")
+    grom= User(user_id=5, fb_userid="105608939924154", first_name="Grom", last_name="Gromoth", age=27, email="grom@", password="maddie5", image="https://s-media-cache-ak0.pinimg.com/originals/84/42/a7/8442a778bf0b163a3c30aefe7a64be61.jpg")
+    thomoth = User(user_id=6, fb_userid="100014168388615", first_name="Beyonce", last_name="Knowles", age=27, email="thomoth@", password="maddie6", image="https://s-media-cache-ak0.pinimg.com/originals/13/44/06/134406e512f3ab5b252df70df541bf56.jpg")
+    lexie = User(user_id=7, fb_userid="100014175948968", first_name="Lexie", last_name="Cousens", age=27, email="lexie@", password="maddie7", image="http://www.zercustoms.com/news/images/Subaru-dog-driving-lessons-b.jpg")
 
     # = User(name="", email="", password="")
 
@@ -100,22 +100,22 @@ def example_data():
                 # ending = "{},{}".format(ride.end_lat, ride.end_lng)
                 # print '\nstart: {}\nend: {}'.format(starting, ending)
 
-                directions_result = gmaps.directions("{},{}".format(ride.start_lat, ride.start_lng),
-                                                     "{},{}".format(ride.end_lat, ride.end_lng),
+                directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
+                                                     "{},{}".format(end_lat, end_lng),
                                                      traffic_model='best_guess',
-                                                     departure_time=ride.start_timestamp)
+                                                     departure_time=start_time_aware)
 
                 duration = directions_result[0]['legs'][0]['duration']['text']
 
-                distance = directions_result[0]['legs'][0]['distance']['text']
+                mileage = directions_result[0]['legs'][0]['distance']['text']
 
-                ride.duration = duration
-                ride.mileage = distance
-                print '\n\nduration: {}, mileage{}\n\n'.format(ride.duration, ride.mileage)
+                # ride.duration = duration
+                # ride.mileage = distance
+                print '\n\nduration: {}, mileage{}\n\n'.format(duration, mileage)
 
             except:
                 print '\n\nDuration/Mileage API Failed\n\n'
-                print "Unexpected error:", sys.exc_info()[0]
+                print "Unexpected error:", start_lng, start_lng, end_lat, end_lng
 
 
             ride = Ride(driver=row[0],
@@ -146,11 +146,13 @@ def example_data():
                         
                         #Details
                         # pickup_window = datetime.strptime(row[24],'%M'),
-                        car_type = row[9],
-                        luggage =  row[10],
-                        comments = row[11],
-                        pickup_window = row[12],
-                        detour = row[13]
+                        car_type=row[9],
+                        luggage=row[10],
+                        comments=row[11],
+                        pickup_window=row[12],
+                        detour=row[13],
+                        mileage=mileage,
+                        duration=duration
                         )
     
             db.session.add(ride)
