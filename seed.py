@@ -23,7 +23,7 @@ def example_data():
     # In case this is run more than once, empty out existing data
     print "deleting data"
     # db.drop_all()
-    db.drop_all()
+    db.drop(users)
     db.create_all()
     # User.query.delete()
     # Ride.query.delete()

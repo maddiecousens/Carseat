@@ -164,10 +164,21 @@ var rides, pageCount;
             row += '</span> \
                 </p> \
               </div> \
-              <div class="row"> \
-                <button type="button" class="btn btn-link view-route-btn">View Route</button> \
-              </div> \
-              <div class="add-map-here"></div> \
+              <br>'
+            if (ride.mileage != null & ride.duration != null) {
+                row += '<div class="row"> \
+                <span class="glyphicon glyphicon-time"></span> \
+                <span>'
+                + ride.mileage
+                + ', Est Travel Time: '
+                + ride.duration
+                + '</span> \
+                      </div>'
+            }
+            row += '<div class="row"> \
+                    <button type="button" class="btn btn-link view-route-btn">View Route</button> \
+                </div> \
+                <div class="add-map-here"></div> \
             </td> \
             <td class="col-xs-2" style="padding-left:20px;"> \
               <div class="row"> \

@@ -22,13 +22,14 @@ function initMap(evt) {
     // console.log($(this).parent().siblings('.ride'));
     // console.log($(this).parent().siblings('.ride').data('startlat'))
 
-    var startLat = $(this).parent().prevAll('.ride').data('startlat')
-    var startLng = $(this).parent().prevAll('.ride').data('startlng')
-    var endLat = $(this).parent().prevAll('.ride').data('endlat')
-    var endLng = $(this).parent().prevAll('.ride').data('endlng')
+    var startLat = $(this).parent().prevAll('.ride').data('startlat');
+    var startLng = $(this).parent().prevAll('.ride').data('startlng');
+    var endLat = $(this).parent().prevAll('.ride').data('endlat');
+    var endLng = $(this).parent().prevAll('.ride').data('endlng');
 
     var start = {lat: startLat, lng: startLng};
         var end = {lat: endLat, lng: endLng};
+        console.log(start, end)
 
         var map = new google.maps.Map(document.getElementById('map'), {
           center: start,
@@ -60,6 +61,8 @@ function initMap(evt) {
 
 function addMap(evt) {
     
+    console.log($(this).parent().child(".add-map-here"))
+    console.log($(this).parent().parent().siblings(".add-map-here"))
     $(this).parent().siblings(".add-map-here").removeClass("add-map-here").attr("id", "map");
 
         // .removeClass("add-map-here");

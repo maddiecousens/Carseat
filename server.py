@@ -331,6 +331,47 @@ def view_login():
     """ Show login form """
     return render_template('login.html')
 
+
+@app.route("/login2", methods=["POST"])
+def fb_login_process():
+    """ Facebook Process login """
+    fb_userid = request.form.get("id")
+    fb_user_accesstoken = request.form.get('access_token')
+
+    # if User.query.filter(User.email == email).first():
+
+    #     # Grab user OBJECT
+    #     user = User.query.filter(User.email==email).first()
+
+    #     db_password = user.password
+
+    #     # Check if provided pw matches db pw
+    #     if password == db_password:
+
+    #         # Set session cookie to user_id from user OBJECT
+    #         session['current_user'] = user.user_id 
+    #         flash("Logged in as %s" % user.first_name)
+    #         redirect_path = '/profile/{}'.format(user.user_id)
+    #         return redirect(redirect_path) 
+
+    #     # If wrong password, flash message, redirect to login
+    #     else:
+    #         flash("Wrong password!")
+    #         return redirect("/login")
+
+    # # If email is not in database, flash message, redirect to /login
+    # else:
+    #     flash("Email is not in use.  Please register.")
+    #     return redirect("/login")
+
+
+
+    print '\n\n',fb_userid, fb_user_accesstoken,'\n\n'
+
+    return "hi"
+
+
+
 @app.route("/login", methods=["POST"])
 def login_process():
     """ Process login """
@@ -501,6 +542,7 @@ def sqlalchemy_to_json(rides, total_count, limit):
                  'cost',
                  'detour',
                  'driver',
+                 'duration',
                  'end_city',
                  'end_lat',
                  'end_lng',
