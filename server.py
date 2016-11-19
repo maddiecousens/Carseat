@@ -331,7 +331,7 @@ def process_rideform():
     return redirect('/profile/{}'.format(driver))
 
 ##################################                               
-##### Login/Logout/Register ######
+######### Login/Logout ###########
 ##################################
 
 @app.route('/check-login.json')
@@ -346,21 +346,19 @@ def check_login():
 @app.route("/login", methods=["POST"])
 def fb_login_process():
     """ Facebook Process login """
-    
+
+    # retrieve id and access_token
     fb_userid = request.form.get("id")
     fb_user_accesstoken = request.form.get('access_token')
 
+    # If user is in db, add their user_id to session
     if User.query.filter(User.fb_userid == fb_userid).first():
-
-    #     # Grab user OBJECT
+        # Grab user OBJECT
         user = User.query.filter(User.fb_userid == fb_userid).one()
         session['current_user'] = user.user_id
-        print '\n\nadded session\n\n'
 
+    # If new user, get info from FB Graph API and add to db
     else:
-        print '\n\nfb user id not in db\n\n'
-        # add a new user object, pull their info from fb
-
         graph = facebook.GraphAPI(fb_user_accesstoken)
         profile = graph.get_object('me')
         args = {'fields' : 'id,name,email,picture.width(200).height(200)'}
@@ -371,59 +369,16 @@ def fb_login_process():
         email = profile.get('email')
         image = profile.get('picture')['data']['url']
 
-        print '\n\n',first_name,last_name,email,image,'\n\n'
-
+        # create user instance and commit to db
         user = User(fb_userid=fb_userid, first_name=first_name, last_name=last_name,
                     email=email, image=image)
         db.session.add(user)
         db.session.commit()
+
         # add user to session
         user = User.query.filter(User.fb_userid == fb_userid).one()
         session['current_user'] = user.user_id
-        print '\n\nadded to db and session\n\n'
-
-    return "hi"
-
-
-
-@app.route("/login", methods=["POST"])
-def login_process():
-    """ Process login """
-
-    # Get email and password from input fields in form
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-
-    # If email is in database, grab password from database
-    if User.query.filter(User.email == email).first():
-
-        # Grab user OBJECT
-        user = User.query.filter(User.email==email).first()
-
-        db_password = user.password
-
-        # Check if provided pw matches db pw
-        if password == db_password:
-
-            # Set session cookie to user_id from user OBJECT
-            session['current_user'] = user.user_id 
-            flash("Logged in as %s" % user.first_name)
-            redirect_path = '/profile/{}'.format(user.user_id)
-            return redirect(redirect_path) 
-
-        # If wrong password, flash message, redirect to login
-        else:
-            flash("Wrong password!")
-            return redirect("/login")
-
-    # If email is not in database, flash message, redirect to /login
-    else:
-        flash("Email is not in use.  Please register.")
-        return redirect("/login")
-
-    # QUESTION : how do I redirect them from whatever page they logged in from?
-    #   ideas: keep stored in sessions what page the request is coming from
+    return "logged in"
 
 @app.route('/logout', methods=["GET"])
 def logout_form():
@@ -435,7 +390,7 @@ def logout_form():
     return redirect('/')
 
 
-##################################                               
+##################################                         
 #### Profile Page + Requests #####
 ##################################
 
