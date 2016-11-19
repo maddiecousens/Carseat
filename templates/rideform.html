@@ -3,28 +3,23 @@
 {% block Title %} Home {% endblock %}
 
 {% block head %} 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<!-- moment js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
-<!-- bootstrap datepicker -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-<!-- 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script> -->
+<!-- jQuery UI, used by datepicker and timepicker -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+<!-- Bootstrap Time Picker -->
+<script src="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/js/bootstrap-timepicker.min.js"></script>
+<link href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
-
+<!-- google maps -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
 
 {% endblock %}
 
 
 
 {% block content %}
-
-
-<!-- Jquery -->
 
 
 <div class="container" id="customcontainerwidth" role="main">
@@ -58,7 +53,7 @@
                     <div class="input-group col-xs-2">
                         <span class="input-group-addon">$</span>
                         <input type="number" class="form-control" id="cost" name="cost"
-                        aria-describedby="cost" placedholder="Ex: 15.00" min="1.00" required>
+                        aria-describedby="cost" placedholder="Ex: 15.00" min="1.00" max="50.00" step="1.00" required>
                     </div>
                 </div>
             </div>
@@ -109,31 +104,37 @@
 
             </div>
 
+
+
         <fieldset>
-            <legend>When will you leave and Arrive?</legend>
+            <legend>When will you leave?</legend>
                 <div class="container">
-                    <div class='col-md-5'>
-                        <div class="form-group">
-                            <div class='input-group date' id='datetimepicker6'>
-                                <input type='text' name='date1' class="form-control" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
+                    <div class='col-xs-5'>
+                        <label for="date-picker-2" class="control-label">Date</label>
+                        <div class="input-group">
+                            <input id="date-picker-2" type="text" class="date-picker form-control" />
+                            <label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+                            </label>
                         </div>
                     </div>
-                    <div class='col-md-5'>
-                        <div class="form-group">
-                            <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' name='date2' class="form-control" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
+                    <div class="input-group bootstrap-timepicker timepicker">
+  <input id="timepicker1" type="text" class="form-control input-small">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+</div>
+                   <!--  <div class='col-xs-5'>
+                        <label for="timepicker1" class="control-label">Time</label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="timepicker1" type="text" class="form-control input-small">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
         </fieldset>
+        <script type="text/javascript">
+            $('#timepicker1').timepicker({
+                showInputs: false
+            });
+        </script>
 
         <br>
 
@@ -148,6 +149,9 @@
                         </div>
                     </div>
                 </div>
+
+                <br> 
+
         
 
                 <br> 
@@ -205,26 +209,6 @@
 
         </fieldset>
 
-
-        <script type="text/javascript">
- 
-        $(function () {
-            $('#datetimepicker6').datetimepicker();
-            $('#datetimepicker7').datetimepicker();
-            $("#datetimepicker6").on("dp.change", function (e) {
-                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-            });
-            $("#datetimepicker7").on("dp.change", function (e) {
-                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-            });
-        });
-
-
-    </script>
-
-    <script type="text/javascript" src="static/autocomplete.js"></script>
-
-
         <!-- submit button -->
         <button type="submit" id="ride-form-submit" class="btn btn-primary">Submit</button>
 
@@ -243,6 +227,25 @@
     // submitRide.on('click', checkLoggedIn);
 
 
+
+</script>
+<script type="text/javascript" src="static/autocomplete_index.js"></script>
+
+<script>
+$(".date-picker").datepicker();
+
+$(".date-picker").on("change", function () {
+    var id = $(this).attr("id");
+    var val = $("label[for='" + id + "']").text();
+    $("#msg").text(val + " changed");
+});
+</script>
+
+<script>
+
+$('#cost').on("change", function() {
+    $(this).val(parseInt($(this).val()).toFixed(2));
+});
 
 </script>
 

@@ -209,6 +209,14 @@ def json_test():
 
     return jsonify(json_list)
 
+###test route
+
+@app.route('/test', methods=["GET"])
+def view_test():
+    """ Form to post new ride """
+
+    return render_template('googletest5.html')
+
 
 ##################################                               
 ######## Post Ride Form ##########
@@ -229,8 +237,14 @@ def process_rideform():
     ##- Add logged in check
     ##- DON'T ADD TO DB IF THE FIELDS ARE BLANK!!!
     ################
-    user = session['current_user']
+
+    ## V2. verify on backend. send AJAX request, if errors notify user
+
+
     driver = session['current_user']
+
+    seats = int(request.form.get('seats'))
+    cost = int(request.form.get('cost'))
 
     ###### Store Auto Completed Addresses ########
 
@@ -254,10 +268,6 @@ def process_rideform():
 
 
     ##### Other Data ######
-
-    cost = request.form.get('cost')
-    seats = int(request.form.get('seats'))
-    
     luggage = request.form.get('luggage')
     comments = request.form.get('comments')
     pickup_window = request.form.get('pickup-window')
@@ -302,19 +312,23 @@ def process_rideform():
                 start_timestamp=start_time,
                 end_timestamp=end_time,
 
-                car_type=car_type,
+                mileage=mileage, #compute
+                duration=duration, #compute
                 luggage=luggage,
                 comments=comments,
                 pickup_window=pickup_window,
-                detour=detour
+                detour=detour,
+                car_type=car_type
                )
+
+    ride = validate_ride(ride)
 
     db.session.add(ride)
     db.session.commit()
 
     flash("Ride added to DB")
 
-    return redirect('/profile/{}'.format(user))
+    return redirect('/profile/{}'.format(driver))
 
 ##################################                               
 ##### Login/Logout/Register ######
@@ -638,6 +652,40 @@ def to_time_string(timestamp):
         datetime_str = timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
 
     return datetime_str
+
+def validate_ride(ride):
+    attributes = ["driver",
+                  "seats",
+                  "cost",
+                  "start_lat",
+                  "start_lng",
+                  "start_number",
+                  "start_street",
+                  "start_city",
+                  "start_state",
+                  "start_zip",
+                  "end_lat",
+                  "end_lng",
+                  "end_number",
+                  "end_street",
+                  "end_city",
+                  "end_state",
+                  "end_zip",
+                  "start_timestamp",
+                  "end_timestamp",
+                  "mileage",
+                  "duration",
+                  "luggage",
+                  "comments",
+                  "pickup_window",
+                  "detour",
+                  "car_type"]
+
+    for attr in attributes:
+        if not getattr(ride, attr):
+            setattr(ride, attr, None)
+
+    return ride
 
 
 if __name__ == '__main__':

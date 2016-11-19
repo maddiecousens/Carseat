@@ -72,7 +72,7 @@ class Ride(db.Model):
     #Details
     mileage = db.Column(db.String(10), nullable=True)   # would there be a way to validate this? API?
     duration = db.Column(db.String(100), nullable=True)
-    luggage =  db.Column(db.String(50), nullable=True) #number for now.. drop down js
+    luggage = db.Column(db.String(50), nullable=True) #number for now.. drop down js
     comments = db.Column(db.Text, nullable=True) #db.Text field??
     pickup_window = db.Column(db.String(50), nullable=True) 
     detour = db.Column(db.String(50), nullable=True) 
