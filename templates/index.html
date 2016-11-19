@@ -10,11 +10,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"/>
 
-<!-- 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
- -->
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script> -->
+<script type="text/javascript" src="static/autocomplete_index.js"></script>
 
 
 {% endblock %}
@@ -26,13 +27,6 @@
     <h1>Find your next Seat</h1>
 </div>
 <div class="container">
-<div class="well">
-    To Do:<br>
-    - Fix login/register... FB oAuth<br>
-    - Circle radius search
-</div>
-
-
 <form action="/search">
     <div class="form-group">
         <div class="row">
@@ -83,8 +77,6 @@
     </div>
 </form>
 </div>
-
-<script type="text/javascript" src="static/autocomplete.js"></script>
 
 
 {% endblock %}

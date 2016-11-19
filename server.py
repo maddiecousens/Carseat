@@ -21,6 +21,8 @@ import googlemaps
 
 import facebook
 
+import math
+
 
 app = Flask(__name__)
 
@@ -50,45 +52,33 @@ def index():
 def search_rides():
     """Searches database for rides"""
 
-    # If user clicks 'All Rides' from NavBar, show all rides
+    # initialize to show 10 results ordered by date
+    limit = 10
+    order_by = 'date'
+
+    ### If user clicks 'All Rides' ###
     if request.args.get('query'):
 
         # Query database for all rides
-        rides = Ride.get_rides(limit=10, order_by='date')
-        page_count = int(Ride.query.count()) / 10
-        # rides = (Ride.query.options(db.joinedload('user'))
-        #                    .order_by(Ride.start_timestamp).all())
-        
-        # Create dicts to hold search parameters that will be added to html 
-        #   and Utilized by AJAX when search results are toggled.
+        rides = Ride.get_rides(limit=limit, order_by=order_by)
+
+        # Round up page count with + 1
+        page_count = int(Ride.query.count()) / limit + 1
 
         for ride in rides:
-            # Convert to local time for start state
-            ###############
-            ## to do: should really be the users timezone, since rides could
-            ## significantly vary by timezone when searching all rides. ADJUST
-            ################
-
-
+            # convert ride to local timezone
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
-
-            # print '\n\n',ride,'\n\n'
-
-            # print '\n**{}\n'.format(ride.start_timestamp)
+            # turn date object into string for front end
             ride.start_timestamp = to_time_string(ride.start_timestamp)
 
-            
-            db.session.commit()
+        # Render search page, passing rides and page_count for pagination
         return render_template('search.html', rides=rides, page_count=page_count)
 
-    # If user enters search terms, show rides based off search terms
+    ### If user enters search terms ###
     else:
  
-        # Eventually add miles as an input field
-        miles = 25
-        count = 0
-
-        # Convert miles to lat/lng degrees
+        # Start with 15mile square search
+        miles = 15
         deg = miles_to_degrees(miles)
         
         # Get search terms lat/lng
@@ -97,8 +87,8 @@ def search_rides():
         end_lat = float(request.args.get('lat2'))
         end_lng = float(request.args.get('lng2'))
 
-        # Create dicts to hold search parameters that will be added to html 
-        #   and Utilized by AJAX when search results are toggled.
+        # Dicts holding search terms to be placed in DOM and used by AJAX when 
+        #   user toggles search parameters
         start_search = {"term": request.args.get('searchstring'),
                         "state": request.args.get('administrative_area_level_1'),
                         "lat": start_lat,
@@ -109,27 +99,44 @@ def search_rides():
                       "lat": end_lat,
                       "lng": end_lng
                       }
-
-        rides = Ride.get_rides(deg=deg, start_lat=start_lat, start_lng=start_lng,
-                               end_lat=end_lat, end_lng=end_lng)
+        # Get the first 10 results for query
+        rides = Ride.get_rides(deg=deg,
+                               start_lat=start_lat,
+                               start_lng=start_lng,
+                               end_lat=end_lat,
+                               end_lng=end_lng,
+                               limit=limit,
+                               order_by=order_by)
+        if len(rides) > limit:
+            total_count = Ride.get_rides(deg=deg,
+                                   start_lat=start_lat,
+                                   start_lng=start_lng,
+                                   end_lat=end_lat,
+                                   end_lng=end_lng,
+                                   limit=limit,
+                                   order_by=order_by,
+                                   count=True)
+            # Round up page count with + 1
+            page_count = int(total_count) / limit + 1
+        else:
+            page_count = 1
 
         for ride in rides:
-            count += 1
-            # Convert timestamp to local time
+            # convert ride to local timezone
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
-
+            # turn date object into string for front end
             ride.start_timestamp = to_time_string(ride.start_timestamp)
 
         return render_template('search.html', rides=rides,
                                               start_search=start_search,
-                                              end_search=end_search, 
-                                              count=count)
+                                              end_search=end_search,
+                                              page_count=page_count)
 
-@app.route('/search-time.json')
+@app.route('/search.json')
 def json_test():
     """Return new ride results"""
 
-    #Get location search terms
+    #Get search terms
 
     start_term = request.args.get('start_term')
     end_term = request.args.get('end_term')
@@ -155,6 +162,7 @@ def json_test():
     offset = request.args.get("offset")
     order = request.args.get("order")
 
+    # convert dates to utc to be queried against db
     if date_from:
         date_from = to_utc_date(start_state, date_from)
 
@@ -165,17 +173,15 @@ def json_test():
     # Convert miles to lat/lng degrees
     deg = miles_to_degrees(25)
 
-    # If no location is specified
+    # If searching all rides (multiple timezones), search times based off user location 
     if not(start_term) and not(end_term):
         client_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
-        # print '\n\n{}\n\n'.format(client_state, user_lat, )
         start_time = to_utc_time(client_state, start_time)
     else:
         start_time = to_utc_time(start_state, start_time)
 
 
-
-    rides = Ride.get_rides(deg=deg, 
+    rides = Ride.get_rides(deg=deg,
                            start_lat=start_lat,
                            start_lng=start_lng,
                            end_lat=end_lat,
@@ -184,38 +190,25 @@ def json_test():
                            cost=cost,
                            date_to=date_to,
                            date_from=date_from,
-                           limit=limit, #################
+                           limit=limit,
                            offset=offset,
                            order=order)
 
-    total_count = Ride.get_rides(deg=deg, 
-                               start_lat=start_lat,
-                               start_lng=start_lng,
-                               end_lat=end_lat,
-                               end_lng=end_lng,
-                               start_time=start_time,
-                               cost=cost,
-                               date_to=date_to,
-                               date_from=date_from,
-                               count=True)
+    total_count = Ride.get_rides(deg=deg,
+                                 start_lat=start_lat,
+                                 start_lng=start_lng,
+                                 end_lat=end_lat,
+                                 end_lng=end_lng,
+                                 start_time=start_time,
+                                 cost=cost,
+                                 date_to=date_to,
+                                 date_from=date_from,
+                                 count=True)
 
-    # print '\n\n{}\n\n'.format(total_count)
     json_list = sqlalchemy_to_json(rides, total_count, limit)
 
     return jsonify(json_list)
 
-
-
-##################################                               
-######### Testing Route ##########
-##################################
-
-
-@app.route('/googletest', methods=["GET"])
-def google_test():
-    """  """
-    count = 6
-    return render_template('slider.html', count=count)
 
 ##################################                               
 ######## Post Ride Form ##########
@@ -321,7 +314,7 @@ def process_rideform():
 
     flash("Ride added to DB")
 
-    return redirect('/profile/{}'.format(user)) 
+    return redirect('/profile/{}'.format(user))
 
 ##################################                               
 ##### Login/Logout/Register ######
@@ -421,36 +414,15 @@ def logout_form():
     del session['current_user']
     flash("You've been logged out")
 
-    return redirect("/")
+    return redirect('/')
 
-@app.route('/register', methods=["GET"])
-def register_form():
-    """ Registration form """
-
-    return render_template('register.html')
-
-@app.route('/register', methods=["POST"])
-def register():
-    """Add new user to database """
-
-    name = request.form.get('name')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    user = User(name=name, email=email, password=password)
-
-    db.session.add(user)
-    db.session.commit()
-    flash("You have been added as a user. Please login")
-
-    return redirect("login")
 
 ##################################                               
 #### Profile Page + Requests #####
 ##################################
 
 
-@app.route('/profile/<user_id>', methods=["GET"])
+@app.route('/profile/<user_id>')
 def user_profile(user_id):
     """ Show users home page """
     # Eventually will make this so that you can view your drivers page too
@@ -538,7 +510,7 @@ def request_approval():
 ### Helper Functions ###
 
 def sqlalchemy_to_json(rides, total_count, limit):
-    """Convert sqlalchemy objects to json"""
+    """Convert sqlalchemy ride objects to json"""
 
     attributes = ['car_type',
                  'comments',
@@ -570,31 +542,32 @@ def sqlalchemy_to_json(rides, total_count, limit):
                  'start_timestamp',
                  'start_zip']
 
-    # Instantiate list
-    json_list = []
+    # Round up page count with + 1
+    page_count = int(total_count) / int(limit) + 1
 
-    # iterate over  and add to temp_dict
+    #Initialize json list with page count
+    json_list = [{'page_count': page_count},[]]
+
     for ride in rides:
 
-        temp_dict = {}
+        ride_dict = {}
+
+        # Add all attributes to temporary dictionary
         for attr in attributes:
-            temp_dict[attr] = getattr(ride, attr)
+            ride_dict[attr] = getattr(ride, attr)
         
         # Convert timestamp to local, add as string to temp_dict
         ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
-        temp_dict['start_timestamp'] = to_time_string(ride.start_timestamp)
+        ride_dict['start_timestamp'] = to_time_string(ride.start_timestamp)
 
         # Add driver info, utilizing SQLAlchemy relationships
-        temp_dict['user_first_name'] = ride.user.first_name
-        temp_dict['user_image'] = ride.user.image
+        ride_dict['user_first_name'] = ride.user.first_name
+        ride_dict['user_image'] = ride.user.image
         
-        json_list.append(temp_dict)
+        # add ride dictionary to json list
+        json_list[1].append(ride_dict)
 
-    page_count = int(total_count) / int(limit)
-    # print '\n\nPage count: {}\n\n'.format(page_count)
-    json_list_final = [{'page_count': page_count}]
-    json_list_final.append(json_list)
-    return json_list_final
+    return json_list
 
 def to_utc_time(state, start_time):
     """Convert unaware time to UTC"""

@@ -249,7 +249,7 @@ var rides, pageCount;
         pageCount = data[0].page_count;
         console.log(pageCount)
         rides = data[1];
-        console.log(data);
+        console.log(rides);
 
         // Replace Pagination
         // var limit = $('#dropdownMenu1').text().trim()
@@ -321,7 +321,7 @@ var rides, pageCount;
         // console.log($('.slider-time').val());
         // console.log($('.slider-cost').val());
         // Ajax call
-        $.get('/search-time.json', data, buildHTML);
+        $.get('/search.json', data, buildHTML);
     }
 
 
