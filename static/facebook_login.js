@@ -20,7 +20,7 @@ var data;
         "access_token": response['authResponse']['accessToken']
     };
     console.log(data);
-    $.post('/login2', data, function(result) {console.log(result);});
+    $.post('/login', data, function(result) {console.log(result);});
       testAPI();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.

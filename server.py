@@ -234,17 +234,12 @@ def view_rideform():
 def process_rideform():
     """ Add new ride to database """
 
-    
-    ###############
-    ## to do: 
-    ##- Add logged in check
-    ##- DON'T ADD TO DB IF THE FIELDS ARE BLANK!!!
-    ################
-
     ## V2. verify on backend. send AJAX request, if errors notify user
 
+    # driver is logged in user
     driver = session['current_user']
 
+    # retrieve form inputs
     seats = int(request.form.get('seats'))
     cost = int(float(request.form.get('cost')))
 
@@ -271,11 +266,11 @@ def process_rideform():
 
     start_time = datetime.strptime("{} {}".format(date, time), "%m/%d/%Y %I:%M %p")
     # Convert to utc
-
     start_time = to_utc_datetime(start_state, start_time)
 
+    # calculate duration and mileage from gmaps api
     gmaps = googlemaps.Client(key=GOOGLE_KEY)
-    
+
     try:
         directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
                                              "{},{}".format(end_lat, end_lng),
@@ -295,8 +290,7 @@ def process_rideform():
     detour = request.form.get('detour')
     car_type = request.form.get('cartype')
     
-    ######## Create Ride Instance ############
-
+    # Create Ride Instance 
     ride = Ride(driver=driver,
                 seats=seats,
                 cost=cost,
@@ -325,8 +319,10 @@ def process_rideform():
                 car_type=car_type
                )
 
+    # validate fields
     ride = validate_ride(ride)
 
+    #commit to db
     db.session.add(ride)
     db.session.commit()
 
@@ -338,11 +334,6 @@ def process_rideform():
 ##### Login/Logout/Register ######
 ##################################
 
-@app.route('/login', methods=["GET"])
-def view_login():
-    """ Show login form """
-    return render_template('login.html')
-
 @app.route('/check-login.json')
 def check_login():
     """ Return True if session variable"""
@@ -352,11 +343,10 @@ def check_login():
 
     return jsonify(logged_in)
 
-
-
-@app.route("/login2", methods=["POST"])
+@app.route("/login", methods=["POST"])
 def fb_login_process():
     """ Facebook Process login """
+    
     fb_userid = request.form.get("id")
     fb_user_accesstoken = request.form.get('access_token')
 
@@ -539,6 +529,8 @@ def request_approval():
 
 def sqlalchemy_to_json(rides, total_count, limit):
     """Convert sqlalchemy ride objects to json"""
+
+    ## Add more validation
 
     attributes = ['car_type',
                  'comments',
