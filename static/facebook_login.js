@@ -32,7 +32,7 @@ var data;
       console.log('Logging out User');
 
       document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
+        'in via Facebook.';
       }
 
     else {
@@ -81,8 +81,6 @@ var data;
   };
 
   // Load the SDK asynchronously
- 
-
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;

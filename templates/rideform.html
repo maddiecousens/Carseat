@@ -13,9 +13,11 @@
 <link href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 
 <!-- google maps -->
-<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script> -->
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+
+
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script> -->
 
 {% endblock %}
 
@@ -38,7 +40,7 @@
             <div class="row">
                 <div class="col-xs-2">
                     <label for="seats">Seats Available</label>
-                    <select class="form-control" name="seats">
+                    <select class="form-control" data-index="1" name="seats">
                         {% for i in range(7) %}
                         <option value={{ i+1 }}>{{ i+1 }}</option>
                         {% endfor %}<span>
@@ -53,7 +55,7 @@
                     <label for="cost">Cost per Seat</label>
                     <div class="input-group col-xs-2">
                         <span class="input-group-addon">$</span>
-                        <input type="number" class="form-control" id="cost" name="cost"
+                        <input type="number" data-index="2" class="form-control" id="cost" name="cost"
                         aria-describedby="cost" placedholder="Ex: 15.00" min="1.00" max="50.00" step="1.00" required>
                     </div>
                 </div>
@@ -65,7 +67,7 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Starting Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" id="autocomplete"name="start-address"
+                        <input type="text" data-index="3" class="form-control autocomplete" id="autocomplete"name="start-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
@@ -87,7 +89,7 @@
                 <div class="col-lg-12">
                     <label for="start-auto">Ending Point</label>
                     <div class="input-group col-xs-6">
-                        <input type="text" class="form-control autocomplete" id="autocomplete2" name="end-address"
+                        <input type="text" data-index="4" class="form-control autocomplete" id="autocomplete2" name="end-address"
                         aria-describedby="start-streetaddress" placedholder="Address" required>
                     </div>
                 </div>
@@ -111,9 +113,9 @@
             <legend>When will you leave?</legend>
                 <div class="container">
                     <div class='col-xs-5'>
-                        <label for="date-picker">Date</label>
+                        <label data-index="5" for="date-picker">Date</label>
                         <div class="input-group">
-                            <input id="date-picker" type="text" class="date-picker form-control" />
+                            <input id="date-picker" name="date" type="text" class="date-picker form-control" />
                             <label for="date-picker" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
                             </label>
                         </div>
@@ -122,7 +124,7 @@
                     <div class='col-xs-5'>
                         <label for="timepicker">Time</label>
                         <div class="input-group bootstrap-timepicker timepicker">
-                          <input id="timepicker" type="text" class="form-control input-small">
+                          <input id="timepicker" name="time" data-index="6" type="text" class="form-control input-small">
                           <label for="timepicker" class="input-group-addon btn"><span class="glyphicon glyphicon-time"></span>
                             </label>
                         </div>
@@ -138,7 +140,7 @@
                     <div class="col-xs-8">
                         <label for="cartype">What kind of car do you drive?</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="cartype" name="cartype"
+                            <input type="text" data-index="7" class="form-control" id="cartype" name="cartype"
                             aria-describedby="cartype" placedholder="Car Type" required>
                         </div>
                     </div>
@@ -152,7 +154,7 @@
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="luggage">Maxiumum luggage per person</label>
-                        <select class="form-control" d="luggage" name="luggage"
+                        <select class="form-control" data-index="8" d="luggage" name="luggage"
                             aria-describedby="luggage" placedholder="" required>
                             <option value="small">small</option>
                             <option value="medium">medium</option>
@@ -164,7 +166,7 @@
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="pickup-window">Pickup Flexibilty</label>
-                        <select class="form-control" d="pickup-window" name="pickup-window"
+                        <select class="form-control" data-index="9" d="pickup-window" name="pickup-window"
                             aria-describedby="pickup-window" placedholder="" required>
                             <option value="No">No flexibility</option>
                             <option value="15 min">In a 15 min window</option>
@@ -181,7 +183,7 @@
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="detour">Possible Detour</label>
-                        <select class="form-control" d="detour" name="detour"
+                        <select class="form-control" data-index="10" d="detour" name="detour"
                             aria-describedby="detour" placedholder="" required>
                             <option value="No">No detour</option>
                             <option value="15 min">15 min</option>
@@ -195,7 +197,7 @@
                     <div class="col-xs-8">
                         <label for="comments">Comments</label>
                         <div class="input-group">
-                            <textarea form="ride-form" class="form-control" id="comments" name="comments"
+                            <textarea form="ride-form" data-index="11" class="form-control" id="comments" name="comments"
                             aria-describedby="comments" placedholder="" required></textarea>
                         </div>
                     </div>
@@ -223,9 +225,22 @@
 
 
 </script>
+<script type="text/javascript" src="static/autocomplete_index.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
 
-<script type="text/javascript" src="static/autocomplete.js"></script>
-
+<!-- 
+<script>
+$('#ride-from').on('keydown', 'input', function (evt) {
+    console.log('did i even get here')
+    if (evt.which == 13) {
+        evt.preventDefault();
+        var $this = $(evt.target);
+        var index = parseFloat($this.attr('data-index'));
+        $('[data-index="' + (index + 1).toString() + '"]').focus();
+    }
+});
+</script>
+ -->
 <script> $(".date-picker").datepicker(); </script>
 
 <script>
@@ -239,6 +254,46 @@
 $('#cost').on("change", function() {
     $(this).val(parseInt($(this).val()).toFixed(2));
 });
+
+</script>
+
+    
+
+<script>
+var submit = $('#ride-form-submit')
+
+function promptLogin(data) {
+    console.log(data)
+    if (data['logged_in'] != true) {
+        console.log('log in yo')
+        return
+    }
+    else {
+        $('#ride-form').submit()
+        console.log("yo submit the form")
+
+    }
+}
+
+
+submit.on('click', function(evt) {
+    evt.preventDefault();
+    //This is my attempt at fixing the user flow... revist
+    // if (evt.which == 13) {
+    //     console.log('am i here')
+    //     evt.preventDefault();
+    //     var $this = $(evt.target);
+    //     var index = parseFloat($this.attr('data-index'));
+    //     console.log(index)
+    //     $('[data-index="' + (index + 1).toString() + '"]').focus();
+    // }
+    $.get('/check-login.json', promptLogin)
+    evt.stopPropagation();
+    $('a.dropdown-toggle').dropdown('toggle')
+    $('#login-message').text('Please log in to submit a ride');
+    
+});
+
 
 </script>
 

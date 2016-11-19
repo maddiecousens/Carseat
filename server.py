@@ -233,6 +233,7 @@ def view_rideform():
 @app.route('/post-ride', methods=["POST"])
 def process_rideform():
     """ Add new ride to database """
+
     
     ###############
     ## to do: 
@@ -242,13 +243,10 @@ def process_rideform():
 
     ## V2. verify on backend. send AJAX request, if errors notify user
 
-
     driver = session['current_user']
 
     seats = int(request.form.get('seats'))
-    cost = int(request.form.get('cost'))
-
-    ###### Store Auto Completed Addresses ########
+    cost = int(float(request.form.get('cost')))
 
     start_string = request.form.get('start-address')
     start_lat = request.form.get('lat')
@@ -268,41 +266,47 @@ def process_rideform():
     end_state = request.form.get('administrative_area_level_1_2')
     end_zip = request.form.get('postal_code2')
 
+    date = request.form.get('date')
+    time = request.form.get('time')
 
-    ##### Other Data ######
+    start_time = datetime.strptime("{} {}".format(date, time), "%m/%d/%Y %I:%M %p")
+    # Convert to utc
+
+    start_time = to_utc_datetime(start_state, start_time)
+
+    gmaps = googlemaps.Client(key=GOOGLE_KEY)
+    
+    try:
+        directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
+                                             "{},{}".format(end_lat, end_lng),
+                                             traffic_model='best_guess',
+                                             departure_time=start_time)
+
+        duration = directions_result[0]['legs'][0]['duration']['text']
+
+        mileage = directions_result[0]['legs'][0]['distance']['text']
+    except:
+        duration = None
+        mileage = None
+
     luggage = request.form.get('luggage')
     comments = request.form.get('comments')
     pickup_window = request.form.get('pickup-window')
     detour = request.form.get('detour')
     car_type = request.form.get('cartype')
-
-    ####### PARSE datetime from datetimepicker ########
-
-    start_time = datetime.strptime(request.form.get('date1'), "%m/%d/%Y %I:%M %p")
-    end_time = datetime.strptime(request.form.get('date2'), "%m/%d/%Y %I:%M %p")
-
-    # Convert to utc
-
-    start_time = to_utc_datetime(start_state, start_time)
-    end_time = to_utc_datetime(end_state, end_time)
-
-
+    
     ######## Create Ride Instance ############
-
-    # import pdb; pdb.set_trace()
 
     ride = Ride(driver=driver,
                 seats=seats,
                 cost=cost,
-                # starting location
                 start_lat=start_lat,
-                start_lng=start_lng, #eventually change to lng
+                start_lng=start_lng,
                 start_number=start_number,
                 start_street=start_street,
                 start_city=start_city,
                 start_state=start_state,
                 start_zip=start_zip,
-                # ending location
                 end_lat=end_lat,
                 end_lng=end_lng,
                 end_number=end_number,
@@ -310,10 +314,8 @@ def process_rideform():
                 end_city=end_city,
                 end_state=end_state,
                 end_zip=end_zip,
-                #details
                 start_timestamp=start_time,
-                end_timestamp=end_time,
-
+                end_timestamp=start_time,
                 mileage=mileage, #compute
                 duration=duration, #compute
                 luggage=luggage,
@@ -340,6 +342,16 @@ def process_rideform():
 def view_login():
     """ Show login form """
     return render_template('login.html')
+
+@app.route('/check-login.json')
+def check_login():
+    """ Return True if session variable"""
+    logged_in = {
+                'logged_in' : bool(session.get("current_user"))
+                }
+
+    return jsonify(logged_in)
+
 
 
 @app.route("/login2", methods=["POST"])
@@ -426,9 +438,9 @@ def login_process():
 @app.route('/logout', methods=["GET"])
 def logout_form():
     """ Log user out"""
-
-    del session['current_user']
-    flash("You've been logged out")
+    if session.get('current_user'):
+        del session['current_user']
+        flash("You've been logged out")
 
     return redirect('/')
 
