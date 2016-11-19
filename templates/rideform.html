@@ -13,7 +13,9 @@
 <link href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 
 <!-- google maps -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places&callback=initAutocomplete" async defer></script> -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
 
 {% endblock %}
 
@@ -27,7 +29,6 @@
 
 <div class="well col-xs-8 col-md-12">
     To Do:<br>
-    - Change cost so decimals not allowed<br>
     - If there is no street number or street... Pop up a message!<br>
 </div>
 
@@ -110,31 +111,24 @@
             <legend>When will you leave?</legend>
                 <div class="container">
                     <div class='col-xs-5'>
-                        <label for="date-picker-2" class="control-label">Date</label>
+                        <label for="date-picker">Date</label>
                         <div class="input-group">
-                            <input id="date-picker-2" type="text" class="date-picker form-control" />
-                            <label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+                            <input id="date-picker" type="text" class="date-picker form-control" />
+                            <label for="date-picker" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
                             </label>
                         </div>
                     </div>
-                    <div class="input-group bootstrap-timepicker timepicker">
-  <input id="timepicker1" type="text" class="form-control input-small">
-  <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-</div>
-                   <!--  <div class='col-xs-5'>
-                        <label for="timepicker1" class="control-label">Time</label>
+
+                    <div class='col-xs-5'>
+                        <label for="timepicker">Time</label>
                         <div class="input-group bootstrap-timepicker timepicker">
-                            <input id="timepicker1" type="text" class="form-control input-small">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                          <input id="timepicker" type="text" class="form-control input-small">
+                          <label for="timepicker" class="input-group-addon btn"><span class="glyphicon glyphicon-time"></span>
+                            </label>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
         </fieldset>
-        <script type="text/javascript">
-            $('#timepicker1').timepicker({
-                showInputs: false
-            });
-        </script>
 
         <br>
 
@@ -229,16 +223,15 @@
 
 
 </script>
-<script type="text/javascript" src="static/autocomplete_index.js"></script>
+
+<script type="text/javascript" src="static/autocomplete.js"></script>
+
+<script> $(".date-picker").datepicker(); </script>
 
 <script>
-$(".date-picker").datepicker();
-
-$(".date-picker").on("change", function () {
-    var id = $(this).attr("id");
-    var val = $("label[for='" + id + "']").text();
-    $("#msg").text(val + " changed");
-});
+    $('#timepicker').timepicker({
+        showInputs: false
+    });
 </script>
 
 <script>
@@ -248,5 +241,7 @@ $('#cost').on("change", function() {
 });
 
 </script>
+
+
 
 {% endblock %}
