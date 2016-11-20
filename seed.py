@@ -31,7 +31,7 @@ def example_data():
 
    # Add sample employees and departments
     maddie = User(user_id=1, fb_userid="10154085900708339", first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1", image="https://s-media-cache-ak0.pinimg.com/236x/3a/8e/6e/3a8e6eec898c6f3d1c9352503a9c8e37.jpg")
-    ahmad = User(user_id=2, fb_userid="100014268574964", first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="maddie2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
+    ahmad = User(user_id=2, fb_userid="108875526264733", first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="maddie2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
     carl = User(user_id=3, fb_userid="100014238157245", first_name="Aretha", last_name="Franklin", age=51, email="carl@", password="maddie3", image="https://i.ytimg.com/vi/BWAK0J8Uhzk/hqdefault.jpg")
     graham = User(user_id=4, fb_userid="100014205218090", first_name="Graham", last_name="Egan", age=27, email="graham@", password="maddie4", image="http://67.media.tumblr.com/tumblr_md019wlf781rz4vr8o1_1280.jpg")
     grom= User(user_id=5, fb_userid="105608939924154", first_name="Grom", last_name="Gromoth", age=27, email="grom@", password="maddie5", image="https://s-media-cache-ak0.pinimg.com/originals/84/42/a7/8442a778bf0b163a3c30aefe7a64be61.jpg")

@@ -385,9 +385,9 @@ def logout_form():
     """ Log user out"""
     if session.get('current_user'):
         del session['current_user']
-        flash("You've been logged out")
+        print '\n\ndeleted session\n\n'
 
-    return redirect('/')
+    return render_template('index.html')
 
 
 ##################################                         
@@ -398,16 +398,29 @@ def logout_form():
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
     """ Show users home page """
-    # Eventually will make this so that you can view your drivers page too
 
+    # get user with joined loads rides_taking and rides_offered
     user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)
+    
     rides_offered = user.rides_offered
+    rides_offered_requests = []
+
+    # If there are requests for rides you are offering, append
+    for ride in rides_offered:
+        if ride.requests:
+            rides_offered_requests.append(ride)
 
     rides_taking = user.rides_taking
+    rides_taking_requests = Request.query.filter(Request.requester==user_id).all()
 
-    return render_template('profile.html', user=user, 
-                                           rides_offered=rides_offered, 
-                                           rides_taking=rides_taking)
+    return render_template('profile.html',
+                            user=user,
+                            rides_offered=rides_offered,
+                            rides_offered_requests=rides_offered_requests,
+                            rides_taking=rides_taking,
+                            rides_taking_requests=rides_taking_requests
+                            )
+
 
 @app.route('/request-seats', methods=["POST"])
 def request_seats():
