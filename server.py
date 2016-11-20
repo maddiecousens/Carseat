@@ -426,24 +426,20 @@ def user_profile(user_id):
 def request_seats():
     """ Add request for a seat to database """
     
-    # Grab number of seats requested
+    # Retrieve number of seats, ride_id from AJAX request
     seats = request.form.get('seats')
-
-    # Grab ride_id from html
     ride_id = request.form.get('ride_id')
 
-    # Grab requester from session
     requester = session['current_user']
 
-    # Make request instance
+    # Request instance
     new_request = Request(ride_id=ride_id, requester=requester, seats=seats)
 
     db.session.add(new_request)
     db.session.commit()
-    flash('You have requested this ride')
 
     path = '/profile/{}'.format(requester)
-    return redirect(path)
+    return redirect('/profile/{}'.format(requester))
 
 
 @app.route('/request-approval', methods=["POST"])

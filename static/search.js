@@ -285,7 +285,7 @@ var rides, pageCount;
         var today = new Date()
         var today_string = (today.getMonth() 
                         + '/' 
-                        + today.getDay() 
+                        + today.getDate() 
                         + '/' 
                         + today.getFullYear())
 
