@@ -69,7 +69,7 @@ def search_rides():
             # convert ride to local timezone
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
             # turn date object into string for front end
-            ride.start_timestamp = to_time_string(ride.start_timestamp)
+            ride.start_timestamp = to_time_string(ride.start_state, ride.start_timestamp)
 
         # Render search page, passing rides and page_count for pagination
         return render_template('search.html', rides=rides, page_count=page_count)
@@ -125,7 +125,7 @@ def search_rides():
             # convert ride to local timezone
             ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
             # turn date object into string for front end
-            ride.start_timestamp = to_time_string(ride.start_timestamp)
+            ride.start_timestamp = to_time_string(ride.start_state, ride.start_timestamp)
 
         return render_template('search.html', rides=rides,
                                               start_search=start_search,
@@ -281,7 +281,7 @@ def process_rideform():
 
     start_time = datetime.strptime("{} {}".format(date, time), "%m/%d/%Y %I:%M %p")
     # Convert to utc
-    start_time = to_utc_datetime(start_state, start_time)
+    start_time = to_utc(start_state, start_time)
 
     # calculate duration and mileage from gmaps api
     gmaps = googlemaps.Client(key=GOOGLE_KEY)
@@ -554,7 +554,7 @@ def sqlalchemy_to_json(rides, total_count, limit):
         
         # Convert timestamp to local, add as string to temp_dict
         ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
-        ride_dict['start_timestamp'] = to_time_string(ride.start_timestamp)
+        ride_dict['start_timestamp'] = to_time_string(ride.start_state, ride.start_timestamp)
 
         # Add driver info, utilizing SQLAlchemy relationships
         ride_dict['user_first_name'] = ride.user.first_name
@@ -564,38 +564,6 @@ def sqlalchemy_to_json(rides, total_count, limit):
         json_list[1].append(ride_dict)
 
     return json_list
-
-def to_utc_time(state, start_time):
-    """Convert unaware time to UTC"""
-    # Convert time to datetime object without tz
-    start_time_notz = datetime.strptime(start_time, '%I:%M %p')
-    # Get timezone of ride's starting state
-    tz = state_to_timezone(state)
-    # Localize to timezone of state the ride is leaving from
-    start_time_aware = pytz.timezone(tz).localize(start_time_notz)
-    # Normalize to UTC in order to search DB
-    start_time_utc = pytz.utc.normalize(start_time_aware)
-    # Use time() method to create a time only object
-    return start_time_utc.time()
-
-def to_utc_date(state, date_str):
-    """ 
-    Takes in a date string, converts it to an aware datetime object, then 
-    converts to UTC. 
-
-    NOTE: if the state is an empty string the timezone defaults to 'US/Pacific'
-    """
-    
-    # Convert date string into datetime object without tz
-    date_notz = datetime.strptime(date_str, '%m/%d/%Y')
-    # Get timezone of starting state or user's state
-    tz = state_to_timezone(state)
-    # Localize to timezone of state the ride is leaving from
-    date_aware = pytz.timezone(tz).localize(date_notz)
-    # Normalize to UTC in order to search DB
-    date_utc = pytz.utc.normalize(date_aware)
-    # Use time() method to create a time only object
-    return date_utc.date()
 
 def to_utc(state, datetime_obj):
     """
@@ -613,47 +581,43 @@ def to_utc(state, datetime_obj):
     return datetime_utc
 
 
-
-def to_utc_datetime(state, timestamp):
-    """Convert datetime object to utc datetime object"""
-    tz = state_to_timezone(state)
-
-    # Localize timezone
-    timestamp_aware = pytz.timezone(tz).localize(timestamp) 
-
-    # Convert to utc
-    timestamp_utc = pytz.utc.normalize(timestamp_aware)
-
-    return timestamp_utc
-
-def to_local(state, timestamp):
-    """Convert UTC to local time"""
+def to_local(state, datetime_obj):
+    """
+    Convert timestamp from database to local time.
+    First converts to tz-aware UTC, then to local time given the rides
+    starting state.
+    """
     # Use state from database to determine timezone
     tz = state_to_timezone(state)
     # Convert timestamp from db to be aware that it is in utc
-    utc = timestamp.replace(tzinfo=pytz.utc)
+    utc = datetime_obj.replace(tzinfo=pytz.utc)
     # Convert start_timestamp attribute to timezone of state
     local = pytz.timezone(tz).normalize(utc)
 
     return local
 
-def to_time_string(timestamp):
-    # If ride is today, adjust attribute to indicate
-    ###############
-    ## to do: compare to user's TZ not US/Pacific
-    ################
+def to_time_string(state, datetime_obj):
+    """
+    Converts python datetime object to a string to be displayed on front end.
 
-    today = datetime.now(pytz.timezone('US/Pacific')).date()
+    Compares to today's date in order to display "Today" or "Tomorrow".
 
-    if timestamp.date() == today:
+    Timezone to get today's date is computed using the state the ride departs from.
+    """
+
+    tz = state_to_timezone(state)
+
+    today = datetime.now(pytz.timezone(tz)).date()
+
+    if datetime_obj.date() == today:
         datetime_str = "Today, {}".format(timestamp.strftime('%-I:%M %p'))
 
     # If ride is tomorrow, adjust attribute to indicate
-    elif timestamp.date() == (today + timedelta(days=1)):
-        datetime_str = "Tomorrow, {}".format(timestamp.strftime('%-I:%M %p'))
+    elif datetime_obj.date() == (today + timedelta(days=1)):
+        datetime_str = "Tomorrow, {}".format(datetime_obj.strftime('%-I:%M %p'))
     # Otherwise change attribute to formatted timestamp string
     else:
-        datetime_str = timestamp.strftime('%A, %b %d, %Y %-I:%M %p')
+        datetime_str = datetime_obj.strftime('%A, %b %d, %Y %-I:%M %p')
 
     return datetime_str
 
