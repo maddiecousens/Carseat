@@ -186,7 +186,7 @@
             </a>
           </li>
           {% for i in range(page_count) %}
-          <li class="page-number" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
+          <li class="page-number" data-pagenumber="{{i+1}}" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
           {% endfor %}
           <li id="next">
           <a href="#" aria-label="Next">

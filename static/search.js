@@ -11,7 +11,9 @@ var rides, pageCount;
                 </a> \
               </li>';
         for (var i = 0; i < pageCount; i++) {
-            paginationHTML += '<li class="page-number" id="page-number'
+            paginationHTML += '<li class="page-number" data-pagenumber="'
+            + (i + 1)
+            + '" id="page-number'
             + (i + 1)
             + '"><a href="#">'
             + (i + 1)
@@ -373,14 +375,11 @@ var rides, pageCount;
     // Page Numbers
     var pages = $('.page-number')
     // Initialize Page1 as the active class
-    // $('#page-number1').addClass('active')
-    // console.log('hi')
+    $('#page-number1').addClass('active')
 
 
-    for (var i = 0; i < pages.length; i++) {
-        pages[i].addEventListener('click', function(evt){
-
-            var page = parseInt(evt.srcElement.childNodes[0].data);
+    $('body').on('click', '.page-number', function(evt) {
+            var page = $(this).data('pagenumber')
             console.log(page)
             // Subtracting 1 from page, because offset is 1 minus the page num
             $('#current-offset').val(page - 1);
@@ -388,12 +387,8 @@ var rides, pageCount;
             //Remove 'active' class from all page numbers
             $('.page-number').removeClass('active');
             // Add active class to Current Page
-            console.log('page')
-            console.log(page)
             $('#page-number' + page).addClass('active')
-            console.log($('#page-number' + page))
     });
-    }
 
     // Previous button
     $('body').on('click', '#previous', function(evt) {
