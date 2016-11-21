@@ -168,6 +168,8 @@
         <input type="text" id="from" name="from" required>
         <label for="to">to</label>
         <input type="text" id="to" name="to">
+        <input id="current-offset" type="hidden" value="0"></input>
+        <input id="max-offset" type="hidden" value="{{ page_count - 1 }}"></input>
       </div>
     </div>
   </div>
@@ -176,10 +178,7 @@
 
   <div class="row col-xs-12">
     <div class="col-xs-4" id="pagination">
-
       <nav aria-label="Page navigation">
-        <input id="current-offset" type="hidden" value="0"></input>
-        <input id="max-offset" type="hidden" value="{{ page_count - 1 }}"></input>
         <ul class="pagination">
           <li id="previous">
             <a href="#" aria-label="Previous">
@@ -455,6 +454,8 @@
   </script>
 
 <script type="text/javascript" src="static/autocomplete.js"></script>
+
+
 <script type="text/javascript" src="static/search_time_toggle.js"></script>
 <script type="text/javascript" src="static/search_cost_toggle.js"></script>
 <script type="text/javascript" src="static/search_date.js"></script>

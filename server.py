@@ -75,7 +75,7 @@ def search_rides():
         # Round up page count with + 1
         total_count = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, order_by=order_by, count=True)
         print '\n\ntotal_count: {}\n\n'.format(total_count)
-        page_count = int(total_count) / limit + 1
+        page_count = int(math.ceil(float(total_count)/float(limit)))
 
         for ride in rides:
             # convert ride to local timezone
@@ -129,7 +129,7 @@ def search_rides():
                                    order_by=order_by,
                                    count=True)
             # Round up page count with + 1
-            page_count = int(total_count) / limit + 1
+            page_count = int(math.ceil(float(total_count)/float(limit)))
         else:
             page_count = 1
 
@@ -551,8 +551,8 @@ def sqlalchemy_to_json(rides, total_count, limit):
                  'start_timestamp',
                  'start_zip']
 
-    # Round up page count with + 1
-    page_count = int(total_count) / int(limit) + 1
+    # Round up page count
+    page_count = int(math.ceil(float(total_count)/float(limit)))
 
     #Initialize json list with page count
     json_list = [{'page_count': page_count},[]]

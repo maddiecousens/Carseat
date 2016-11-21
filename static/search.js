@@ -4,10 +4,6 @@ var rides, pageCount;
 
     function pagination(pageCount) {
         var paginationHTML = '<nav aria-label="Page navigation"> \
-                <input id="current-offset" type="hidden" value="0"></input> \
-                <input id="max-offset" type="hidden" value="'
-        + (pageCount - 1)
-        + '"></input> \
             <ul class="pagination"> \
               <li id="previous"> \
                 <a href="#" aria-label="Previous"> \
@@ -254,6 +250,7 @@ var rides, pageCount;
         // Replace Pagination
         // var limit = $('#dropdownMenu1').text().trim()
         pagination(pageCount);
+        $('#max-offset').val(pageCount - 1);
         
         // Start building HTML
         var html = '<table class="table table-hover"> \
@@ -316,13 +313,13 @@ var rides, pageCount;
                     offset: $('#current-offset').val(),
                     order: $('#active-orderby-btn').data('orderby')
         };
-        console.log(data);
-        console.log($('#current-offset').val());
+        console.log('data to backend: ' + data);
+        console.log('current-offset: ' + $('#current-offset').val());
         // console.log($('.slider-time').val());
         // console.log($('.slider-cost').val());
         // Ajax call
         $.get('/search.json', data, buildHTML);
-        console.log(data);
+
     }
 
 
@@ -376,8 +373,8 @@ var rides, pageCount;
     // Page Numbers
     var pages = $('.page-number')
     // Initialize Page1 as the active class
-    $('#page-number1').addClass('active')
-    console.log('hi')
+    // $('#page-number1').addClass('active')
+    // console.log('hi')
 
 
     for (var i = 0; i < pages.length; i++) {
@@ -385,18 +382,22 @@ var rides, pageCount;
 
             var page = parseInt(evt.srcElement.childNodes[0].data);
             console.log(page)
-            //Remove 'active' class from all page numbers
-            $('.page-number').removeClass('active');
-            // Add active class to Current Page
-            $('#page-number' + page).addClass('active')
             // Subtracting 1 from page, because offset is 1 minus the page num
             $('#current-offset').val(page - 1);
             newSearch();
+            //Remove 'active' class from all page numbers
+            $('.page-number').removeClass('active');
+            // Add active class to Current Page
+            console.log('page')
+            console.log(page)
+            $('#page-number' + page).addClass('active')
+            console.log($('#page-number' + page))
     });
     }
 
     // Previous button
-    $('#previous').on('click', function(evt) {
+    $('body').on('click', '#previous', function(evt) {
+
         var current = parseInt($('#current-offset').val());
 
         if (current > 0) {
@@ -414,7 +415,9 @@ var rides, pageCount;
     });
 
     // Next button
-    $('#next').on('click', function(evt) {
+    $('body').on('click', '#next',  function(evt) {
+        console.log('got to next')
+
         var current = parseInt($('#current-offset').val());
         var max = parseInt($('#max-offset').val());
 
@@ -426,6 +429,7 @@ var rides, pageCount;
             //Add active class to Current Page (current +2 bc when 
                 //you go up a page, the page is the old offset plus 2)
             $('#page-number' + (current + 2)).addClass('active');
+
             newSearch();
         }
 
