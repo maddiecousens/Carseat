@@ -1,6 +1,13 @@
 
 
 def state_to_timezone(state):
+     """
+     Takes in a state abbreviation, passes back a timzeone string.
+
+     If state is an empty string, passes back 'US/Pacific'
+
+
+     """
      state2timezone = {  'AK': 'US/Alaska',
                          'AL': 'US/Central',
                          'AR': 'US/Central',

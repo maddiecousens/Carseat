@@ -316,7 +316,7 @@ var rides, pageCount;
                     offset: $('#current-offset').val(),
                     order: $('#active-orderby-btn').data('orderby')
         };
-
+        console.log(data);
         console.log($('#current-offset').val());
         // console.log($('.slider-time').val());
         // console.log($('.slider-cost').val());

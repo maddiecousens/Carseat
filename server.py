@@ -162,23 +162,38 @@ def json_test():
     offset = request.args.get("offset")
     order = request.args.get("order")
 
-    # convert dates to utc to be queried against db
+    # If there are no search terms, start_state will be an empty string. In this
+    # case it it best to use the clients timezone to cater results to dates/ times in their
+    # tz.
+    if not start_state:
+        # Using a try statement, because if google is unable to geocode the user, 
+        # I don't want this to error out, any would rather default to 'US/Pacific'
+        try:
+            start_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
+        except:
+            # Blank start states default to 'US/Pacific'
+            start_state = ""
+
+    # convert dates and time to utc to be queried against db
     if date_from:
-        date_from = to_utc_date(start_state, date_from)
+        date_from = datetime.strptime(date_from, '%m/%d/%Y')
+        date_from = to_utc(start_state, date_from).date()
+        print '\n\n',date_from,'---',start_state,'\n\n'
+
 
     if date_to:
-        date_to = to_utc_date(start_state, date_to)
+        date_to = datetime.strptime(date_to, '%m/%d/%Y')
+        date_to = to_utc(start_state, date_to).date()
+        print '\n\n',date_to,'---',start_state,'\n\n'
+
+
+    start_time = datetime.strptime(start_time, '%I:%M %p')
+    start_time = to_utc(start_state, start_time).time()
+    print '\n\n',start_time,'---',start_state,'\n\n'
 
 
     # Convert miles to lat/lng degrees
     deg = miles_to_degrees(25)
-
-    # If searching all rides (multiple timezones), search times based off user location 
-    if not(start_term) and not(end_term):
-        client_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
-        start_time = to_utc_time(client_state, start_time)
-    else:
-        start_time = to_utc_time(start_state, start_time)
 
 
     rides = Ride.get_rides(deg=deg,
@@ -426,7 +441,7 @@ def user_profile(user_id):
 def request_seats():
     """ Add request for a seat to database """
     
-    # Retrieve number of seats, ride_id from AJAX request
+    # Retrieve number of seats, ride_id from form
     seats = request.form.get('seats')
     ride_id = request.form.get('ride_id')
 
@@ -438,7 +453,6 @@ def request_seats():
     db.session.add(new_request)
     db.session.commit()
 
-    path = '/profile/{}'.format(requester)
     return redirect('/profile/{}'.format(requester))
 
 
@@ -446,14 +460,15 @@ def request_seats():
 def request_approval():
     """Approve or reject request"""
 
-    # Grab whether the approve or deny request was clicked
+    # Approval will be either 'Approve' or 'Deny'
     approval = request.form.get('approvedeny')
 
-    # Grab other information from html/session
+    # Retrieve other form information
     ride_id = request.form.get('ride_id')
     requester = request.form.get('requester')
     seats = request.form.get('seats')
     request_id = request.form.get('request_id')
+
     current_user = session['current_user']
 
     # If request is approved
@@ -463,6 +478,7 @@ def request_approval():
 
         # Query for Ride object
         ride = Ride.query.get(ride_id)
+
         # Subtract number of seats from Ride
         ride.seats = ride.seats - int(seats)
 
@@ -474,8 +490,6 @@ def request_approval():
         db.session.add(rider)
         db.session.commit()
 
-        flash("Request Approved")
-
     # If request is rejected
     else:
         # Query for Request object
@@ -484,10 +498,8 @@ def request_approval():
         # Delete Request
         db.session.delete(ride_request)
         db.session.commit()
-        flash("Request Denied")
 
-    path = '/profile/{}'.format(current_user)
-    return redirect(path)
+    return redirect('/profile/{}'.format(current_user))
 
 ### Helper Functions ###
 
@@ -567,7 +579,13 @@ def to_utc_time(state, start_time):
     return start_time_utc.time()
 
 def to_utc_date(state, date_str):
+    """ 
+    Takes in a date string, converts it to an aware datetime object, then 
+    converts to UTC. 
 
+    NOTE: if the state is an empty string the timezone defaults to 'US/Pacific'
+    """
+    
     # Convert date string into datetime object without tz
     date_notz = datetime.strptime(date_str, '%m/%d/%Y')
     # Get timezone of starting state or user's state
@@ -578,6 +596,22 @@ def to_utc_date(state, date_str):
     date_utc = pytz.utc.normalize(date_aware)
     # Use time() method to create a time only object
     return date_utc.date()
+
+def to_utc(state, datetime_obj):
+    """
+    Takes in unaware python datetime object, converts to tz aware, then 
+    converts to UTC.
+
+    """
+    # Get timezone of starting state or user's state
+    tz = state_to_timezone(state)
+    # Localize to timezone of state the ride is leaving from
+    datetime_aware = pytz.timezone(tz).localize(datetime_obj)
+    # Normalize to UTC in order to search DB
+    datetime_utc = pytz.utc.normalize(datetime_aware)
+
+    return datetime_utc
+
 
 
 def to_utc_datetime(state, timestamp):

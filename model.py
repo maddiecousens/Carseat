@@ -134,7 +134,7 @@ class Ride(db.Model):
 
         if kwargs.get('start_time'):
             start_time = kwargs.get('start_time')
-            q = q.filter(cast(cls.start_timestamp, Time) > start_time)
+            q = q.filter(cast(cls.start_timestamp, Time) >= start_time)
 
         if kwargs.get('cost'):
             cost = int(kwargs.get('cost'))
