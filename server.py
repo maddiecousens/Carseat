@@ -58,12 +58,24 @@ def search_rides():
 
     ### If user clicks 'All Rides' ###
     if request.args.get('query'):
+        start_time = "12:00 AM"
+        start_state = ''
+        start_time = datetime.strptime(start_time, '%I:%M %p')
+        start_time = to_utc(start_state, start_time).time()
+
+        date_from = "10/21/2016"
+        date_from = datetime.strptime(date_from, '%m/%d/%Y')
+        date_from = to_utc(start_state, date_from).date()
+        cost = 50
 
         # Query database for all rides
-        rides = Ride.get_rides(limit=limit, order_by=order_by)
+        rides = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, limit=limit, order_by=order_by)
+
 
         # Round up page count with + 1
-        page_count = int(Ride.query.count()) / limit + 1
+        total_count = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, order_by=order_by, count=True)
+        print '\n\ntotal_count: {}\n\n'.format(total_count)
+        page_count = int(total_count) / limit + 1
 
         for ride in rides:
             # convert ride to local timezone
@@ -160,7 +172,8 @@ def json_test():
 
     limit = request.args.get("limit")
     offset = request.args.get("offset")
-    order = request.args.get("order")
+    offset = int(offset) * int(limit)
+    order_by = request.args.get("order")
 
     # If there are no search terms, start_state will be an empty string. In this
     # case it it best to use the clients timezone to cater results to dates/ times in their
@@ -170,26 +183,24 @@ def json_test():
         # I don't want this to error out, any would rather default to 'US/Pacific'
         try:
             start_state = (geocoder.google('{}, {}'.format(user_lat, user_lng))).state
+            # adding this check, because sometimes this returns odd strings
+            if len(start_state) > 2:
+                start_state = ''
         except:
             # Blank start states default to 'US/Pacific'
-            start_state = ""
+            start_state = ''
 
     # convert dates and time to utc to be queried against db
     if date_from:
         date_from = datetime.strptime(date_from, '%m/%d/%Y')
         date_from = to_utc(start_state, date_from).date()
-        print '\n\n',date_from,'---',start_state,'\n\n'
-
 
     if date_to:
         date_to = datetime.strptime(date_to, '%m/%d/%Y')
         date_to = to_utc(start_state, date_to).date()
-        print '\n\n',date_to,'---',start_state,'\n\n'
-
 
     start_time = datetime.strptime(start_time, '%I:%M %p')
     start_time = to_utc(start_state, start_time).time()
-    print '\n\n',start_time,'---',start_state,'\n\n'
 
 
     # Convert miles to lat/lng degrees
@@ -207,7 +218,9 @@ def json_test():
                            date_from=date_from,
                            limit=limit,
                            offset=offset,
-                           order=order)
+                           order_by=order_by)
+
+    print '\nlimit: {}\noffset: {}\norder_by: {}\ndate_form: {}'.format(limit,offset,order_by, date_from)
 
     total_count = Ride.get_rides(deg=deg,
                                  start_lat=start_lat,
@@ -219,6 +232,7 @@ def json_test():
                                  date_to=date_to,
                                  date_from=date_from,
                                  count=True)
+    print '\ntotal_count: {}\n'.format(total_count)
 
     json_list = sqlalchemy_to_json(rides, total_count, limit)
 
@@ -400,7 +414,6 @@ def logout_form():
     """ Log user out"""
     if session.get('current_user'):
         del session['current_user']
-        print '\n\ndeleted session\n\n'
 
     return render_template('index.html')
 
@@ -580,7 +593,6 @@ def to_utc(state, datetime_obj):
 
     return datetime_utc
 
-
 def to_local(state, datetime_obj):
     """
     Convert timestamp from database to local time.
@@ -610,7 +622,7 @@ def to_time_string(state, datetime_obj):
     today = datetime.now(pytz.timezone(tz)).date()
 
     if datetime_obj.date() == today:
-        datetime_str = "Today, {}".format(timestamp.strftime('%-I:%M %p'))
+        datetime_str = "Today, {}".format(datetime_obj.strftime('%-I:%M %p'))
 
     # If ride is tomorrow, adjust attribute to indicate
     elif datetime_obj.date() == (today + timedelta(days=1)):

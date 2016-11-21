@@ -322,6 +322,7 @@ var rides, pageCount;
         // console.log($('.slider-cost').val());
         // Ajax call
         $.get('/search.json', data, buildHTML);
+        console.log(data);
     }
 
 
@@ -376,11 +377,14 @@ var rides, pageCount;
     var pages = $('.page-number')
     // Initialize Page1 as the active class
     $('#page-number1').addClass('active')
+    console.log('hi')
+
 
     for (var i = 0; i < pages.length; i++) {
         pages[i].addEventListener('click', function(evt){
 
             var page = parseInt(evt.srcElement.childNodes[0].data);
+            console.log(page)
             //Remove 'active' class from all page numbers
             $('.page-number').removeClass('active');
             // Add active class to Current Page

@@ -130,7 +130,7 @@ class Ride(db.Model):
         if kwargs.get('date_to'):
             date_to = kwargs.get('date_to')
             
-            q = q.filter((cast(cls.start_timestamp, Date) >= date_to))
+            q = q.filter((cast(cls.start_timestamp, Date) <= date_to))
 
         if kwargs.get('start_time'):
             start_time = kwargs.get('start_time')
@@ -142,13 +142,13 @@ class Ride(db.Model):
 
         # q = q.order_by(cls.start_timestamp)
 
-        if kwargs.get('order') == 'date':
+        if kwargs.get('order_by') == 'date':
             q = q.order_by(cls.start_timestamp)
 
-        if kwargs.get('order') == 'time':
+        if kwargs.get('order_by') == 'time':
             q = q.order_by(cast(cls.start_timestamp, Time))
 
-        if kwargs.get('order') == 'cost':
+        if kwargs.get('order_by') == 'cost':
             q = q.order_by(cls.cost)
 
 
