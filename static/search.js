@@ -349,7 +349,6 @@ $(document).ajaxSuccess(function() {
         $('#searchstring').val(old_ss2);
 
         newSearch();
-        $('active-page').val(1)
     }
 
     // Event Listeners for Toggles
@@ -423,9 +422,10 @@ $(document).ajaxSuccess(function() {
         $(this).attr('id','active-orderby-btn');
         console.log($('#active-orderby-btn').data('orderby'));
 
+        $('#current-offset').val(0); 
         newSearch();
 
-        $('#current-offset').val(0); 
+        
 
     }
 
