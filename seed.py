@@ -53,14 +53,15 @@ def example_data():
     # rider3 = Rider(id=3, ride_id=2, user_id=1, seats=1)
     # rider4 = Rider(id=4, ride_id=2, user_id=4, seats=1)
 
-    request1 = Request(ride_id=1, requester=2, seats=2)
-    request2 = Request(ride_id=3, requester=3, seats=2)
-    request3 = Request(ride_id=5, requester=3, seats=3)
-    request4 = Request(ride_id=5, requester=1, seats=1)
+    # request1 = Request(ride_id=1, requester=2, seats=2)
+    # request2 = Request(ride_id=3, requester=3, seats=2)
+    # request3 = Request(ride_id=5, requester=3, seats=3)
+    # request4 = Request(ride_id=5, requester=1, seats=1)
 
     # db.session.add_all([maddie, ahmad, carl, sfth1, sfth2, sfla1, sfla2, request1, request2, request3, request4])
-    db.session.add_all([request1, request2, request3, request4])
+    # db.session.add_all([request1, request2, request3, request4])
     db.session.add_all([maddie, ahmad, carl, graham, grom, thomoth, lexie])
+    db.session.commit()
 
     with open('seed-data/rides_seed.csv', 'rb') as ride_data:
         reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
@@ -115,6 +116,8 @@ def example_data():
 
             except:
                 print '\n\nDuration/Mileage API Failed\n\n'
+                mileage = None
+                duration = None
                 print "Unexpected error:", start_lng, start_lng, end_lat, end_lng
 
 
@@ -156,7 +159,7 @@ def example_data():
                         )
     
             db.session.add(ride)
-    db.session.commit()
+            db.session.commit()
     print "adding data"
 
 def set_val_user_id():

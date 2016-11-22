@@ -242,10 +242,16 @@ var rides, pageCount;
         return row;
     }
 
+$(document).ajaxSuccess(function() {
+        var activePage = parseInt($('#current-offset').val()) + 1
+        $('#page-number' + activePage).addClass('active')
+});
+
+
     // Success Function to build html
     function buildHTML(data) {
         pageCount = data[0].page_count;
-        console.log(pageCount)
+        console.log('pageCount: ' + pageCount);
         rides = data[1];
         console.log(rides);
 
@@ -315,18 +321,14 @@ var rides, pageCount;
                     offset: $('#current-offset').val(),
                     order: $('#active-orderby-btn').data('orderby')
         };
-        console.log('data to backend: ' + data);
+        console.log('data to backend:');
+        console.log(data);
         console.log('current-offset: ' + $('#current-offset').val());
-        // console.log($('.slider-time').val());
-        // console.log($('.slider-cost').val());
+
         // Ajax call
         $.get('/search.json', data, buildHTML);
-
     }
 
-
-  //add buttons for sorting order by html
-  //sync hidden field to grab $('#order-by').val() from
 
     // Reverse Button
     var reverseInput = function() {
@@ -347,6 +349,7 @@ var rides, pageCount;
         $('#searchstring').val(old_ss2);
 
         newSearch();
+        $('active-page').val(1)
     }
 
     // Event Listeners for Toggles
@@ -380,14 +383,10 @@ var rides, pageCount;
 
     $('body').on('click', '.page-number', function(evt) {
             var page = $(this).data('pagenumber')
-            console.log(page)
+
             // Subtracting 1 from page, because offset is 1 minus the page num
             $('#current-offset').val(page - 1);
             newSearch();
-            //Remove 'active' class from all page numbers
-            $('.page-number').removeClass('active');
-            // Add active class to Current Page
-            $('#page-number' + page).addClass('active')
     });
 
     // Previous button
@@ -398,12 +397,6 @@ var rides, pageCount;
         if (current > 0) {
             // Subtract 1 from page offset if not already at 0
             $('#current-offset').val(current - 1);
-            //Remove 'active' class from all page numbers
-            $('.page-number').removeClass('active');
-            //Add active class to Current Page (current offset bc when 
-                //you go down a page, the previous page is the old offset)
-            $('#page-number' + current).addClass('active')
-            
             newSearch();
         }
 
@@ -411,20 +404,12 @@ var rides, pageCount;
 
     // Next button
     $('body').on('click', '#next',  function(evt) {
-        console.log('got to next')
-
         var current = parseInt($('#current-offset').val());
         var max = parseInt($('#max-offset').val());
 
         if (current < max) {
             // Add 1 from page offset if not already at 0
             $('#current-offset').val(current + 1);
-            //Remove 'active' class from all page numbers
-            $('.page-number').removeClass('active');
-            //Add active class to Current Page (current +2 bc when 
-                //you go up a page, the page is the old offset plus 2)
-            $('#page-number' + (current + 2)).addClass('active');
-
             newSearch();
         }
 
@@ -432,7 +417,7 @@ var rides, pageCount;
 
     // Order By Buttons
     function orderBy(evt) {
-      //Remove 'active-orderby-btn' id from all buttons
+        //Remove 'active-orderby-btn' id from all buttons
         $('.orderbybtn').removeAttr('id','active-orderby-btn');
         // Add active-orderby-btn id to selection
         $(this).attr('id','active-orderby-btn');
@@ -440,14 +425,7 @@ var rides, pageCount;
 
         newSearch();
 
-        $('#current-offset').val(0);
-            //Remove 'active' class from all page numbers
-        $('.page-number').removeClass('active');
-    //Add active class to Current Page (current +2 bc when 
-        //you go up a page, the page is the old offset plus 2)
-        $('#page-number' + (1)).addClass('active');
-
-        
+        $('#current-offset').val(0); 
 
     }
 
