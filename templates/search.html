@@ -19,24 +19,13 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
 <link rel="stylesheet" rel="text/css" href="static/search.css">
 
-
 <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        /*height: 100%;*/
-        height: 50em;
-        width: 50em;
-        /*display: none;*/
-      }
-      /* Optional: Makes the sample page fill the window. */
-      /*html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }*/
+#map {
+  /*height: 100%;*/
+  height: 50em;
+  width: 50em;
+}
 </style>
-
 
 
 {% endblock %}
@@ -53,334 +42,327 @@
     - Only 43 rides are showing, you can view all ones returned in terminal<br>
   </div> -->
 
-  <form action="/search" id="searchform">
-    <div class="row form-inline">
-      <fieldset>
+  <div class="row">
+    <div class="well">
+    <form action="/search" id="searchform">
+        <div class="row form-inline">
+          <fieldset>
+            <div class="col-md-12">
+              <label for="start-address">Enter Your Destination</label>
+            </div>
+{% if start_search is defined %}
+            <div class="form-group">
+              <input type="text" class="form-control" id="autocomplete" name="start-address"
+              aria-describedby="starting destination" onFocus="geolocate()" value="{{ start_search['term'] }}">
+              <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search['term'] }}">
+              <input type="hidden" id="locality" name="locality">
+              <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1" value="{{ start_search['state'] }}">
+              <input type="hidden" id="postal_code" name="postal_code">
+              <input type="hidden" id="lat" name="lat" value="{{ start_search['lat'] }}">
+              <input type="hidden" id="lng" name="lng" value="{{ start_search['lng'] }}">      
+            </div>
 
-        <div class="col-md-12">
-          <label for="start-address">Enter Your Destination</label>
-        </div>
+            <div class="form-group">
+              <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
+            </div>
 
-          {% if start_search is defined %}
+            <div class="form-group">
+              <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
+              aria-describedby="ending destination" onFocus="geolocate()" value="{{ end_search['term'] }}"> 
+              <input type="hidden" id="searchstring2" name="searchstring2" value="{{ end_search['term'] }}">
+              <input type="hidden" id="locality2" name="locality2">
+              <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2" value="{{ end_search['state'] }}">
+              <input type="hidden" id="postal_code2" name="postal_code2">
+              <input type="hidden" id="lat2" name="lat2" value="{{ end_search['lat'] }}">
+              <input type="hidden" id="lng2" name="lng2" value="{{ end_search['lng'] }}">
+            </div>
+{% else %}
           <div class="form-group">
-          <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" onFocus="geolocate()" value="{{ start_search["term"] }}">
-
-          <div>
-            <input type="hidden" id="searchstring" name="searchstring" value="{{ start_search["term"] }}"></input>
-
-           <!--  <input type="text" id="street_number" name="street_number"></input>
-            <input type="text" id="route" name="route"></input> -->
-            <input type="hidden" id="locality" name="locality"></input>
-            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1" value="{{ start_search["state"] }}"></input>
-            <input type="hidden" id="postal_code" name="postal_code"></input>
-            <input type="hidden" id="lat" name="lat" value="{{ start_search["lat"] }}"></input>
-            <input type="hidden" id="lng" name="lng" value="{{ start_search["lng"] }}"></input>        
+            <input type="text" class="form-control" id="autocomplete" name="start-address"
+              aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location">
+            <input type="hidden" id="searchstring" name="searchstring" value="">
+            <input type="hidden" id="locality" name="locality">
+            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1">
+            <input type="hidden" id="postal_code" name="postal_code">
+            <input type="hidden" id="lat" name="lat">
+            <input type="hidden" id="lng" name="lng">
+            <input type="hidden" id="user_lat" name="user_lat" value="34.0522">
+            <input type="hidden" id="user_lng" name="user_lng" value="118.2437">     
           </div>
 
-        </div>
-
-        <div class="form-group">
-          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
-        </div>
-
-        <div class="form-group">
-          <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" onFocus="geolocate()" value="{{ end_search["term"] }}"> 
-          <div>
-              <input type="hidden" id="searchstring2" name="searchstring2" value="{{ end_search["term"] }}"></input>
-             <!--  <input type="text" id="street_number2" name="street_number"></input>
-              <input type="text" id="route2" name="route2"></input> -->
-              <input type="hidden" id="locality2" name="locality2"></input>
-              <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2" value="{{ end_search["state"] }}"></input>
-              <input type="hidden" id="postal_code2" name="postal_code2"></input>
-              <input type="hidden" id="lat2" name="lat2" value="{{ end_search["lat"] }}"></input>
-              <input type="hidden" id="lng2" name="lng2" value="{{ end_search["lng"] }}"></input>
-          </div>             
-        </div>
-
-        {% else %}
-
-        <div class="form-group">
-          <input type="text" class="form-control" id="autocomplete" name="start-address"
-            aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location">
-
-          <div>
-            <input type="hidden" id="searchstring" name="searchstring" value=""></input>
-           <!--  <input type="text" id="street_number" name="street_number"></input>
-            <input type="text" id="route" name="route"></input> -->
-            <input type="hidden" id="locality" name="locality"></input>
-            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-            <input type="hidden" id="postal_code" name="postal_code"></input>
-            <input type="hidden" id="lat" name="lat"></input>
-            <input type="hidden" id="lng" name="lng"></input>
-            <input type="hidden" id="user_lat" name="user_lat" value="34.0522"></input>
-            <input type="hidden" id="user_lng" name="user_lng" value="118.2437"></input>       
+          <div class="form-group">
+            <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
           </div>
 
-        </div>
-
-        <div class="form-group">
-          <span class="glyphicon glyphicon-transfer" id="reverse" aria-hidden="true"></span>
-        </div>
-
-        <div class="form-group">
-          <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
-          aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location"> 
-          <div>
-              <input type="hidden" id="searchstring2" name="searchstring2" value=""></input>
-             <!--  <input type="text" id="street_number2" name="street_number"></input>
-              <input type="text" id="route2" name="route2"></input> -->
-              <input type="hidden" id="locality2" name="locality2"></input>
-              <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2"></input>
-              <input type="hidden" id="postal_code2" name="postal_code2"></input>
-              <input type="hidden" id="lat2" name="lat2"></input>
-              <input type="hidden" id="lng2" name="lng2"></input>
-          </div>             
-        </div>
-          
-        {% endif %}
+          <div class="form-group">
+            <input aria-label type="text" class="form-control" id="autocomplete2" name="end-address"
+            aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location">
+            <input type="hidden" id="searchstring2" name="searchstring2" value="">
+            <input type="hidden" id="locality2" name="locality2">
+            <input type="hidden" id="administrative_area_level_1_2" name="administrative_area_level_1_2">
+            <input type="hidden" id="postal_code2" name="postal_code2">
+            <input type="hidden" id="lat2" name="lat2">
+            <input type="hidden" id="lng2" name="lng2">         
+          </div>
+{% endif %}
 
     <!-- submit button -->
-      <button type="submit" class="btn btn-primary" style="display:none">Submit</button>
-
+        <button type="submit" class="btn btn-primary" style="display:none">Submit</button>
       </fieldset>
     </div>
   </form>
 
-<!--   <div class="row">
-  <div id="map"></div>
-</div> -->
+</div>
+  </div>
   <br>
 
-  <div class="well row col-xs-12">
-    <div class="row">
-      <div class="col-xs-4">
-          <h5>Leaving after: <span class="slider-time"></span></h5>
-          <div  id="slider-range-max"></div>
-      </div>
+  <div class="row">
+    <div class="col-xs-3">
+      <div class="well" style="height:100%;">
 
-      <div class="col-xs-4">
+      <div class="row">
+        <div class="col-xs-12">
+          <h5>Leaving after: <span class="slider-time"></span></h5>
+          <div id="slider-range-max"></div>
+        </div>
+      </div>
+      <br>
+      <br>
+
+      <div class="row">
+        <div class="col-xs-12">
         <h5>Rides less than: <span class="slider-cost"></span></h5>
         <div id="slider-range-max-cost"></div>
+        </div>
       </div>
-        <div class="col-xs-4">
+
+      <br>
+      <br>
+
+      <div class="row">
         <label for="from">From</label>
         <input type="text" id="from" name="from" required>
         <label for="to">to</label>
         <input type="text" id="to" name="to">
-        <input id="current-offset" type="hidden" value="0"></input>
-        <input id="max-offset" type="hidden" value="{{ page_count - 1 }}"></input>
-        <input id="active-page" type="hidden" value="1"></input>
+        <input id="current-offset" type="hidden" value="0">
+        <input id="max-offset" type="hidden" value="{{ page_count - 1 }}">
+        <input id="active-page" type="hidden" value="1">
       </div>
     </div>
-  </div>
-  
-  <br>
+    </div>
 
-  <div class="row col-xs-12">
-    <div class="col-xs-4" id="pagination">
-      <nav aria-label="Page navigation">
+    <div class="col-xs-9">
+
+      <div class="row" id="pagination">
+        <nav aria-label="Page navigation">
         <ul class="pagination">
           <li id="previous">
             <a href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          {% for i in range(page_count) %}
+{% for i in range(page_count) %}
           <li class="page-number" data-pagenumber="{{i+1}}" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
-          {% endfor %}
+{% endfor %}
           <li id="next">
-          <a href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
           </li>
         </ul>
-      </nav>
-
-    </div>
-
-    <div class="col-xs-4">
-      <div class="dropdown" id="results-per-page">
-        <button class="btn btn-default dropdown-toggle" type="button" 
-        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" 
-        aria-expanded="true">10<span class="caret"></span>
-        </button> Results per page
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li><a href="#">10</a></li>
-          <li><a href="#">50</a></li>
-          <li><a href="#">100</a></li>
-        </ul>
+        </nav>
       </div>
-    </div>
 
-    <div class="btn-group col-xs-4" role="group" aria-label="Order by buttons">
-
-      <button type="button" class="btn btn-default orderbybtn" data-orderby="cost" aria-label="Sort by Price">
-        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
-           title="Sort by Price">
-          <span class="glyphicon glyphicon glyphicon-usd" aria-hidden="true"></span>
-        </a>
-      </button>
-
-      <button type="button" class="btn btn-default orderbybtn" data-orderby="time" aria-label="Sort by Departure Time">
-        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
-           title="Sort by Departure Time">
-          <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
-        </a>
-      </button>
-
-      <button type="button" id="active-orderby-btn" class="btn btn-default orderbybtn" data-orderby="date" aria-label="Sort by Departure Date">
-        <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
-           title="Sort by Departure Date">
-          <span class="glyphicon glyphicon glyphicon-calendar" aria-hidden="true"></span>
-        </a>
-      </button>
-
-    </div>
-
-
-
-  </div>
-
-  <table class="table table-hover" id="results">
-    <tbody>
-    {% if rides %}
-
-    {% for ride in rides %}
-
-    
-      <tr> 
-        <td class="col-xs-2" style="padding-right:20px; border-right: 1px solid #ccc;">
-          <div class="row">
-            <img class="img-responsive" src="{{ ride.user.image }}" alt="driver image" width="100" height="100">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="dropdown" id="results-per-page">
+              <button class="btn btn-default dropdown-toggle" type="button" 
+              id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" 
+              aria-expanded="true">10<span class="caret"></span>
+              </button> Results per page
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">10</a></li>
+                <li><a href="#">50</a></li>
+                <li><a href="#">100</a></li>
+              </ul>
+            </div>
           </div>
 
-          <div class="row">
-            <div>
-              <h5>{{ ride.user.first_name }}</h5>
+          <!-- <div class="col-xs-offset-8 col-xs-4"> -->
+          <div class="col-xs-6">
+            <div class="btn-group pull-right" role="group" aria-label="Order by buttons">
+              <button type="button" class="btn btn-default orderbybtn" data-orderby="cost" aria-label="Sort by Price">
+                <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+                   title="Sort by Price">
+                  <span class="glyphicon glyphicon glyphicon-usd" aria-hidden="true"></span>
+                </a>
+              </button>
+              <button type="button" class="btn btn-default orderbybtn" data-orderby="time" aria-label="Sort by Departure Time">
+                <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+                   title="Sort by Departure Time">
+                  <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                </a>
+              </button>
+              <button type="button" id="active-orderby-btn" class="btn btn-default orderbybtn" data-orderby="date" aria-label="Sort by Departure Date">
+                <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" 
+                   title="Sort by Departure Date">
+                  <span class="glyphicon glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                </a>
+              </button>
             </div>
-            <div>
-              <form action="/request-seats" method="POST">
-                <div class="input-group">
-                  <select class="form-control" name='seats' style="width:auto;">
-                    {% for i in range(ride.seats) %}
-                    <option value={{ i+1 }}>{{ i+1 }}</option>
-                    {% endfor %}<span>
-                  <input type="hidden" name="ride_id" value={{ride.ride_id}}></input>
-                  <input class="btn btn-default" type="submit" value="Request Seats"></span>
+          </div>
+
+        </div>
+        <br>
+
+<!-- Ride Results -->
+      <div class="row">
+        <table class="table table-hover" id="results">
+          <tbody>
+{% if rides %}
+
+{% for ride in rides %}
+
+            <tr> 
+<!-- Left Hand Box -->
+              <td class="col-xs-2" style="padding-right:20px; border-right: 1px solid #ccc;">
+                <div class="row">
+                  <img class="img-responsive" src="{{ ride.user.image }}" alt="driver image" width="100" height="100">
                 </div>
-              </form>
+
+                <div class="row">
+                  <div>
+                    <h5>{{ ride.user.first_name }}</h5>
+                  </div>
+
+                  <div>
+                    <form action="/request-seats" method="POST">
+                      <div class="input-group">
+
+                        <select class="form-control" name='seats' style="width:auto;">
+{% for i in range(ride.seats) %}
+                          <option value="{{ i+1 }}>{{ i+1 }}"></option>
+                        </select>
+                      
+{% endfor %}
+                      
+                          <span>
+                            <input type="hidden" name="ride_id" value="{{ ride.ride_id }}">
+                            <input class="btn btn-default" type="submit" value="Request Seats">
+                          </span>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </td>
+
+<!-- Middle Box -->
+              <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;">
+                <div class="row ride" data-startlat="{{ ride.start_lat }}" data-startlng="{{ ride.start_lng }}" data-endlat="{{ ride.end_lat }}" data-endlng="{{ ride.end_lng }}">
+                  <h4>{{ ride.start_timestamp }}</h4>
+                </div>
+
+                <div class="row">
+                  <h5>{{ ride.start_city }}, {{ ride.start_state }} 
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                       {{ ride.end_city }}, {{ ride.end_state }}</h5>
+                </div>
+
+              <div class="row">
+                <p>
+                  <span class="glyphicon glyphicon-unchecked" style="color:green"></span>
+                  <span>
+{% if ride.start_name is not none %}
+
+{{ ride.start_name }}
+
+{% endif %}
+
+{% if (ride.start_number is not none) and (ride.start_street is not none) %}
+
+{{ ride.start_number }} {{ ride.start_street }}, 
+
+{% endif %}
+
+{% if ride.start_city is not none %}
+{{ ride.start_city }}, 
+{% endif %}
+
+{% if ride.start_state is not none %}
+  {% if ride.start_zip %}
+    {{ ride.start_state }}, 
+  {% else %}
+    {{ ride.start_state }}
+  {% endif %}
+{% endif %}
+
+{% if ride.start_zip is not none %}
+{{ ride.start_zip }}
+{% endif %}
+                 </span>
+                </p>
+              </div>
+
+              <div class="row">
+                <p>
+                  <span class="glyphicon glyphicon-unchecked" style="color:red"></span>
+                  <span>
+{% if ride.end_name is not none %}
+
+{{ ride.end_name }}
+
+{% endif %}
+
+{% if (ride.end_number is not none) and (ride.end_street is not none) %}
+
+{{ ride.end_number }} {{ ride.end_street }}, 
+
+{% endif %}
+
+{% if ride.end_city is not none %}
+{{ ride.end_city }}, 
+{% endif %}
+
+{% if ride.end_state is not none %}
+  {% if ride.end_zip %}
+    {{ ride.end_state }}, 
+  {% else %}
+    {{ ride.end_state }}
+  {% endif %}
+{% endif %}
+
+{% if ride.end_zip is not none %}
+{{ ride.end_zip }}
+{% endif %}
+                  </span>
+                </p>
+              </div>
+
+              <br>
+
+{% if ride.mileage and ride.duration is not none %}
+              <div class="row">
+                <span class="glyphicon glyphicon-time"></span>
+                <span>{{ ride.mileage }}, Est Travel Time: {{ ride.duration }}</span>
+              </div>
+{% endif %}
+
+              <div class="row">
+                <button type="button"class="btn btn-link view-route-btn">View Route</button>
+              </div>
+
+              <div class="add-map-here"></div>
+          </td>
+
+<!-- Right Hand Box -->
+          <td class="col-xs-2" style="padding-left:20px;">
+            <div class="row">
+              <span><h1>${{ ride.cost }}</h1></span>
             </div>
-          </div>
-        </td>
 
-        <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;">
-          <div class="row ride" data-startlat="{{ ride.start_lat }}" data-startlng="{{ ride.start_lng }}" data-endlat="{{ ride.end_lat }}" data-endlng="{{ ride.end_lng }}">
-            <h4>{{ ride.start_timestamp }}</h4>
-          </div>
-
-          <div class="row">
-            <h5>{{ ride.start_city }}, {{ ride.start_state }} 
-              <span class="glyphicon glyphicon-arrow-right"></span>
-                 {{ ride.end_city }}, {{ ride.end_state }}</h5>
-          </div>
-
-          <div class="row">
-            <p>
-              <span class="glyphicon glyphicon-unchecked" style="color:green"></span>
-              <span>
-                
-                {% if ride.start_name is not none %}
-
-                {{ ride.start_name }}
-
-                {% endif %}
-
-                {% if (ride.start_number is not none) and (ride.start_street is not none) %}
-
-                {{ ride.start_number }} {{ ride.start_street }}, 
-
-                {% endif %}
-
-                {% if ride.start_city is not none %}
-                {{ ride.start_city }}, 
-                {% endif %}
-
-                {% if ride.start_state is not none %}
-                  {% if ride.start_zip %}
-                    {{ ride.start_state }}, 
-                  {% else %}
-                    {{ ride.start_state }}
-                  {% endif %}
-                {% endif %}
-
-                {% if ride.start_zip is not none %}
-                {{ ride.start_zip }}
-                {% endif %}
-
-             </span>
-            </p>
-          </div>
-
-          <div class="row">
-            <p>
-              <span class="glyphicon glyphicon-unchecked" style="color:red"></span>
-              <span>
-              {% if ride.end_name is not none %}
-
-                {{ ride.end_name }}
-
-                {% endif %}
-
-                {% if (ride.end_number is not none) and (ride.end_street is not none) %}
-
-                {{ ride.end_number }} {{ ride.end_street }}, 
-
-                {% endif %}
-
-                {% if ride.end_city is not none %}
-                {{ ride.end_city }}, 
-                {% endif %}
-
-                {% if ride.end_state is not none %}
-                  {% if ride.end_zip %}
-                    {{ ride.end_state }}, 
-                  {% else %}
-                    {{ ride.end_state }}
-                  {% endif %}
-                {% endif %}
-
-                {% if ride.end_zip is not none %}
-                {{ ride.end_zip }}
-                {% endif %}
-              </span>
-            </p>
-          </div>
-          <br>
-
-          {% if ride.mileage and ride.duration is not none %}
-          <div class="row">
-            <span class="glyphicon glyphicon-time"></span>
-            <span>{{ ride.mileage }}, Est Travel Time: {{ ride.duration }}</span>
-          </div>
-          {% endif %}
-
-          <div class="row">
-            <button type="button"class="btn btn-link view-route-btn">View Route</button>
-          </div>
-
-          <div class="add-map-here"></div>
-
-        </td>
-
-        <td class="col-xs-2" style="padding-left:20px;">
-          <div class="row">
-            <span><h1>${{ ride.cost }}</h1></span>
-          </div>
-
-          <div class="row">
-            <h4><small><i>per passenger</i><small></h4>
+            <div class="row">
+              <h4><small><i>per passenger</i></small></h4>
             </div>
 
             <div class="row">
@@ -395,53 +377,46 @@
               </a>
 
               <!-- Flexible Picup -->
-              {% if ride.pickup_window == "flexible" %}
+{% if ride.pickup_window == "flexible" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver">
                 <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
               </a>
 
-              {% elif ride.pickup_window != "No" %}
+{% elif ride.pickup_window != "No" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is flexible in a {{ ride.pickup_window }} window">
                 <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
               </a>
+{% endif %}
 
-              {% endif %}
-
-              {% if ride.detour == "flexible" %}
-
+{% if ride.detour == "flexible" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours">
                 <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
               </a>
-
-              {% elif ride.detour != "No" %}
-
+{% elif ride.detour != "No" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is open to a {{ ride.detour }} detour">
                 <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
               </a>
-
-              {% endif %}
-
-
-              
+{% endif %}
             </div>  
-            
-          </div>
-
         </td>
       </tr>
 
-    {% endfor %}
-    {% else %}
-  <tr>
-    <td>
-      <p>No upcoming rides for that search</p>
-    </td>
-  </tr>
+{% endfor %}
+{% else %}
+      <tr>
+        <td>
+          <p>No upcoming rides for that search</p>
+        </td>
+      </tr>
 
-  {% endif %}
+{% endif %}
 
-  </table>
-</tbody>
+        </table>
+      </tbody>
+    </div>
+      </div>
+    </div>
+  </div>
 
 
 <script> $("a.my-tool-tip").tooltip(); </script>
