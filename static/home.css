@@ -1,0 +1,64 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url(road.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: #000;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+
+h1.main-title{
+  color: #fff;
+  font-family: 'Droid Serif', serif;
+  font-size:60px;
+  position: center;
+  text-align: center;
+  top: 75px;
+  right: 25px;
+}
+
+.main-search {
+  color: #fff;
+  font-family: 'Droid Serif', serif;
+  font-size:20px;
+  position: center;
+  text-align: center;
+  top: 75px;
+  right: 25px;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important; /* Prevent element from affecting the box model, e.g. whitespace between visible, surrounding elements  */
+}
+
+.main{
+  height: 100%;
+  width: 100%;
+}
+
+.main-search {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
+  padding: 20px;  
+  color: white; 
+}
+
+.form { 
+  display: block;
+  margin : 0 auto;
+  position: center;
+}
