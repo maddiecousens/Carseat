@@ -219,11 +219,11 @@ class Request(db.Model):
 ##############################################################################
 # Helper Functions
 
-def connect_db(app):
+def connect_db(app, db_uri='postgresql:///rideshare'):
     """Connect db to Flask app"""
 
     # Configure connection to PostgreSQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///rideshare'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
