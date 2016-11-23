@@ -11,53 +11,13 @@
 <!-- Bootsrap Min JS -->
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+<link href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif:700" rel="stylesheet">
 
 <script type="text/javascript" src="static/facebook_login.js"></script>
-  
+<link rel="stylesheet" rel="text/css" href="static/base.css">
 
-
-
-  <title>{% block title %} Title {% endblock %}</title>
-  {% block head %} {% endblock %}
-
-  <style>
-      /* navbar */
-    .navbar-default {
-        background-color: #668B8B;
-        border-color: black;
-    }
-    /* title */
-    .navbar-default .navbar-brand {
-        color: black;
-    }
-    .navbar-default .navbar-brand:hover,
-    .navbar-default .navbar-brand:focus {
-        color: #668B8B;
-    }
-    /* link */
-    .active {
-        background-color: #668B8B;
-        color: black;
-      }
-
-    #login-dp{
-    min-width: 250px;
-    padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
-    }
-
-    #login-dp .bottom{
-        background-color:rgba(255,255,255,.8);
-        border-top:1px solid #ddd;
-        clear:both;
-        padding:14px;
-    }
-    #login-dp .social-buttons{
-        margin:12px 0    
-    }
-  </style>
+<title>{% block title %} Title {% endblock %}</title>
+{% block head %} {% endblock %}
 
 </head>
 
@@ -80,7 +40,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active" id="all-rides"><a href="/search?query=all">All Rides <span class="sr-only">(current)</span></a></li>
+        <li id="all-rides"><a href="/search?query=all">All Rides <span class="sr-only">(current)</span></a></li>
         <li><a href="/post-ride">Post Ride</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
