@@ -1,51 +1,113 @@
-driver,seats,cost,start_lat,start_long,end_lat,end_long,start_timestamp,end_timsetamp,car_type,luggage,comments,pickup_window,detour
-1,5,15,37.897369,-122.300884,38.95447,-119.942625,11/21/2016 9:15:00,11/21/2016 12:30:00,Honda,small,Will be a short driver. Willing to stop for bathroom breaks,No,flexible
-2,5,15,38.95447,-119.942625,37.897369,-122.300884,11/21/2016 10:15:00,12/07/2016 12:30:00,Honda,medium,Will be a short driver. Willing to stop for bathroom breaks,flexible,No
-3,5,20,37.897369,-122.300884,38.95447,-119.942625,11/21/2016 9:15:00,11/21/2016 12:30:00,Honda,large,Will be a short driver. Willing to stop for bathroom breaks,15 min,15 min
-4,5,15,38.95447,-119.942625,37.897369,-122.300884,12/16/2016 9:15:00,12/16/2016 12:30:00,Honda,small,Will be a short driver. Willing to stop for bathroom breaks,30 min,30 min
-5,5,15,37.897369,-122.300884,38.95447,-119.942625,11/22/2016 11:15:00,12/22/2016 12:30:00,Honda,small,Will be a short driver. Willing to stop for bathroom breaks,No,flexible
-6,5,15,38.95447,-119.942625,37.897369,-122.300884,12/17/2016 9:15:00,12/17/2016 12:30:00,Honda,medium,Will be a short driver. Willing to stop for bathroom breaks,flexible,No
-7,5,10,37.897369,-122.300884,38.95447,-119.942625,11/22/2016 11:15:00,11/22/2016 14:15:00,Honda,large,Will be a short driver. Willing to stop for bathroom breaks,15 min,15 min
-1,5,15,38.95447,-119.942625,37.897369,-122.300884,12/19/2016 9:15:00,12/19/2016 12:30:00,Honda,small,Will be a short driver. Willing to stop for bathroom breaks,30 min,30 min
-2,4,21,37.789696,-122.411607,33.946563,-118.384066,12/25/2016 2:15:00,12/25/2016 2:15:00,Tesla,small,I drive FAST,1 hour,No
-3,4,21,33.946563,-118.384066,37.789696,-122.411607,12/26/2016 2:15:00,12/26/2016 2:15:00,Tesla,medium,I drive FAST,2 hour,flexible
-4,4,21,37.789696,-122.411607,33.946563,-118.384066,12/27/2016 2:15:00,12/27/2016 2:15:00,Tesla,small,I drive FAST,1 hour,No
-5,4,21,33.946563,-118.384066,37.789696,-122.411607,12/28/2016 2:15:00,12/28/2016 2:15:00,Tesla,medium,I drive FAST,2 hour,flexible
-6,4,21,37.789696,-122.411607,33.946563,-118.384066,12/29/2016 2:15:00,12/29/2016 2:15:00,Tesla,small,I drive FAST,1 hour,No
-7,4,21,33.946563,-118.384066,37.789696,-122.411607,12/30/2016 2:15:00,12/30/2016 2:15:00,Tesla,medium,I drive FAST,2 hour,flexible
-1,4,13,38.926513,-77.014575,40.7128,-74.0059,12/15/2016 7:15:00,12/15/2016 10:15:00,Audi,small,Lololol I'm a dog!,flexible,15 min
-2,4,14,40.7128,-74.0059,38.926513,-77.014575,12/16/2016 8:15:00,12/16/2016 11:15:00,Audi,medium,Lololol I'm a dog!,15 min,30 min
-3,4,15,38.926513,-77.014575,40.7128,-74.0059,12/17/2016 9:30:00,12/17/2016 9:30:00,Audi,large,Lololol I'm a dog!,30 min,No
-4,4,16,40.7128,-74.0059,38.926513,-77.014575,12/18/2016 10:30:00,12/18/2016 10:30:00,Audi,small,Lololol I'm a dog!,1 hour,flexible
-5,4,17,38.926513,-77.014575,42.3601,-71.0589,12/19/2016 11:15:00,12/19/2016 16:15:00,Audi,medium,Lololol I'm a dog!,2 hour,15 min
-6,4,13,42.3601,-71.0589,38.926513,-77.014575,12/20/2016 13:15:00,12/20/2016 17:15:00,Lexus,large,Corgis CAN TO drive,flexible,30 min
-7,4,14,38.926513,-77.014575,42.3601,-71.0589,12/21/2016 14:15:00,12/21/2016 20:15:00,Lexus,small,Corgis CAN TO drive,15 min,No
-1,4,15,42.3601,-71.0589,38.926513,-77.014575,12/22/2016 15:30:00,12/22/2016 18:30:00,Lexus,medium,Corgis CAN TO drive,30 min,flexible
-2,4,16,38.926513,-77.014575,40.7128,-74.0059,12/23/2016 16:30:00,12/24/2016 17:30:00,Lexus,large,Corgis CAN TO drive,1 hour,15 min
-3,4,17,38.926513,-77.014575,40.7128,-74.0059,12/24/2016 17:30:00,12/25/2016 9:15:00,Lexus,small,Corgis CAN TO drive,2 hour,30 min
-4,4,13,43.5637,-70.2,40.7128,-74.0059,12/25/2016 9:15:00,12/26/2016 10:45:00,Jeep,medium,My short legs make me an excellent driver,flexible,No
-5,4,14,40.7128,-74.0059,43.5637,-70.2,12/26/2016 10:45:00,12/27/2016 11:45:00,Jeep,large,My short legs make me an excellent driver,15 min,flexible
-6,4,15,43.5637,-70.2,40.7128,-74.0059,12/27/2016 11:45:00,12/28/2016 12:45:00,Jeep,small,My short legs make me an excellent driver,30 min,15 min
-7,4,16,40.7128,-74.0059,43.5637,-70.2,12/28/2016 12:45:00,12/29/2016 7:15:00,Jeep,medium,My short legs make me an excellent driver,1 hour,30 min
-6,4,17,43.5637,-70.2,40.7128,-74.0059,12/29/2016 7:15:00,12/30/2016 2:15:00,Jeep,large,My short legs make me an excellent driver,2 hour,No
-1,5,25,37.7749,-122.4194,39.742885,-104.944425,12/25/2016 2:15:00,12/25/2016 2:15:00,VW Van,small,Let's ride!,flexible,flexible
-2,5,25,39.742885,-104.944425,37.7749,-122.4194,12/26/2016 2:15:00,12/26/2016 2:15:00,VW Van,medium,Let's ride!,45 min,45 min
-3,5,25,37.7749,-122.4194,39.742885,-104.944425,12/27/2016 2:15:00,12/27/2016 2:15:00,VW Van,large,Let's ride!,60 min,60 min
-4,5,25,39.742885,-104.944425,37.7749,-122.4194,12/28/2016 2:15:00,12/28/2016 2:15:00,VW Van,small,Let's ride!,3 hour,No
-5,5,10,37.7749,-122.4194,39.742885,-104.944425,12/29/2016 2:15:00,12/29/2016 2:15:00,VW Van,medium,Let's ride!,4 hour,flexible
-6,5,10,39.742885,-104.944425,37.7749,-122.4194,12/30/2016 2:15:00,12/30/2016 2:15:00,VW Van,large,Let's ride!,flexible,75 min
-7,5,50,37.7749,-122.4194,39.742885,-104.944425,12/15/2016 7:15:00,12/15/2016 10:15:00,VW Van,small,Let's ride!,75 min,90 min
-1,5,50,39.742885,-104.944425,37.7749,-122.4194,12/16/2016 8:15:00,12/16/2016 11:15:00,VW Van,medium,Let's ride!,90 min,No
-2,5,10,37.7749,-122.4194,39.742885,-104.944425,12/17/2016 9:30:00,12/17/2016 9:30:00,VW Van,large,Let's ride!,5 hour,flexible
-3,5,20,39.742885,-104.944425,37.7749,-122.4194,12/18/2016 10:30:00,12/18/2016 10:30:00,VW Van,small,This will be fun,6 hour,105 min
-4,3,11,45.5231,-122.6765,47.6062,-122.3321,12/19/2016 11:15:00,12/19/2016 16:15:00,Junker,medium,This will be fun,flexible,120 min
-5,3,12,47.6062,-122.3321,45.5231,-122.6765,12/20/2016 13:15:00,12/20/2016 17:15:00,Junker,large,This will be fun,105 min,No
-6,3,13,45.5231,-122.6765,47.6062,-122.3321,12/21/2016 14:15:00,12/21/2016 20:15:00,Junker,small,This will be fun,120 min,flexible
-7,3,14,47.6062,-122.3321,45.5231,-122.6765,12/22/2016 15:30:00,12/22/2016 18:30:00,Junker,medium,This will be fun,7 hour,135 min
-1,3,15,45.5231,-122.6765,47.6062,-122.3321,12/23/2016 16:30:00,12/24/2016 17:30:00,Junker,large,This will be fun,8 hour,150 min
-2,3,16,47.6062,-122.3321,45.5231,-122.6765,12/24/2016 17:30:00,12/25/2016 9:15:00,Junker,small,This will be fun,flexible,No
-3,3,17,45.5231,-122.6765,47.6062,-122.3321,12/25/2016 9:15:00,12/26/2016 10:45:00,Junker,medium,This will be fun,135 min,flexible
-4,3,18,47.6062,-122.3321,45.5231,-122.6765,12/26/2016 10:45:00,12/27/2016 11:45:00,Junker,large,This will be fun,150 min,165 min
-5,3,19,45.5231,-122.6765,47.6062,-122.3321,12/27/2016 11:45:00,12/28/2016 12:45:00,Junker,small,This will be fun,9 hour,180 min
-6,3,20,47.6062,-122.3321,45.5231,-122.6765,12/28/2016 12:45:00,12/29/2016 7:15:00,Junker,medium,This will be fun,10 hour,No
-1,5,35,37.897369,-122.300884,38.95447,-119.942625,11/27/2016 17:15:00,11/27/2016 10:30:00,Honda,small,Will be a short driver. Willing to stop for bathroom breaks,No,flexible
+driver,seats,cost,start_lat,start_long,end_lat,end_long,start_timestamp,end_timsetamp,car_type,luggage,comments,pickup_window,detour,day,route
+1,3,10,37.788975,-122.411542,34.020822,-118.288351,9:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,1,1a
+2,3,15,37.788975,-122.411542,34.020822,-118.288351,3:00 PM,,Tesla,small,I tend to drive slow,flexible,No,1,1a
+3,4,10,37.786142,-122.396741,45.518601,-122.682927,9:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,1,3a
+4,4,15,37.786142,-122.396741,45.518601,-122.682927,3:00 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,1,3a
+5,5,10,37.795554,-122.404182,38.912688,-120.004492,9:00 AM,,Mini Van,medium,I hope you like fun music!,1 hour,flexible,2,5a
+6,5,15,37.795554,-122.404182,38.912688,-120.004492,11:00 AM,,SUV,large,Looking forward to great conversation,2 hour,No,2,5a
+7,3,35,40.756674,-73.999329,42.354974,-71.06142,2:00 PM,,Nissan,small,I tend to stop for breaks a lot,No,15 min,2,7a
+8,2,40,40.756674,-73.999329,42.354974,-71.06142,9:00 AM,,Truck,large,Open to taking scenic detours,flexible,30 min,2,7a
+1,3,40,34.060935,-118.245607,36.153615,-115.155784,9:00 AM,,Honda,medium,Looking forward to a great ride,15 min,flexible,3,2a
+2,3,35,34.060935,-118.245607,36.153615,-115.155784,3:00 PM,,Tesla,small,I tend to drive slow,30 min,No,3,2a
+3,4,40,45.525175,-122.681972,47.619521,-122.324971,9:00 AM,,Audi,medium,I have a dog who will be traveling with us,1 hour,15 min,3,4a
+4,4,35,45.525175,-122.681972,47.619521,-122.324971,3:00 PM,,VW Van,large,I like to listen to podcast away,2 hour,30 min,3,4a
+5,5,21,38.912688,-120.004492,37.795554,-122.404182,2:00 PM,,Mini Van,medium,I hope you like fun music!,No,flexible,4,5b
+6,5,20,38.907729,-120.001373,37.332224,-121.900988,2:00 PM,,SUV,large,Looking forward to great conversation,flexible,No,4,6b
+7,3,10,42.354974,-71.06142,40.756674,-73.999329,4:15 PM,,Nissan,small,I tend to stop for breaks a lot,15 min,15 min,4,7b
+8,2,15,42.354974,-71.06142,40.756674,-73.999329,9:00 AM,,Truck,large,Open to taking scenic detours,30 min,30 min,4,7b
+1,3,35,36.153615,-115.155784,34.060935,-118.245607,9:00 AM,,Honda,medium,Looking forward to a great ride,1 hour,flexible,5,2b
+2,3,40,36.153615,-115.155784,34.060935,-118.245607,3:00 PM,,Tesla,small,I tend to drive slow,2 hour,No,5,2b
+3,4,35,47.619521,-122.324971,45.525175,-122.681972,9:00 AM,,Audi,medium,I have a dog who will be traveling with us,No,15 min,5,4b
+4,4,40,47.619521,-122.324971,45.525175,-122.681972,3:00 PM,,VW Van,large,I like to listen to podcast away,flexible,30 min,5,4b
+5,5,20,37.795554,-122.404182,38.912688,-120.004492,8:00 AM,,Mini Van,medium,I hope you like fun music!,15 min,flexible,6,5a
+6,5,40,37.332224,-121.900988,38.907729,-120.001373,2:00 PM,,SUV,large,Looking forward to great conversation,30 min,No,6,6a
+7,3,13,40.706839,-74.003063,38.909335,-77.042527,4:15 PM,,Nissan,small,I tend to stop for breaks a lot,1 hour,15 min,6,8a
+8,2,15,40.706839,-74.003063,38.909335,-77.042527,9:00 AM,,Truck,large,Open to taking scenic detours,2 hour,30 min,6,8a
+1,3,13,34.020822,-118.288351,37.788975,-122.411542,9:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,7,1b
+2,3,15,34.020822,-118.288351,37.788975,-122.411542,3:00 PM,,Tesla,small,I tend to drive slow,flexible,No,7,1b
+3,4,13,45.518601,-122.682927,37.786142,-122.396741,9:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,7,3b
+4,4,15,45.518601,-122.682927,37.786142,-122.396741,3:00 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,7,3b
+1,3,20,37.788975,-122.411542,34.020822,-118.288351,10:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,15,1a
+2,3,25,37.788975,-122.411542,34.020822,-118.288351,4:00 PM,,Tesla,small,I tend to drive slow,flexible,No,15,1a
+3,4,20,37.786142,-122.396741,45.518601,-122.682927,10:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,15,3a
+4,4,25,37.786142,-122.396741,45.518601,-122.682927,4:00 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,15,3a
+5,5,25,37.795554,-122.404182,38.912688,-120.004492,2:00 PM,,Mini Van,medium,I hope you like fun music!,1 hour,flexible,16,5a
+6,5,20,37.795554,-122.404182,38.912688,-120.004492,1:00 PM,,SUV,large,Looking forward to great conversation,2 hour,No,16,5a
+7,3,32,40.756674,-73.999329,42.354974,-71.06142,3:00 PM,,Nissan,small,I tend to stop for breaks a lot,No,15 min,16,7a
+8,2,25,40.756674,-73.999329,42.354974,-71.06142,10:00 AM,,Truck,large,Open to taking scenic detours,flexible,30 min,16,7a
+1,3,25,34.060935,-118.245607,36.153615,-115.155784,10:00 AM,,Honda,medium,Looking forward to a great ride,15 min,flexible,17,2a
+2,3,30,34.060935,-118.245607,36.153615,-115.155784,4:00 PM,,Tesla,small,I tend to drive slow,30 min,No,17,2a
+3,4,25,45.525175,-122.681972,47.619521,-122.324971,10:00 AM,,Audi,medium,I have a dog who will be traveling with us,1 hour,15 min,17,4a
+4,4,30,45.525175,-122.681972,47.619521,-122.324971,4:00 PM,,VW Van,large,I like to listen to podcast away,2 hour,30 min,17,4a
+5,5,25,38.912688,-120.004492,37.795554,-122.404182,9:00 AM,,Mini Van,medium,I hope you like fun music!,No,flexible,18,5b
+6,5,15,38.907729,-120.001373,37.332224,-121.900988,9:00 AM,,SUV,large,Looking forward to great conversation,flexible,No,18,6b
+7,3,20,42.354974,-71.06142,40.756674,-73.999329,3:00 PM,,Nissan,small,I tend to stop for breaks a lot,15 min,15 min,18,7b
+8,2,25,42.354974,-71.06142,40.756674,-73.999329,10:00 AM,,Truck,large,Open to taking scenic detours,30 min,30 min,18,7b
+1,3,32,36.153615,-115.155784,34.060935,-118.245607,10:00 AM,,Honda,medium,Looking forward to a great ride,1 hour,flexible,19,2b
+2,3,25,36.153615,-115.155784,34.060935,-118.245607,4:00 PM,,Tesla,small,I tend to drive slow,2 hour,No,19,2b
+3,4,32,47.619521,-122.324971,45.525175,-122.681972,10:00 AM,,Audi,medium,I have a dog who will be traveling with us,No,15 min,19,4b
+4,4,25,47.619521,-122.324971,45.525175,-122.681972,4:00 PM,,VW Van,large,I like to listen to podcast away,flexible,30 min,19,4b
+5,5,15,37.795554,-122.404182,38.912688,-120.004492,9:00 AM,,Mini Van,medium,I hope you like fun music!,15 min,flexible,20,5a
+6,5,35,37.332224,-121.900988,38.907729,-120.001373,9:00 AM,,SUV,large,Looking forward to great conversation,30 min,No,20,6a
+7,3,17,40.706839,-74.003063,38.909335,-77.042527,3:00 PM,,Nissan,small,I tend to stop for breaks a lot,1 hour,15 min,20,8a
+8,2,21,40.706839,-74.003063,38.909335,-77.042527,10:00 AM,,Truck,large,Open to taking scenic detours,2 hour,30 min,20,8a
+1,3,17,34.020822,-118.288351,37.788975,-122.411542,10:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,21,1b
+2,3,21,34.020822,-118.288351,37.788975,-122.411542,4:00 PM,,Tesla,small,I tend to drive slow,flexible,No,21,1b
+3,4,17,45.518601,-122.682927,37.786142,-122.396741,10:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,21,3b
+4,4,21,45.518601,-122.682927,37.786142,-122.396741,4:00 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,21,3b
+1,3,20,37.788975,-122.411542,34.020822,-118.288351,9:30 AM,,Honda,medium,Looking forward to a great ride,No,flexible,22,1a
+2,3,15,37.788975,-122.411542,34.020822,-118.288351,3:30 PM,,Tesla,small,I tend to drive slow,flexible,No,22,1a
+3,4,20,37.786142,-122.396741,45.518601,-122.682927,9:30 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,22,3a
+4,4,15,37.786142,-122.396741,45.518601,-122.682927,3:30 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,22,3a
+5,5,10,37.795554,-122.404182,38.912688,-120.004492,11:00 AM,,Mini Van,medium,I hope you like fun music!,1 hour,flexible,23,5a
+6,5,20,37.795554,-122.404182,38.912688,-120.004492,8:00 AM,,SUV,large,Looking forward to great conversation,2 hour,No,23,5a
+7,3,20,40.756674,-73.999329,42.354974,-71.06142,4:00 PM,,Nissan,small,I tend to stop for breaks a lot,No,15 min,23,7a
+8,2,18,40.756674,-73.999329,42.354974,-71.06142,9:30 AM,,Truck,large,Open to taking scenic detours,flexible,30 min,23,7a
+1,3,20,34.060935,-118.245607,36.153615,-115.155784,9:30 AM,,Honda,medium,Looking forward to a great ride,15 min,flexible,24,2a
+2,3,15,34.060935,-118.245607,36.153615,-115.155784,3:30 PM,,Tesla,small,I tend to drive slow,30 min,No,24,2a
+3,4,20,45.525175,-122.681972,47.619521,-122.324971,9:30 AM,,Audi,medium,I have a dog who will be traveling with us,1 hour,15 min,24,4a
+4,4,15,45.525175,-122.681972,47.619521,-122.324971,3:30 PM,,VW Van,large,I like to listen to podcast away,2 hour,30 min,24,4a
+5,5,27,38.912688,-120.004492,37.795554,-122.404182,11:00 AM,,Mini Van,medium,I hope you like fun music!,No,flexible,25,5b
+6,5,13,38.907729,-120.001373,37.332224,-121.900988,11:00 AM,,SUV,large,Looking forward to great conversation,flexible,No,25,6b
+7,3,20,42.354974,-71.06142,40.756674,-73.999329,4:00 PM,,Nissan,small,I tend to stop for breaks a lot,15 min,15 min,25,7b
+8,2,15,42.354974,-71.06142,40.756674,-73.999329,9:30 AM,,Truck,large,Open to taking scenic detours,30 min,30 min,25,7b
+1,3,20,36.153615,-115.155784,34.060935,-118.245607,9:30 AM,,Honda,medium,Looking forward to a great ride,1 hour,flexible,26,2b
+2,3,18,36.153615,-115.155784,34.060935,-118.245607,3:30 PM,,Tesla,small,I tend to drive slow,2 hour,No,26,2b
+3,4,20,47.619521,-122.324971,45.525175,-122.681972,9:30 AM,,Audi,medium,I have a dog who will be traveling with us,No,15 min,26,4b
+4,4,18,47.619521,-122.324971,45.525175,-122.681972,3:30 PM,,VW Van,large,I like to listen to podcast away,flexible,30 min,26,4b
+5,5,13,37.795554,-122.404182,38.912688,-120.004492,2:00 PM,,Mini Van,medium,I hope you like fun music!,15 min,flexible,27,5a
+6,5,25,37.332224,-121.900988,38.907729,-120.001373,11:00 AM,,SUV,large,Looking forward to great conversation,30 min,No,27,6a
+7,3,21,40.706839,-74.003063,38.909335,-77.042527,4:00 PM,,Nissan,small,I tend to stop for breaks a lot,1 hour,15 min,27,8a
+8,2,25,40.706839,-74.003063,38.909335,-77.042527,9:30 AM,,Truck,large,Open to taking scenic detours,2 hour,30 min,27,8a
+1,3,21,34.020822,-118.288351,37.788975,-122.411542,9:30 AM,,Honda,medium,Looking forward to a great ride,No,flexible,28,1b
+2,3,25,34.020822,-118.288351,37.788975,-122.411542,3:30 PM,,Tesla,small,I tend to drive slow,flexible,No,28,1b
+3,4,21,45.518601,-122.682927,37.786142,-122.396741,9:30 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,28,3b
+4,4,25,45.518601,-122.682927,37.786142,-122.396741,3:30 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,28,3b
+1,3,10,37.788975,-122.411542,34.020822,-118.288351,7:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,43,1a
+2,3,20,37.788975,-122.411542,34.020822,-118.288351,4:15 PM,,Tesla,small,I tend to drive slow,flexible,No,43,1a
+3,4,10,37.786142,-122.396741,45.518601,-122.682927,7:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,43,3a
+4,4,20,37.786142,-122.396741,45.518601,-122.682927,4:15 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,43,3a
+5,5,15,37.795554,-122.404182,38.912688,-120.004492,9:00 AM,,Mini Van,medium,I hope you like fun music!,1 hour,flexible,44,5a
+6,5,17,37.795554,-122.404182,38.912688,-120.004492,11:00 AM,,SUV,large,Looking forward to great conversation,2 hour,No,44,5a
+7,3,16,40.756674,-73.999329,42.354974,-71.06142,3:30 PM,,Nissan,small,I tend to stop for breaks a lot,No,15 min,44,7a
+8,2,12,40.756674,-73.999329,42.354974,-71.06142,7:00 AM,,Truck,large,Open to taking scenic detours,flexible,30 min,44,7a
+1,3,13,34.060935,-118.245607,36.153615,-115.155784,7:00 AM,,Honda,medium,Looking forward to a great ride,15 min,flexible,45,2a
+2,3,21,34.060935,-118.245607,36.153615,-115.155784,4:15 PM,,Tesla,small,I tend to drive slow,30 min,No,45,2a
+3,4,13,45.525175,-122.681972,47.619521,-122.324971,7:00 AM,,Audi,medium,I have a dog who will be traveling with us,1 hour,15 min,45,4a
+4,4,21,45.525175,-122.681972,47.619521,-122.324971,4:15 PM,,VW Van,large,I like to listen to podcast away,2 hour,30 min,45,4a
+5,5,30,38.912688,-120.004492,37.795554,-122.404182,8:00 AM,,Mini Van,medium,I hope you like fun music!,No,flexible,46,5b
+6,5,21,38.907729,-120.001373,37.332224,-121.900988,8:00 AM,,SUV,large,Looking forward to great conversation,flexible,No,46,6b
+7,3,10,42.354974,-71.06142,40.756674,-73.999329,3:30 PM,,Nissan,small,I tend to stop for breaks a lot,15 min,15 min,46,7b
+8,2,20,42.354974,-71.06142,40.756674,-73.999329,7:00 AM,,Truck,large,Open to taking scenic detours,30 min,30 min,46,7b
+1,3,16,36.153615,-115.155784,34.060935,-118.245607,7:00 AM,,Honda,medium,Looking forward to a great ride,1 hour,flexible,47,2b
+2,3,12,36.153615,-115.155784,34.060935,-118.245607,4:15 PM,,Tesla,small,I tend to drive slow,2 hour,No,47,2b
+3,4,16,47.619521,-122.324971,45.525175,-122.681972,7:00 AM,,Audi,medium,I have a dog who will be traveling with us,No,15 min,47,4b
+4,4,12,47.619521,-122.324971,45.525175,-122.681972,4:15 PM,,VW Van,large,I like to listen to podcast away,flexible,30 min,47,4b
+5,5,21,37.795554,-122.404182,38.912688,-120.004492,8:00 AM,,Mini Van,medium,I hope you like fun music!,15 min,flexible,48,5a
+6,5,30,37.332224,-121.900988,38.907729,-120.001373,8:00 AM,,SUV,large,Looking forward to great conversation,30 min,No,48,6a
+7,3,27,40.706839,-74.003063,38.909335,-77.042527,3:30 PM,,Nissan,small,I tend to stop for breaks a lot,1 hour,15 min,48,8a
+8,2,30,40.706839,-74.003063,38.909335,-77.042527,7:00 AM,,Truck,large,Open to taking scenic detours,2 hour,30 min,48,8a
+1,3,27,34.020822,-118.288351,37.788975,-122.411542,7:00 AM,,Honda,medium,Looking forward to a great ride,No,flexible,49,1b
+2,3,30,34.020822,-118.288351,37.788975,-122.411542,4:15 PM,,Tesla,small,I tend to drive slow,flexible,No,49,1b
+3,4,27,45.518601,-122.682927,37.786142,-122.396741,7:00 AM,,Audi,medium,I have a dog who will be traveling with us,15 min,15 min,49,3b
+4,4,30,45.518601,-122.682927,37.786142,-122.396741,4:15 PM,,VW Van,large,I like to listen to podcast away,30 min,30 min,49,3b

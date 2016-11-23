@@ -5,7 +5,7 @@ from server import app
 
 from sqlalchemy import func
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import csv
 
@@ -15,6 +15,10 @@ import time
 
 import os
 import googlemaps
+from collections import defaultdict
+from helperfunctions import state_to_timezone, miles_to_degrees
+
+
 GOOGLE_KEY = os.environ["GOOGLE_KEY"]
 
 def example_data():
@@ -37,7 +41,7 @@ def example_data():
     grom= User(user_id=5, fb_userid="105608939924154", first_name="Grom", last_name="Gromoth", age=27, email="grom@", password="maddie5", image="https://s-media-cache-ak0.pinimg.com/originals/84/42/a7/8442a778bf0b163a3c30aefe7a64be61.jpg")
     thomoth = User(user_id=6, fb_userid="100014168388615", first_name="Beyonce", last_name="Knowles", age=27, email="thomoth@", password="maddie6", image="https://s-media-cache-ak0.pinimg.com/originals/13/44/06/134406e512f3ab5b252df70df541bf56.jpg")
     lexie = User(user_id=7, fb_userid="100014175948968", first_name="Lexie", last_name="Cousens", age=27, email="lexie@", password="maddie7", image="http://www.zercustoms.com/news/images/Subaru-dog-driving-lessons-b.jpg")
-
+    ryan = User(user_id=8, fb_userid="110433086107763", first_name="Ryan", last_name="Neal", age=27, email="ryan_xskfbpi_neal@tfbnw.net", password="testuser8", image="https://s-media-cache-ak0.pinimg.com/originals/28/c7/ad/28c7adffc9af705dcd8a8b77b1a9c0e8.jpg")
     # = User(name="", email="", password="")
 
     # sfth1 =Ride(ride_id=1 ,driver=1, start_location="SF", end_location="Tahoe",date=datetime.now(), seats=4)
@@ -60,106 +64,126 @@ def example_data():
 
     # db.session.add_all([maddie, ahmad, carl, sfth1, sfth2, sfla1, sfla2, request1, request2, request3, request4])
     # db.session.add_all([request1, request2, request3, request4])
-    db.session.add_all([maddie, ahmad, carl, graham, grom, thomoth, lexie])
+    db.session.add_all([maddie, ahmad, carl, graham, grom, thomoth, lexie, ryan])
     db.session.commit()
 
     with open('seed-data/rides_seed.csv', 'rb') as ride_data:
+
         reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
         reader.next()
         gmaps = googlemaps.Client(key=GOOGLE_KEY)
+
+        geocode = defaultdict(defaultdict)
+
         for row in reader:
-            start_lat = row[3]
-            start_lng = row[4]
-            end_lat = row[5]
-            end_lng = row[6]
-            time.sleep(1)
-            g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
-            time.sleep(1)
-            g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
-            # print '\n\n{}\n\n'.format(g_end.city)
+            route = row[15]
 
-            # start time from seed file
-            start_time = datetime.strptime(row[7],'%m/%d/%Y %H:%M:%S')
+            if not geocode[route]:
 
-            # localize to US/Pacific
-            start_time_aware = pytz.timezone("US/Pacific").localize(start_time)
+                start_lat = row[3]
+                start_lng = row[4]
+                end_lat = row[5]
+                end_lng = row[6]
+                time.sleep(1)
+                g_start = geocoder.google('{}, {}'.format(start_lat, start_lng))
+                time.sleep(1)
+                g_end = geocoder.google('{}, {}'.format(end_lat, end_lng))
 
-            # Normalize to UTC
-            start_time_utc = pytz.utc.normalize(start_time_aware)
+                geocode[route]['start_lat'] = start_lat
+                geocode[route]['start_lng'] = start_lng
+                geocode[route]['start_number'] = g_start.housenumber
+                geocode[route]['start_street'] = g_start.street
+                geocode[route]['start_city'] = g_start.city
+                geocode[route]['start_state'] = g_start.state
+                geocode[route]['start_zip'] = g_start.postal
 
-            # end time from seed file
-            end_time = datetime.strptime(row[8],'%m/%d/%Y %H:%M:%S')
+                geocode[route]['end_lat'] = end_lat
+                geocode[route]['end_lng'] = end_lng
+                geocode[route]['end_number'] = g_end.housenumber
+                geocode[route]['end_street'] = g_end.street
+                geocode[route]['end_city'] = g_end.city
+                geocode[route]['end_state'] = g_end.state
+                geocode[route]['end_zip'] = g_end.postal
 
-            # localize to US/Pacific
-            end_time_aware = pytz.timezone("US/Pacific").localize(end_time)
+                start_time = datetime.strptime('4:00 PM', '%I:%M %p')
+                today = datetime.now().date()
+                start_datetime = datetime.combine(datetime.now().date() + timedelta(days = 1), start_time.time())
 
-            # Normalize to UTC
-            end_time_utc = pytz.utc.normalize(end_time_aware)
+                tz = state_to_timezone(geocode[route]['start_state'])
+                start_time_aware = pytz.timezone(tz).localize(start_datetime)
 
-            try:
-                # starting = "{},{}".format(ride.start_lat, ride.start_lng)
-                # ending = "{},{}".format(ride.end_lat, ride.end_lng)
-                # print '\nstart: {}\nend: {}'.format(starting, ending)
+                print '\n\n{},{},{},{},{}\n\n'.format(start_time, today, start_datetime, tz, start_time_aware)
 
-                directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
+                try:
+                    directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
                                                      "{},{}".format(end_lat, end_lng),
                                                      traffic_model='best_guess',
                                                      departure_time=start_time_aware)
 
-                duration = directions_result[0]['legs'][0]['duration']['text']
+                    print 'made it past directions_result'
 
-                mileage = directions_result[0]['legs'][0]['distance']['text']
+                    geocode[route]['duration'] = directions_result[0]['legs'][0]['duration']['text']
 
-                # ride.duration = duration
-                # ride.mileage = distance
-                print '\n\nduration: {}, mileage{}\n\n'.format(duration, mileage)
+                    geocode[route]['mileage'] = directions_result[0]['legs'][0]['distance']['text']
 
-            except:
-                print '\n\nDuration/Mileage API Failed\n\n'
-                mileage = None
-                duration = None
-                print "Unexpected error:", start_lng, start_lng, end_lat, end_lng
+                    print '\n\nduration: {}, mileage{}\n\n'.format(geocode[route]['duration'], geocode[route]['mileage'])
+                except Exception,e: 
+                    print '\n\nDuration/Mileage API Failed\n\n'
+                    geocode[route]['mileage'] = None
+                    geocode[route]['duration'] = None
+                    print "Unexpected error:", start_lat, start_lng, end_lat, end_lng
+                    print str(e)
 
+
+            start_time = datetime.strptime(row[7], '%I:%M %p')
+            today = datetime.now().date()
+            day_offset = int(row[14])
+            start_datetime = datetime.combine(datetime.now().date() + timedelta(days = day_offset), start_time.time())
+
+            tz = state_to_timezone(geocode[route]['start_state'])
+            # localize to US/Pacific
+            start_time_aware = pytz.timezone(tz).localize(start_datetime)
+
+            # Normalize to UTC
+            start_time_utc = pytz.utc.normalize(start_time_aware)
 
             ride = Ride(driver=row[0],
                         seats=row[1],
                         cost=row[2],
 
                         # Start Location
-                        start_lat=start_lat,
-                        start_lng=start_lng,
-                        start_number=g_start.housenumber,
-                        start_street=g_start.street,
-                        start_city=g_start.city,
-                        start_state=g_start.state,
-                        start_zip=g_start.postal,
-
+                        start_lat=geocode[route]['start_lat'],
+                        start_lng=geocode[route]['start_lng'],
+                        start_number=geocode[route]['start_number'],
+                        start_street=geocode[route]['start_street'],
+                        start_city=geocode[route]['start_city'],
+                        start_state=geocode[route]['start_state'],
+                        start_zip=geocode[route]['start_zip'],
                         # End Location
-                        end_lat=end_lat,
-                        end_lng=end_lng,
-                        end_number=g_end.housenumber,
-                        end_street=g_end.street,
-                        end_city=g_end.city,
-                        end_state=g_end.state,
-                        end_zip=g_end.postal,
+                        end_lat=geocode[route]['end_lat'],
+                        end_lng=geocode[route]['end_lng'],
+                        end_number=geocode[route]['end_number'],
+                        end_street=geocode[route]['end_street'],
+                        end_city=geocode[route]['end_city'],
+                        end_state=geocode[route]['end_state'],
+                        end_zip=geocode[route]['end_zip'],
 
                         # Date/Time
                         start_timestamp=start_time_utc,
-                        end_timestamp=end_time_utc,
                         
                         #Details
-                        # pickup_window = datetime.strptime(row[24],'%M'),
                         car_type=row[9],
                         luggage=row[10],
                         comments=row[11],
                         pickup_window=row[12],
                         detour=row[13],
-                        mileage=mileage,
-                        duration=duration
+                        mileage=geocode[route]['mileage'],
+                        duration=geocode[route]['duration']
                         )
     
             db.session.add(ride)
             db.session.commit()
+        print geocode
     print "adding data"
 
 def set_val_user_id():

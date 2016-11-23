@@ -66,7 +66,7 @@ class Ride(db.Model):
 
     # Date/Time
     start_timestamp = db.Column(db.DateTime, nullable=False)
-    end_timestamp = db.Column(db.DateTime, nullable=False)
+    # end_timestamp = db.Column(db.DateTime, nullable=False)
    
     
     #Details

@@ -30,7 +30,7 @@ var data;
       
       $.get('/logout', function() {});
       console.log('Logging out User');
-
+      // redirect somewhere else window.location or something
       document.getElementById('status').innerHTML = 'Please log ' +
         'in via Facebook.';
       }

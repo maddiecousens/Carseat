@@ -338,7 +338,6 @@ def process_rideform():
                 end_state=end_state,
                 end_zip=end_zip,
                 start_timestamp=start_time,
-                end_timestamp=start_time,
                 mileage=mileage, #compute
                 duration=duration, #compute
                 luggage=luggage,
@@ -534,7 +533,6 @@ def sqlalchemy_to_json(rides, total_count, limit):
                  'end_number',
                  'end_state',
                  'end_street',
-                 'end_timestamp',
                  'end_zip',
                  'luggage',
                  'mileage',
@@ -652,7 +650,6 @@ def validate_ride(ride):
                   "end_state",
                   "end_zip",
                   "start_timestamp",
-                  "end_timestamp",
                   "mileage",
                   "duration",
                   "luggage",
