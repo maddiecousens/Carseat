@@ -44,7 +44,7 @@
         <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
         <td>{{ ride.start_timestamp.strftime('%H:%M') }}</td>
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
-        <td>{{ ride.end_timestamp.strftime('%H:%M') }}</td>
+        <td>hi</td>
         <td>{{ ride.cost }}</td>
         <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
         <td>{{ request.seats }}</td>
@@ -94,7 +94,7 @@
         <td>{{ request.ride.start_city }}, {{ request.ride.start_state }}</td>
         <td>{{ request.ride.start_timestamp.strftime('%H:%M') }}</td>
         <td>{{ request.ride.end_city }}, {{ request.ride.end_state }}</td>
-        <td>{{ request.ride.end_timestamp.strftime('%H:%M') }}</td>
+        <td></td>
         <td>{{ request.ride.cost }}</td>
         <td>{{ request.ride.user.first_name }}</td>
         <td>{{ request.seats }}</td>
@@ -129,7 +129,7 @@
         <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
         <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
-        <td>{{ ride.end_timestamp.strftime('%H:%M')}}</td>
+        <td>hi</td>
         <td>{{ ride.seats }}</td>
         <td>{{ ride.cost }}</td>
       </tr>
@@ -165,7 +165,7 @@
         <td>{{ ride.ride.start_city }}, {{ ride.ride.start_state }}</td>
         <td>{{ ride.ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.ride.end_city }}, {{ ride.ride.end_state }}</td>
-        <td>{{ ride.ride.end_timestamp.strftime('%H:%M')}}</td>
+        <td>hi</td>
         <td>{{ ride.ride.seats }}</td>
         <td>{{ ride.ride.cost }}</td>
       </tr>

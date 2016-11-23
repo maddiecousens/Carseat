@@ -458,6 +458,7 @@ def request_seats():
     ride_id = request.form.get('ride_id')
 
     requester = session['current_user']
+    print '\n\nuser_id: {}, seats: {}, ride_id: {}\n\n'.format(requester, seats, ride_id)
 
     # Request instance
     new_request = Request(ride_id=ride_id, requester=requester, seats=seats)

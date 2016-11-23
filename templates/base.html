@@ -73,7 +73,7 @@
  
 
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <li class="dropdown" id="login">
           {% if session.get('current_user') %}
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Logout</b> <span class="caret"></span></a>
           {% else %}

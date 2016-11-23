@@ -238,22 +238,19 @@
                   <div>
                     <form action="/request-seats" method="POST">
                       <div class="input-group">
-
                         <select class="form-control" name='seats' style="width:auto;">
 {% for i in range(ride.seats) %}
-                          <option value="{{ i+1 }}>{{ i+1 }}"></option>
-                        </select>
-                      
+                          <option value="{{ i+1 }}">{{ i+1 }}</option>
 {% endfor %}
-                      
-                          <span>
-                            <input type="hidden" name="ride_id" value="{{ ride.ride_id }}">
-                            <input class="btn btn-default" type="submit" value="Request Seats">
-                          </span>
+                        </select>
+                        <span>
+                          <input type="hidden" name="ride_id" value="{{ ride.ride_id }}">
+                          <input class="btn btn-default request-seats" type="submit" value="Request Seats">
+                        </span>
                       </div>
-
                     </form>
                   </div>
+
                 </div>
               </td>
 
@@ -429,6 +426,38 @@
   $('#searchform').on("submit", preventSubmit)
 
   </script>
+
+
+<script>
+
+
+var request = $('.request-seats')
+
+function promptLogin(data) {
+    console.log(data)
+    if (data['logged_in'] != true) {
+        console.log('log in yo')
+        return
+    }
+    else {
+        $('#ride-form').submit()
+        console.log("yo submit the form")
+
+    }
+}
+
+function requestSeats(evt) {
+    evt.preventDefault();
+    $.get('/check-login.json', promptLogin)
+    evt.stopPropagation();
+    $('#login').addClass('open')
+    $('#status').text('Please log in to request a ride');
+    
+};
+
+$('.request-seats').on('click', requestSeats)
+
+</script>
 
 <script type="text/javascript" src="static/autocomplete.js"></script>
 

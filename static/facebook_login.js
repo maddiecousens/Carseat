@@ -9,19 +9,23 @@ var data;
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     
-
-
-
+$(document).ajaxSuccess(function() {
+    window.location.reload(true);
+});
 
     if (response.status === 'connected') {
-      // Logged into your app and Facebook.
-      data = {
-        "id": response['authResponse']['userID'],
-        "access_token": response['authResponse']['accessToken']
-    };
-    console.log(data);
-    $.post('/login', data, function(result) {console.log(result);});
-      testAPI();
+        // Logged into your app and Facebook.
+        data = {
+          "id": response['authResponse']['userID'],
+          "access_token": response['authResponse']['accessToken']
+        };
+        // console.log(data["id"]);
+        // console.log(data["access_token"]);
+        $.post('/login', data, function(result) {});
+        
+          testAPI();
+          // eraseCache(){ window.location.reload(true);}
+
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -30,6 +34,7 @@ var data;
       
       $.get('/logout', function() {});
       console.log('Logging out User');
+      window.location.href = '/'
       // redirect somewhere else window.location or something
       document.getElementById('status').innerHTML = 'Please log ' +
         'in via Facebook.';
@@ -74,9 +79,10 @@ var data;
   //
   // These three cases are handled in the callback function.
 
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
+  
+  // FB.getLoginStatus(function(response) {
+  //   statusChangeCallback(response);
+  // });
 
   };
 
