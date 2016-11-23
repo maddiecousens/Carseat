@@ -219,7 +219,7 @@ class Request(db.Model):
 ##############################################################################
 # Helper Functions
 
-def connect_db(app, db_uri='postgresql:///rideshare'):
+def connect_db(app, db_uri='postgresql:///testdb'):
     """Connect db to Flask app"""
 
     # Configure connection to PostgreSQL
