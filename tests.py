@@ -48,44 +48,40 @@ class CarseatUnitTestCase(unittest.TestCase):
         self.assertEqual(local_ny.timetuple().tm_hour - local_ca.timetuple().tm_hour, 3)
 
 
+class FlaskTests(unittest.TestCase):
+    def setUp(self):
+        # Get the Flask test client
+        self.client = app.test_client()
 
+        # Show Flask errors that happen during tests
+        app.config['TESTING'] = True
 
+        # Connect to test database
+        connect_db(app, "postgresql:///testdb")
 
-
-
-# class FlaskTests(TestCase):
-#     def setUp(self):
-#         # Get the Flask test client
-#         self.client = app.test_client()
-
-#         # Show Flask errors that happen during tests
-#         app.config['TESTING'] = True
-
-#         # Connect to test database
-#         connect_db(app, "postgresql:///testdb")
-
-#         # Create tables and add sample data
-#         db.create_all()
-#         example_data()
+        # Create tables and add sample data
+        db.drop_all()
+        db.create_all()
+        example_data()
         
-#     def tearDown(self):
-#             """Do at end of every test."""
+    def tearDown(self):
+            """Do at end of every test."""
 
-#             db.session.close()
-#             db.drop_all()
+            db.session.close()
+            # db.drop_all()
 
-#     def test_does_ride_exist(self):
-#         """Can we find an employee in the sample data?"""
+    def test_does_ride_exist(self):
+        """Can we find an employee in the sample data?"""
 
-#         driver1 = Ride.query.filter(Ride.driver == 1).first()
-#         self.assertEqual(driver1.user.first_name, "Maddie")
+        driver1 = Ride.query.filter(Ride.driver == 1).first()
+        self.assertEqual(driver1.user.first_name, "Maddie")
 
-#     # def test_emps_by_state(self):
-#     #     """Find employees in a state."""
+    # def test_emps_by_state(self):
+    #     """Find employees in a state."""
 
-#     #     result = self.client.post("/emps-by-state", data={'state':'California'})
+    #     result = self.client.post("/emps-by-state", data={'state':'California'})
 
-#     #     self.assertIn("Nadine", result.data)
+    #     self.assertIn("Nadine", result.data)
 
 
 

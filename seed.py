@@ -174,10 +174,10 @@ def all_data():
 
 def example_data():
     # In case this is run more than once, empty out existing data
-    User.query.delete()
-    Ride.query.delete()
-    Rider.query.delete()
     Request.query.delete()
+    Rider.query.delete()
+    Ride.query.delete()
+    User.query.delete()
 
     maddie = User(user_id=1, fb_userid="10154085900708339", first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1", image="https://s-media-cache-ak0.pinimg.com/236x/3a/8e/6e/3a8e6eec898c6f3d1c9352503a9c8e37.jpg")
     ahmad = User(user_id=2, fb_userid="108875526264733", first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="maddie2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
