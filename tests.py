@@ -67,20 +67,21 @@ class FlaskTests(unittest.TestCase):
             db.session.close()
             # db.drop_all()
 
+    # Test Database
     def test_does_ride_exist(self):
         """Can we find an employee in the sample data?"""
 
         driver1 = Ride.query.filter(Ride.driver == 1).first()
         self.assertEqual(driver1.user.first_name, "Maddie")
-
+    # Test Homepage
     def test_index(self):
         result = self.client.get('/')
         self.assertIn('<form action="/search" id="indexsearch">', result.data)
 
+    # Test Initial Search Results
     def test_search(self):
         result = self.client.get('/search?query=all')
         self.assertIn('<span>386 mi, Est Travel Time: 5 hours 48 mins</span>', result.data)
-        import pdb; pdb.set_trace()
 
     def test_search2(self):
         result = self.client.get('/search?query=all')
@@ -91,6 +92,36 @@ class FlaskTests(unittest.TestCase):
         self.assertIn("""<h5>Seattle, WA 
                     <span class="glyphicon glyphicon-arrow-right"></span>
                        Portland, OR</h5>""", result.data)
+
+    def test_search3(self):
+        result = self.client.get('/search?start-address=Seattle%2C+WA%2C+United+States&searchstring=Seattle%2C+WA%2C+United+States&locality=Seattle&administrative_area_level_1=WA&postal_code=&lat=47.6062095&lng=-122.3320708&end-address=Portland%2C+OR%2C+United+States&searchstring2=Portland%2C+OR%2C+United+States&locality2=Portland&administrative_area_level_1_2=OR&postal_code2=&lat2=45.52306220000001&lng2=-122.67648159999999')
+        self.assertIn("""<h5>Seattle, WA 
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                       Portland, OR</h5>""", result.data)
+
+    # Test AJAX Search results
+
+    def test_searchjson(self):
+        data = {'start_term': '',
+                'end_term': '',
+                'user_lat': '37.788797',
+                'user_lng': '-122.411499',
+                'start_lat': '',
+                'start_lng': '',
+                'end_lat': '',
+                'end_lng': '',
+                'start_state': '',
+                'start_time': '',
+                'cost': '',
+                'date_from': '',
+                'date_to': '',
+                'limit': '',
+                'offset': '',
+                'order_by': ''
+        }
+        result = self.client.post("/search",
+                                    data = )
+
 
 
     # def test_emps_by_state(self):
