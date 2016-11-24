@@ -685,7 +685,9 @@ if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5000)
     # app.run(debug=True, host="0.0.0.0")
 
-    # db.create_all(app=app)
+    connect_db(app, os.environ.get("DATABASE_URL"))
+
+    db.create_all(app=app)
 
     DEBUG = "NO_DEBUG" not in os.environ
 
