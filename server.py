@@ -668,16 +668,24 @@ def validate_ride(ride):
 
 if __name__ == '__main__':
     # Debug for DebugToolbarExtension. Also so server restarts when changes made
-    app.debug = True
+    # app.debug = True
 
-    # Connection function from model.py
-    connect_db(app)
+    # # Connection function from model.py
+    # connect_db(app)
 
-    # Debug Toolbar
-    DebugToolbarExtension(app)
+    # # Debug Toolbar
+    # DebugToolbarExtension(app)
 
-    # Allows redirects
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    # # Allows redirects
+    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-    app.run(host="0.0.0.0", port=5000)
+    # app.run(host="0.0.0.0", port=5000)
     # app.run(debug=True, host="0.0.0.0")
+
+    db.create_all(app=app)
+
+    DEBUG = "NO_DEBUG" not in os.environ
+
+    PORT = int(os.environ.get("PORT", 5000))
+
+    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
