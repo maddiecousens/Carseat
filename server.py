@@ -33,8 +33,8 @@ app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 
 
 # Fail if Jinja uses undefined variable
-app.jinja_env.undefined = StrictUndefined
-app.jinja_env.auto_reload = True
+# app.jinja_env.undefined = StrictUndefined
+# app.jinja_env.auto_reload = True
 
 GOOGLE_KEY = os.environ["GOOGLE_KEY"]
 
@@ -685,7 +685,7 @@ if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5000)
     # app.run(debug=True, host="0.0.0.0")
 
-    db.create_all(app=app)
+    # db.create_all(app=app)
 
     DEBUG = "NO_DEBUG" not in os.environ
 
