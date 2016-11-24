@@ -27,7 +27,10 @@ import math
 app = Flask(__name__)
 
 # Secret key - required for Flask Sessions and debug toolbar
-app.secret_key = "thomothgromoth"
+# app.secret_key = "thomothgromoth"
+
+app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
+
 
 # Fail if Jinja uses undefined variable
 app.jinja_env.undefined = StrictUndefined
