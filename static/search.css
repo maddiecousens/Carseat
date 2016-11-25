@@ -1,15 +1,4 @@
-.navbar, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a {
-    background: transparent;
-    border: none;
-    background-color:black;
-    border-radius: 0;
-    color: white;
-    font-family: 'Droid Sans', sans-serif;
-    font-size: 20px;
-}
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover {
-    color: #8D78E7;
-}
+
 #map {
     height: 20em;
     width: 20em;
@@ -188,6 +177,13 @@ div.row.form-inline {
     font-size: 18px;
     font-weight: 500;
     border-bottom: 3px solid #ccc;
+}
+#order-by {
+    padding-bottom: 10px;
+}
+
+#results-per-page {
+    margin-left: -15px;
 }
 
 .toggle-label {

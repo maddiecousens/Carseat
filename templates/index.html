@@ -31,53 +31,55 @@
             <h1 class="main-title">Find your next Seat</h1>
         </div>
     </div>
-<form action="/search" id="indexsearch">
-    <div class="form-group">
-        <div class="row main-search">
-            <div class="col-xs-12 col-sm-6">
-                <div class="input-group">
-                    <label id="from" for="starting" class="hidden">From</label>
-                    <input type="text" class="form-control" id="autocomplete" name="start-address"
-                    aria-describedby="starting destination" onFocus="geolocate()" placeholder="Enter Starting Location" required>
-                </div>
-            </div>
-            <div>
-                <!-- <input type="text" id="street_number" name="street_number"></input> -->
-                <input type="hidden" id="searchstring" name="searchstring"></input>
-                <!-- <input type="text" id="route" name="route"></input> -->
-                <input type="hidden" id="locality" name="locality"></input>
-                <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-                <input type="hidden" id="postal_code" name="postal_code"></input>
-                <input type="hidden" id="lat" name="lat"></input>
-                <input type="hidden" id="lng" name="lng"></input>        
-            </div>
 
-
-            <div class="col-xs-12 col-sm-6">
-                <div class="input-group">
-                    <label for="ending" class="hidden">To</label>
-                    <input type="text" class="form-control" id="autocomplete2" name="end-address"
-                    aria-describedby="ending destination" onFocus="geolocate()" placeholder="Enter Ending Location" required>
+    <div class="row">
+        <div class="col-xs-12" id="search">
+            <form action="/search" id="indexsearch">
+                <div class="row form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon start glyphicon-unchecked"></span>
+                        </div> 
+                        <label id="from" for="starting" class="hidden">From</label>
+                        <input type="text" class="form-control" id="autocomplete" name="start-address"
+                        aria-describedby="starting destination" onFocus="geolocate()" placeholder="Pick-up" required>
+                        <!-- <input type="text" id="street_number" name="street_number"></input> -->
+                        <input type="hidden" id="searchstring" name="searchstring"></input>
+                        <!-- <input type="text" id="route" name="route"></input> -->
+                        <input type="hidden" id="locality" name="locality"></input>
+                        <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+                        <input type="hidden" id="postal_code" name="postal_code"></input>
+                        <input type="hidden" id="lat" name="lat"></input>
+                        <input type="hidden" id="lng" name="lng"></input>  
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <span class="glyphicon end glyphicon-unchecked"></span>
+                        </div>
+                        <label for="ending" class="hidden">To</label>
+                        <input type="text" class="form-control" id="autocomplete2" name="end-address"
+                        aria-describedby="ending destination" onFocus="geolocate()" placeholder="Drop-off" required>
+                        <!-- <input type="text" id="street_number2" name="street_number"></input> -->
+                        <input type="hidden" id="searchstring2" name="searchstring2"></input>
+                        <!-- <input type="text" id="route2" name="route2"></input> -->
+                        <input type="hidden" id="locality2" name="locality2"></input>
+                        <input type="hidden" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
+                        <input type="hidden" id="postal_code2" name="postal_code2"></input>
+                        <input type="hidden" id="lat2" name="lat2"></input>
+                        <input type="hidden" id="lng2" name="lng2"></input>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-custom" type="button">Go!</button>
+                        </span>
+                    </div>
                 </div>
-            </div>
-                <div>
-                    <!-- <input type="text" id="street_number2" name="street_number"></input> -->
-                    <input type="hidden" id="searchstring2" name="searchstring2"></input>
-                    <!-- <input type="text" id="route2" name="route2"></input> -->
-                    <input type="hidden" id="locality2" name="locality2"></input>
-                    <input type="hidden" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
-                    <input type="hidden" id="postal_code2" name="postal_code2"></input>
-                    <input type="hidden" id="lat2" name="lat2"></input>
-                    <input type="hidden" id="lng2" name="lng2"></input>
-                </div>
-        </div>
-
-        <br>
         <!-- submit button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-
+        <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+            </form>
+        </div>
     </div>
-</form>
+
 </div>
 
 

@@ -17,6 +17,7 @@
  -->
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBm2Vj5UTzzCPn_6ZYRQxOT55U3PtKXgQ&libraries=places" async defer></script>
+<link rel="stylesheet" rel="text/css" href="static/navbar.css">
 <link rel="stylesheet" rel="text/css" href="static/search.css">
 
 <style>
@@ -187,9 +188,8 @@
     </div>
     </div>
 
-    <div class="col-xs-8">
-
-        <div class="row">
+    <div class="col-xs-9">
+      <div class="row" id="order-by">
           <div class="col-xs-6">
             <div class="dropdown" id="results-per-page">
               <button class="btn btn-default dropdown-toggle" type="button" 
@@ -229,8 +229,12 @@
           </div>
 
         </div>
-        <br>
+      </div>
 
+    <div class="col-xs-8">
+
+    
+      
 <!-- Ride Results -->
       <div class="row">
         <table class="table table-hover" id="results">
