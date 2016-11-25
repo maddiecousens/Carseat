@@ -61,6 +61,8 @@ def search_rides():
 
     ### If user clicks 'All Rides' ###
     if request.args.get('query'):
+
+        # Default these into the model
         start_time = "12:00 AM"
         start_state = ''
         start_time = datetime.strptime(start_time, '%I:%M %p')

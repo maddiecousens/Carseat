@@ -1,20 +1,186 @@
 .navbar, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a {
     background: transparent;
     border: none;
-    background-color:green;
+    background-color:black;
     border-radius: 0;
-    color: black;
+    color: white;
     font-family: 'Droid Sans', sans-serif;
     font-size: 20px;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover {
-    color: #E1B735;
+    color: #d9534f;
 }
 #map {
     height: 50em;
     width: 50em;
 }
 
-.container {
+/*.container {
     width: 80%;
+}*/
+
+/*ul.nav li a, ul.nav li a:visited {
+    color: green !important;
 }
+
+ul.nav li a:hover, ul.nav li a:active {
+    color: blue !important;
+}
+
+ul.nav li.active a {
+    color: red !important;
+}*/
+
+a {
+    color: #708090;
+}
+
+.departure-date {
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 27px;
+}
+.cities {
+    font-size: 14px;
+    color: #413D35;
+}
+.light-gray {
+    color: #413D35 !important;
+}
+.specific-address {
+    color: #413D35;
+    font-size: 13px;
+}
+
+span.glyphicon-unchecked {
+    font-size: 1.2em;
+}
+.price {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 30px;
+}
+.per-passenger {
+    display: inline-block;
+    font-size: 14px;
+    font-style: italic;
+}
+.seats-left {
+    font-size: 24px;
+}
+.seats-left-number {
+    font-size: 14px
+
+}
+
+.request-seats {
+    background-color: hsl(282, 38%, 48%) !important;
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#924faf", endColorstr="#8d4ba8");
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#924faf), to(#8d4ba8));
+    background-image: -moz-linear-gradient(top, #924faf, #8d4ba8);
+    background-image: -ms-linear-gradient(top, #924faf, #8d4ba8);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #924faf), color-stop(100%, #8d4ba8));
+    background-image: -webkit-linear-gradient(top, #924faf, #8d4ba8);
+    background-image: -o-linear-gradient(top, #924faf, #8d4ba8);
+    background-image: linear-gradient(#924faf, #8d4ba8);
+    border-color: #8d4ba8 #8d4ba8 hsl(282, 38%, 47.5%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.03);
+    -webkit-font-smoothing: antialiased;
+
+    font-weight: 500;
+    }
+.arrow-ie {
+    font-family: "Times New Roman";
+    color: #ADAFAF;
+}
+.view-route-btn {
+    color: grey;
+}
+.glyphicon-chevron-down {
+    vertical-align: baseline;
+}
+
+body {
+    font-size: 14px;
+    /*background-image: url(white_wall_hash.png);*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.ui-slider-range-max {
+    background: #8d4ba8;
+}
+
+
+#top-well {
+    margin-left: 15px;
+}
+
+.toggle-header {    
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 3px solid #ccc;
+}
+
+.toggle-label {
+    padding-bottom: 6px;
+    font-size: 14px;
+}
+.ui-slider-horizontal {
+    height: .5em;
+}
+#slider-range-max {
+    margin-left: 5px;
+}
+
+#slider-range-max-cost {
+    margin-right: 5px;
+}
+
+#to {
+    float:right;
+    clear:both;
+}
+
+#from {
+    float:right;
+    clear:both;
+}
+
+.col-fixed-400{
+    width:300px;
+    /*position:fixed;*/
+    /*height:100%;*/
+}
+
+
+.col-offset-400{
+    padding-left:400px;
+}
+.my-icon { position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    float: left;
+    display: block; /* This is required */
+}
+
+.icon-suitcase {
+    background-image: url("http://www.myiconfinder.com/uploads/iconsets/128-128-71cc833f2521546c94251719ad1729c1.png");
+    background-position: center center;
+}
+
+.icon-detour {
+    background-image: url("http://image.flaticon.com/icons/png/128/160/160733.png");
+    background-position: center center;
+}
+
+/*.icon-time {
+    background-image: url("http://icons.iconarchive.com/icons/icons8/ios7/256/Time-And-Date-Clock-icon.png");
+    background-position: center center;
+}*/

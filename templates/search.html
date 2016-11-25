@@ -43,7 +43,7 @@
   </div> -->
 
   <div class="row">
-    <div class="well">
+    <div class="well" id="top-well">
     <form action="/search" id="searchform">
         <div class="row form-inline">
           <fieldset>
@@ -118,60 +118,64 @@
 
   <div class="row">
     <div class="col-xs-3">
-      <div class="well" style="height:100%;">
+      <div class="well" id="side-well" style="height:100%;">
+
+      <div class="row toggle-header">Depature</div>
+
+      <br>
+
+      <div class="row toggle-label">
+        Leaving after: <span class="slider-time"></span>
+      </div>
 
       <div class="row">
-        <div class="col-xs-12">
-          <h5>Leaving after: <span class="slider-time"></span></h5>
           <div id="slider-range-max"></div>
-        </div>
-      </div>
-      <br>
-      <br>
-
-      <div class="row">
-        <div class="col-xs-12">
-        <h5>Rides less than: <span class="slider-cost"></span></h5>
-        <div id="slider-range-max-cost"></div>
-        </div>
       </div>
 
-      <br>
-      <br>
+      <br><Br>
 
-      <div class="row">
-        <label for="from">From</label>
-        <input type="text" id="from" name="from" required>
-        <label for="to">to</label>
-        <input type="text" id="to" name="to">
+<!--       <div class="row toggle-label">
+        From
+      </div> -->
+
+      <div class="row toggle-label">
+        From <input type="text" id="from" name="from" required>
+      </div>
+
+<!--       <div class="row toggle-label">
+        To
+      </div>
+ -->
+      <div class="row toggle-label">
+        To <input type="text" id="to" name="to">
         <input id="current-offset" type="hidden" value="0">
         <input id="max-offset" type="hidden" value="{{ page_count - 1 }}">
         <input id="active-page" type="hidden" value="1">
       </div>
+
+      <br>
+      <br>
+
+      <div class="row toggle-header">Cost</div>
+
+      <br>
+
+      <div class="row toggle-label">
+        Rides less than: <span class="slider-cost"></span>
+      </div>
+
+      <div class="row">
+        <div id="slider-range-max-cost"></div>
+      </div>
+
+      <br>
+      <br>
+
+
     </div>
     </div>
 
     <div class="col-xs-9">
-
-      <div class="row" id="pagination">
-        <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li id="previous">
-            <a href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-{% for i in range(page_count) %}
-          <li class="page-number" data-pagenumber="{{i+1}}" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
-{% endfor %}
-          <li id="next">
-            <a href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-        </nav>
-      </div>
 
         <div class="row">
           <div class="col-xs-6">
@@ -232,7 +236,7 @@
 
                 <div class="row">
                   <div>
-                    <h5>{{ ride.user.first_name }}</h5>
+                    {{ ride.user.first_name }}
                   </div>
 
                   <div>
@@ -245,7 +249,7 @@
                         </select>
                         <span>
                           <input type="hidden" name="ride_id" value="{{ ride.ride_id }}">
-                          <input class="btn btn-default request-seats" type="submit" value="Request Seats">
+                          <input class="btn btn-custom request-seats" type="submit" value="Request Seats">
                         </span>
                       </div>
                     </form>
@@ -257,17 +261,18 @@
 <!-- Middle Box -->
               <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;">
                 <div class="row ride" data-startlat="{{ ride.start_lat }}" data-startlng="{{ ride.start_lng }}" data-endlat="{{ ride.end_lat }}" data-endlng="{{ ride.end_lng }}">
-                  <h4>{{ ride.start_timestamp }}</h4>
+                  <div class="departure-date light-gray">{{ ride.start_timestamp }}</div>
                 </div>
 
-                <div class="row">
-                  <h5>{{ ride.start_city }}, {{ ride.start_state }} 
-                    <span class="glyphicon glyphicon-arrow-right"></span>
-                       {{ ride.end_city }}, {{ ride.end_state }}</h5>
+                <div class="row cities">
+                  <div>{{ ride.start_city }}, {{ ride.start_state }} 
+                    <span class="arrow-ie">→</span>
+                       {{ ride.end_city }}, {{ ride.end_state }}</div>
                 </div>
+                <br>
 
               <div class="row">
-                <p>
+                <div class="specific-address">
                   <span class="glyphicon glyphicon-unchecked" style="color:green"></span>
                   <span>
 {% if ride.start_name is not none %}
@@ -298,11 +303,11 @@
 {{ ride.start_zip }}
 {% endif %}
                  </span>
-                </p>
+                </div>
               </div>
 
               <div class="row">
-                <p>
+                <div class="specific-address">
                   <span class="glyphicon glyphicon-unchecked" style="color:red"></span>
                   <span>
 {% if ride.end_name is not none %}
@@ -333,7 +338,7 @@
 {{ ride.end_zip }}
 {% endif %}
                   </span>
-                </p>
+                </div>
               </div>
 
               <br>
@@ -346,7 +351,7 @@
 {% endif %}
 
               <div class="row">
-                <button type="button"class="btn btn-link view-route-btn">View Route</button>
+                <button type="button"class="btn btn-link view-route-btn">View Route <span class="glyphicon glyphicon-chevron-down"></span></button>
               </div>
 
               <div class="add-map-here"></div>
@@ -355,43 +360,42 @@
 <!-- Right Hand Box -->
           <td class="col-xs-2" style="padding-left:20px;">
             <div class="row">
-              <span><h1>${{ ride.cost }}</h1></span>
+              <span class="price">${{ ride.cost }}</span>
+              <span class="per-passenger">per passenger</span>
             </div>
 
             <div class="row">
-              <h4><small><i>per passenger</i></small></h4>
+              <span class="seats-left">{{ ride.seats }}<span>
+              <span class="seats-left-number">seats left</span>
             </div>
-
-            <div class="row">
-              <h4>{{ ride.seats }} Seats Left</h4>
-            </div>
+            <br><br><br>
 
            <!--  Luggage, Detours -->
             <div class="row">
               <!-- luggage -->
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="You are allowd to bring 1 {{ ride.luggage }} suitcase">
-                <span class="glyphicon glyphicon-heart col-xs-4" style="font-size:2em;"></span>
+                <i class="icon-briefcase icon-large col-xs-4"></i>
               </a>
 
               <!-- Flexible Picup -->
 {% if ride.pickup_window == "flexible" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver">
-                <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
+                <i class="icon-time icon-large col-xs-4"></i>
               </a>
 
 {% elif ride.pickup_window != "No" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is flexible in a {{ ride.pickup_window }} window">
-                <span class="glyphicon glyphicon-star col-xs-4" style="font-size:2em;"></span>
+                <i class="icon-time icon-large col-xs-4"></i>
               </a>
 {% endif %}
 
 {% if ride.detour == "flexible" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours">
-                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
+                <i class="icon-undo icon-large col-xs-4"></i>
               </a>
 {% elif ride.detour != "No" %}
               <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is open to a {{ ride.detour }} detour">
-                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span>
+                <i class="icon-undo icon-large col-xs-4"></i>
               </a>
 {% endif %}
             </div>  
@@ -410,6 +414,27 @@
 
         </table>
       </tbody>
+
+      <div class="row" id="pagination">
+        <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li id="previous">
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+{% for i in range(page_count) %}
+          <li class="page-number" data-pagenumber="{{i+1}}" id="page-number{{i+1}}"><a href="#">{{ i+1 }}</a></li>
+{% endfor %}
+          <li id="next">
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+        </nav>
+      </div>
+
     </div>
       </div>
     </div>
