@@ -8,12 +8,25 @@
     font-size: 20px;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover {
-    color: #d9534f;
+    color: #8D78E7;
 }
 #map {
-    height: 50em;
-    width: 50em;
+    height: 20em;
+    width: 20em;
 }
+
+a:hover {
+    color: #8D78E7;
+}
+
+#re-search {
+    padding-left: 15px
+}
+
+span.glyphicon.glyphicon-transfer {
+    font-size: 1.2em;
+}
+
 
 /*.container {
     width: 80%;
@@ -48,12 +61,15 @@ a {
     color: #413D35 !important;
 }
 .specific-address {
-    color: #413D35;
-    font-size: 13px;
+    color: #727272;
 }
 
 span.glyphicon-unchecked {
     font-size: 1.2em;
+}
+.pickup-dropoff {
+    font-size: 13px;
+    color: #727272;
 }
 .price {
     font-size: 34px;
@@ -71,6 +87,18 @@ span.glyphicon-unchecked {
 .seats-left-number {
     font-size: 14px
 
+}
+
+#middle-data {
+    padding-left:20px;
+}
+
+#right-data {
+    text-align: right;
+}
+
+#left-data {
+    padding-right:20px; border-right: 1px solid #ccc;
 }
 
 .request-seats {
@@ -98,16 +126,49 @@ span.glyphicon-unchecked {
 .view-route-btn {
     color: grey;
 }
+#seats {
+    width: auto;
+}
+
+.view-route-btn:hover {
+    color: #8D78E7;
+}
+
 .glyphicon-chevron-down {
     vertical-align: baseline;
+}
+span.glyphicon.start.glyphicon-unchecked{
+    color: green;
+}
+span.glyphicon.end.glyphicon-unchecked:before {
+    color: red;
+}
+
+.icon-row {
+    float: right;
 }
 
 body {
     font-size: 14px;
-    /*background-image: url(white_wall_hash.png);*/
+    background-color: #eee;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+div.row.form-inline {
+    background-color: #eee;
+    padding: 20px;
+    margin-right: 0px;
+}
+
+* {
+   margin:  0;
+   padding: 0;
+}
+
+.container {
+    background-color: white;
 }
 
 .ui-slider-range-max {
@@ -117,6 +178,10 @@ body {
 
 #top-well {
     margin-left: 15px;
+}
+
+#side-well {
+    margin-right: 10px;
 }
 
 .toggle-header {    
