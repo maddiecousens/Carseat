@@ -4,19 +4,17 @@
 
 {% block head %} 
 <script type="text/javascript" src="../static/facebook_login.js"></script>
+<link rel="stylesheet" rel="text/css" href="../static/navbar.css">
+<link rel="stylesheet" rel="text/css" href="../static/profile.css">
 
 {% endblock %}
 
 {% block content %}
 <div class="container">
-<h1>User Details</h1>
-    <p>
-        Name: {{ user.first_name }} {{ user.last_name }}
-    </p>
-    <p>
-        Email: {{ user.email }}
-    </p>
-    <div class="well">To Do<br> - Add pending ride requests<br> - Fix time display</div>
+    <div class="row well">
+        <h1>Welcome, {{ user.first_name }}</h1>
+        <h4>See below for your ride information</h4>
+    </div>
 
 {% if rides_offered_requests %}
 

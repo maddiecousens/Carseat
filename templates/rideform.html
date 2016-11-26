@@ -34,10 +34,14 @@
 <div class="container" id="customcontainerwidth" role="main">
 <!-- Why isn't placeholder text displaying -->
 
-<div class="well col-xs-8 col-md-12">
+<!-- <div class="well col-xs-8 col-md-12">
     To Do:<br>
     - If there is no street number or street... Pop up a message!<br>
+</div> -->
+<div class="row">
+    <h3>Offer Seats on your next trip</h3>
 </div>
+<hr>
 
 <form action="/post-ride" method="post" id="ride-form">
     <div class="form-group">
@@ -78,14 +82,14 @@
                 </div>
             </div>
             <div>
-            <input type="text" id="searchstring" name="searchstring"></input>
-            <input type="text" id="street_number" name="street_number"></input>
-            <input type="text" id="route" name="route"></input>
-            <input type="text" id="locality" name="locality"></input>
-            <input type="text" id="administrative_area_level_1" name="administrative_area_level_1"></input>
-            <input type="text" id="postal_code" name="postal_code"></input>
-            <input type="text" id="lat" name="lat"></input>
-            <input type="text" id="lng" name="lng"></input>        
+            <input type="hidden" id="searchstring" name="searchstring"></input>
+            <input type="hidden" id="street_number" name="street_number"></input>
+            <input type="hidden" id="route" name="route"></input>
+            <input type="hidden" id="locality" name="locality"></input>
+            <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1"></input>
+            <input type="hidden" id="postal_code" name="postal_code"></input>
+            <input type="hidden" id="lat" name="lat"></input>
+            <input type="hidden" id="lng" name="lng"></input>        
             </div>
 
             <br>
@@ -99,16 +103,16 @@
                     </div>
                 </div>
             </div>
-
+            <br>
             <div>
-            <input type="text" id="searchstring2" name="searchstring"></input>
-            <input type="text" id="street_number2" name="street_number"></input>
-            <input type="text" id="route2" name="route2"></input>
-            <input type="text" id="locality2" name="locality2"></input>
-            <input type="text" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
-            <input type="text" id="postal_code2" name="postal_code2"></input>
-            <input type="text" id="lat2" name="lat2"></input>
-            <input type="text" id="lng2" name="lng2"></input>
+            <input type="hidden" id="searchstring2" name="searchstring"></input>
+            <input type="hidden" id="street_number2" name="street_number"></input>
+            <input type="hidden" id="route2" name="route2"></input>
+            <input type="hidden" id="locality2" name="locality2"></input>
+            <input type="hidden" id="administrative_area_level_12" name="administrative_area_level_1_2"></input>
+            <input type="hidden" id="postal_code2" name="postal_code2"></input>
+            <input type="hidden" id="lat2" name="lat2"></input>
+            <input type="hidden" id="lng2" name="lng2"></input>
 
             </div>
 

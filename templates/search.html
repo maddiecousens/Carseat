@@ -258,7 +258,7 @@
                   <div>
                     <form action="/request-seats" method="POST">
                       <div class="input-group">
-                        <select class="form-control" id="seats" name='seats'>
+                        <select class="form-control" id="seats" name="seats">
 {% for i in range(ride.seats) %}
                           <option value="{{ i+1 }}">{{ i+1 }}</option>
 {% endfor %}

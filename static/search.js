@@ -40,8 +40,8 @@ var rides, pageCount;
         for (var i = 0; i < seats; i++) {
 
             seatOptions += ('<option value=' + (i+1) + '>' + (i+1)
-                            + '</option> \
-                                <span>');        }
+                            + '</option>');        
+        }
 
         return seatOptions;
     }
@@ -49,35 +49,34 @@ var rides, pageCount;
     // Create HTML for every Data row
     function htmlRow(ride) {
         var row = '<tr> \
-            <td class="col-xs-2" style="padding-right:20px; border-right: 1px \
-            solid #ccc;"> \
-              <div class="row"> \
+            <td class="col-xs-2" id="left-data"> \
+                <div class="row"> \
                 <img class="img-responsive" src="'
             + ride.user_image
             + '" alt="driver image" width="100" height="100"> \
               </div> \
               <div class="row"> \
-                <div> \
-                  <h5>'
+                <div>'
             + ride.user_first_name
-            + '</h5> \
-                </div> \
+            + '</div> \
                 <div> \
                   <form action="/request-seats" method="POST"> \
                     <div class="input-group"> \
-                      <select class="form-control" name="seats" style="width:auto;">';
+                      <select class="form-control" id="seats" name="seats">';
         
         row += htmlSeats(ride.seats);
 
-
-        row += '<input type="hidden" name="ride_id" value="' + ride.ride_id
-                + '"></input><input class="btn btn-default" type="submit" value="Request Seats"></span> \
+        row += '</select> \
+                <span> \
+                  <input type="hidden" name="ride_id" value="' 
+            + ride.ride_id
+                + '"><input class="btn btn-custom request-seats" type="submit" value="Request Seats"></span> \
                 </div> \
                       </form> \
                     </div> \
                   </div> \
                 </td> \
-                <td class="col-xs-8" style="padding-right:20px; padding-left:20px; border-right: 1px solid #ccc;"> \
+                <td class="col-xs-8" id="middle-data"> \
                   <div class="row ride" '
                 + 'data-startlat="'
                 + ride.start_lat
@@ -87,26 +86,28 @@ var rides, pageCount;
                 + ride.end_lat
                 + '" data-endlng="'
                 + ride.end_lng
-                +'""> \
-                    <h4>'
+                +'"> \
+                  <div class="departure-date light-gray">'
                 + ride.start_timestamp
-                + '</h4> \
-                    </div> \
-                  <div class="row"> \
-                    <h5>'
+                + '</div> \
+                   </div> \
+                  <div class="row cities"> \
+                    <div>'
                 + ride.start_city
                 + ', '
                 + ride.start_state
-                + ' <span class="glyphicon glyphicon-arrow-right"></span> '
+                + ' <span class="arrow-ie">→</span> '
                 + ride.end_city
                 + ', '
                 + ride.end_state
-                + '</h5> \
-                   </div> \
+                + '</div> \
+                    </div> \
+                    <br> \
                   <div class="row"> \
-                    <p> \
-                      <span class="glyphicon glyphicon-unchecked" style="color:green"></span> \
-                      <span>';
+                    <div class="specific-address"> \
+                        <span class="glyphicon start glyphicon-unchecked"></span> \
+                        <span class="pickup-dropoff">Pick-up: </span> \
+                        <span>';
 
             if (ride.start_name != null) {
                 row += ride.start_name;
@@ -130,11 +131,12 @@ var rides, pageCount;
             }
 
             row += '</span> \
-                </p> \
+              </div> \
               </div> \
               <div class="row"> \
-                <p> \
-                  <span class="glyphicon glyphicon-unchecked" style="color:red"></span> \
+                <div class="specific-address"> \
+                  <span class="glyphicon end glyphicon-unchecked"></span> \
+                  <span class="pickup-dropoff">Drop-off: </span> \
                   <span>'
 
             if (ride.end_name != null) {
@@ -160,83 +162,73 @@ var rides, pageCount;
             }
 
             row += '</span> \
-                </p> \
+                </div> \
               </div> \
               <br>'
             if (ride.mileage != null & ride.duration != null) {
-                row += '<div class="row"> \
-                <span class="glyphicon glyphicon-time"></span> \
+                row += '<span class="glyphicon glyphicon-time"></span> \
                 <span>'
                 + ride.mileage
                 + ', Est Travel Time: '
                 + ride.duration
-                + '</span> \
-                      </div>'
+                + '</span>'
             }
             row += '<div class="row"> \
-                    <button type="button" class="btn btn-link view-route-btn">View Route</button> \
-                </div> \
-                <div class="add-map-here"></div> \
-            </td> \
-            <td class="col-xs-2" style="padding-left:20px;"> \
-              <div class="row"> \
-                <span><h1>$'
-                + ride.cost
-                + '</h1></span> \
+            <button type="button"class="btn btn-link view-route-btn">View Route <span class="glyphicon glyphicon-chevron-down"></span></button> \
               </div> \
-              <div class="row"> \
-                <h4><small><i>per passenger</i><small></h4> \
-                </div> \
-                <div class="row"> \
-                  <h4>'
+              <div class="add-map-here"></div> \
+          </td> \
+            <td class="col-xs-2" id="right-data"> \
+            <div class="row"> \
+              <span class="price">$'
+                + ride.cost
+                + '</span> \
+              <span class="per-passenger">per passenger</span> \
+            </div> \
+            <div class="row"> \
+              <span class="seats-left">'
                 + ride.seats
-                + ' Seats Left</h4> \
-                </div> \
-                <div class="row"> \
-                  <a class="my-tool-tip" data-toggle="tooltip" \
-                  data-placement="left" title="You are allowd to bring 1 '
+                + '<span> \
+              <span class="seats-left-number">seats left</span> \
+            </div> \
+            <br><br><br> \
+                <div class="row pull-right"> \
+              <a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="You are allowd to bring 1 '
                 + ride.luggage
                 + ' suitcase"> \
-                   <span class="glyphicon glyphicon-heart col-xs-4" \
-                   style="font-size:2em;"></span> \
-                              </a>';
+                   <i class="icon-briefcase icon-large col-xs-4"></i> \
+                    </a>';
 
             if (ride.pickup_window === "flexible") {
-                row += '<a class="my-tool-tip" data-toggle="tooltip" \
-                data-placement="left" title="Pickup time is very flexible, \
-                discuss with driver"> \
-                <span class="glyphicon glyphicon-star col-xs-4" \
-                style="font-size:2em;"></span> \
-                  </a>';
+                row += '<a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Pickup time is very flexible, discuss with driver"> \
+                <i class="icon-time icon-large col-xs-4"></i> \
+              </a>';
             }
             else if (ride.pickup_window !== 'No') {
                 row += '<a class="my-tool-tip" data-toggle="tooltip" \
                 data-placement="left" title="Pickup time is flexible in a '
                 + ride.pickup_window
-                + ' window">=<span class="glyphicon glyphicon-star col-xs-4" \
-                    style="font-size:2em;"></span> \
-                  </a>';
+                + ' window"> \
+                    <i class="icon-time icon-large col-xs-4"></i> \
+                    </a>';
             }
 
             if (ride.detour == "flexible") {
-                row += '<a class="my-tool-tip" data-toggle="tooltip" \
-                data-placement="left" title="Driver is very flexible with detours"> \
-                <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"> \
-                </span> \
-                  </a>';
+                row += '<a class="my-tool-tip" data-toggle="tooltip" data-placement="left" title="Driver is very flexible with detours"> \
+                <i class="icon-undo icon-large col-xs-4"></i> \
+              </a>';
             }
             else if (ride.detour !== 'No') {
                 row += '<a class="my-tool-tip" data-toggle="tooltip" \
                 data-placement="left" title="Driver is open to a '
                 + ride.detour
                 + ' detour"> \
-                    <span class="glyphicon glyphicon-star-empty col-xs-4" style="font-size:2em;"></span> \
-                  </a>';
+                    <i class="icon-undo icon-large col-xs-4"></i> \
+                    </a>';
             }
 
             row += '</div> \
-                      </div> \
-                    </td> \
+                   </td> \
                   </tr>';
 
         return row;
@@ -261,7 +253,7 @@ $(document).ajaxSuccess(function() {
         $('#max-offset').val(pageCount - 1);
         
         // Start building HTML
-        var html = '<table class="table table-hover"> \
+        var html = '<table class="table table-hover" id="results"> \
                         <tbody>';
         
 
@@ -276,7 +268,11 @@ $(document).ajaxSuccess(function() {
 
         }
         else {
-            html += '<p>No upcoming rides for that search</p>';
+            html += '<tr> \
+                      <td> \
+                        <p>No upcoming rides for that search</p> \
+                      </td> \
+                    </tr>';
         }
 
         $('#results').empty().append(html);
