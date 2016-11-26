@@ -281,7 +281,6 @@ $(document).ajaxSuccess(function() {
 
     // Event Handler, AJAX
     function newSearch(evt) {
-
         // If user doesn't enter a from date, make it todays date
         var today = new Date()
         var today_string = (today.getMonth() 
@@ -326,6 +325,7 @@ $(document).ajaxSuccess(function() {
     }
 
 
+
     // Reverse Button
     var reverseInput = function() {
         var old_auto2 = $('#autocomplete2').val();
@@ -343,30 +343,45 @@ $(document).ajaxSuccess(function() {
         var old_ss2 = $('#searchstring2').val();
         $('#searchstring2').val($('#searchstring').val());
         $('#searchstring').val(old_ss2);
-
+        clearOffset();
         newSearch();
     }
 
     // Event Listeners for Toggles
 
     // Time and Cost Sliders
-    $( '#slider-range-max' ).on( "slidechange", newSearch );
-    $( '#slider-range-max-cost' ).on( "slidechange", newSearch );
+    $( '#slider-range-max' ).on( "slidechange", function(){
+        clearOffset();
+        newSearch();
+    } );
+    $( '#slider-range-max-cost' ).on( "slidechange", function(){
+        clearOffset();
+        newSearch();
+    } );
     //To and From DATE changer
-    $( '#to' ).on( "change", newSearch );
-    $( '#from' ).on( "change", newSearch );
+    $( '#to' ).on( "change", function(){
+        clearOffset();
+        newSearch();
+    } );
+    $( '#from' ).on( "change", function(){
+        clearOffset();
+        newSearch();
+    } );
     // Reverse Button
     $('#reverse').on('click', reverseInput)
 
 
-    
+    function clearOffset(evt) {
+        $('#current-offset').val(0)
+    }
 
 
     // Click Event Listeners and Handlers for Pagination
 
     // Changing the results per page
     $('.dropdown-menu a').on('click', function(){    
-        $('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>');
+        $('#dropdownMenu1').html($(this).html() + '<span class="caret"></span>');
+        clearOffset();
         newSearch();    
     })
 
@@ -418,7 +433,7 @@ $(document).ajaxSuccess(function() {
         $(this).attr('id','active-orderby-btn');
         console.log($('#active-orderby-btn').data('orderby'));
 
-        $('#current-offset').val(0); 
+        clearOffset();
         newSearch();
 
         

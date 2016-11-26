@@ -256,7 +256,7 @@
                   </div>
 
                   <div>
-                    <form action="/request-seats" method="POST">
+                    <form action="/request-seats" method="POST" id="request-seats">
                       <div class="input-group">
                         <select class="form-control" id="seats" name="seats">
 {% for i in range(ride.seats) %}
@@ -457,49 +457,7 @@
     </div>
   </div>
 
-
-<script> $("a.my-tool-tip").tooltip(); </script>
-<script>
-
-  function preventSubmit(evt) {
-    evt.preventDefault()
-  }
-
-  $('#searchform').on("submit", preventSubmit)
-
-  </script>
-
-
-<script>
-
-
-var request = $('.request-seats')
-
-function promptLogin(data) {
-    console.log(data)
-    if (data['logged_in'] != true) {
-        console.log('log in yo')
-        return
-    }
-    else {
-        $('#ride-form').submit()
-        console.log("yo submit the form")
-
-    }
-}
-
-function requestSeats(evt) {
-    evt.preventDefault();
-    $.get('/check-login.json', promptLogin)
-    evt.stopPropagation();
-    $('#login').addClass('open')
-    $('#status').text('Please log in to request a ride');
-    
-};
-
-$('.request-seats').on('click', requestSeats)
-
-</script>
+<script type="text/javascript" src="static/request_seats.js"></script>
 
 <script type="text/javascript" src="static/autocomplete.js"></script>
 
@@ -508,7 +466,6 @@ $('.request-seats').on('click', requestSeats)
 <script type="text/javascript" src="static/search_cost_toggle.js"></script>
 <script type="text/javascript" src="static/search_date.js"></script>
 <script type="text/javascript" src="static/search.js"></script>
-<!-- <script type="text/javascript" src="static/reverse_input.js"></script> -->
 <script type="text/javascript" src="static/user_location.js"></script>
 <script type="text/javascript" src="static/view_route.js"></script>
 

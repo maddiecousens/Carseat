@@ -9,8 +9,14 @@ var data;
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     
-$(document).ajaxSuccess(function() {
+$(document).ajaxSuccess(function(event, xhr, settings) {
+  if ( settings.url == "/login" ) {
     window.location.reload(true);
+  }
+  else {
+    window.location.href = '/';
+  }
+ 
 });
 
     if (response.status === 'connected') {
@@ -34,7 +40,7 @@ $(document).ajaxSuccess(function() {
       
       $.get('/logout', function() {});
       console.log('Logging out User');
-      window.location.href = '/'
+      // window.location.href = '/';
       // redirect somewhere else window.location or something
       document.getElementById('status').innerHTML = 'Please log ' +
         'in via Facebook.';

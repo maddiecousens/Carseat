@@ -62,24 +62,20 @@ def search_rides():
     ### If user clicks 'All Rides' ###
     if request.args.get('query'):
 
-        # Default these into the model
-        start_time = "12:00 AM"
-        start_state = ''
-        start_time = datetime.strptime(start_time, '%I:%M %p')
-        start_time = to_utc(start_state, start_time).time()
+        # Defaulting to the starting toggle points when viewing all rides
+        start_time = datetime.strptime("12:00 AM", '%I:%M %p')
+        start_time = to_utc('', start_time).time()
 
-        date_from = "10/21/2016"
-        date_from = datetime.strptime(date_from, '%m/%d/%Y')
-        date_from = to_utc(start_state, date_from).date()
+        date_from = to_utc('', datetime.now()).date()
+
         cost = 50
 
         # Query database for all rides
         rides = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, limit=limit, order_by=order_by)
 
-
-        # Round up page count with + 1
+        
         total_count = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, order_by=order_by, count=True)
-        print '\n\ntotal_count: {}\n\n'.format(total_count)
+        # Round up page count with + 1
         page_count = int(math.ceil(float(total_count)/float(limit)))
 
         for ride in rides:
@@ -225,7 +221,7 @@ def json_test():
                            offset=offset,
                            order_by=order_by)
 
-    print '\nlimit: {}\noffset: {}\norder_by: {}\ndate_form: {}'.format(limit,offset,order_by, date_from)
+    print '\nlimit: {}\noffset: {}\norder_by: {}\ndate_from: {}\nstart_time: {}\ncost: {}'.format(limit,offset,order_by, date_from,start_time,cost)
 
     total_count = Ride.get_rides(deg=deg,
                                  start_lat=start_lat,
@@ -426,10 +422,16 @@ def logout_form():
 #### Profile Page + Requests #####
 ##################################
 
+from flask import abort
 
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
     """ Show users home page """
+
+    print '\n\nuser_id: {}, session_id: {}, types: {}, {}\n\n'.format(user_id, session.get("current_user"), type(user_id), type(session.get("current_user")))
+
+    if int(user_id) != session.get("current_user"):
+        abort(404)
 
     # get user with joined loads rides_taking and rides_offered
     user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)

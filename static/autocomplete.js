@@ -55,6 +55,7 @@ function fillInAddress(autocomplete, unique) {
   }
 
   // call AJAX function in search.js
+  clearOffset();  
   newSearch();
 }
 
