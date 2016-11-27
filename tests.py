@@ -5,6 +5,8 @@ import server
 from seed import *
 from helperfunctions import state_to_timezone, miles_to_degrees
 from datetime import datetime
+from xmltest import XMLAssertions
+import json
 
 class CarseatUnitTestCase(unittest.TestCase):
     """Unit Tests"""
@@ -89,38 +91,60 @@ class FlaskTests(unittest.TestCase):
 
     def test_search3(self):
         result = self.client.get('/search?start-address=Seattle%2C+WA%2C+United+States&searchstring=Seattle%2C+WA%2C+United+States&locality=Seattle&administrative_area_level_1=WA&postal_code=&lat=47.6062095&lng=-122.3320708&end-address=Portland%2C+OR%2C+United+States&searchstring2=Portland%2C+OR%2C+United+States&locality2=Portland&administrative_area_level_1_2=OR&postal_code2=&lat2=45.52306220000001&lng2=-122.67648159999999')
-        self.assertIn("""<h5>Seattle, WA 
-                    <span class="glyphicon glyphicon-arrow-right"></span>
-                       Portland, OR</h5>""", result.data)
+        self.assertIn("""<div>Seattle, WA 
+                    <span class="arrow-ie">""", result.data)
 
-    def test_search3(self):
-        result = self.client.get('/search?start-address=Seattle%2C+WA%2C+United+States&searchstring=Seattle%2C+WA%2C+United+States&locality=Seattle&administrative_area_level_1=WA&postal_code=&lat=47.6062095&lng=-122.3320708&end-address=Portland%2C+OR%2C+United+States&searchstring2=Portland%2C+OR%2C+United+States&locality2=Portland&administrative_area_level_1_2=OR&postal_code2=&lat2=45.52306220000001&lng2=-122.67648159999999')
-        self.assertIn("""<h5>Seattle, WA 
-                    <span class="glyphicon glyphicon-arrow-right"></span>
-                       Portland, OR</h5>""", result.data)
+
 
     # Test AJAX Search results
 
     def test_searchjson(self):
+        date = datetime.now().date().strftime('%-m/%d/%Y')
         data = {'start_term': '',
                 'end_term': '',
-                'user_lat': '37.788797',
-                'user_lng': '-122.411499',
+                'user_lat': '37.881248',
+                'user_lng': '-122.2891349',
                 'start_lat': '',
                 'start_lng': '',
                 'end_lat': '',
                 'end_lng': '',
                 'start_state': '',
-                'start_time': '',
-                'cost': '',
-                'date_from': '',
+                'start': "9:30 AM",
+                'cost': "50",
+                'date_from': date,
                 'date_to': '',
-                'limit': '',
-                'offset': '',
-                'order_by': ''
+                'limit': '10',
+                'offset': "0",
+                'order': "time"
         }
-        result = self.client.post("/search",
-                                    data = )
+        result = self.client.get("/search.json", query_string=data, follow_redirects=True)
+        result = json.loads(result.data)
+        self.assertEqual(result[1][0]['end_city'], u'South Lake Tahoe')
+
+    def test_searchjson2(self):
+        date = datetime.now().date().strftime('%-m/%d/%Y')
+        data = {'start_term': '',
+                'end_term': '',
+                'user_lat': '37.881248',
+                'user_lng': '-122.2891349',
+                'start_lat': '',
+                'start_lng': '',
+                'end_lat': '',
+                'end_lng': '',
+                'start_state': '',
+                'start': "12:00 AM",
+                'cost': "20",
+                'date_from': date,
+                'date_to': '',
+                'limit': '10',
+                'offset': "0",
+                'order': "cost"
+        }
+        result = self.client.get("/search.json", query_string=data, follow_redirects=True)
+        result = json.loads(result.data)
+        self.assertEqual(result[1][0]['start_city'], u'Boston')
+
+
 
 
 

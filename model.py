@@ -145,13 +145,11 @@ class Ride(db.Model):
             q = q.filter(cls.cost < cost)
 
         start_time = kwargs.get('start_time')
-        print '\n\nhiii: {}\n\n'.format(kwargs.get('start_time'))
         if start_time >= time(0,0) and start_time < time(8,0):
             q1 = q.filter(cast(cls.start_timestamp, Time) >= start_time)
             q2 = q.filter(cast(cls.start_timestamp, Time) < time(8, 0))
             q = q1.intersect(q2)
         else:
-            print 'OTHERWISE'
             q1 = q.filter(cast(cls.start_timestamp, Time) >= start_time)
             q2 = q.filter(cast(cls.start_timestamp, Time) < time(8, 0))
             q = q1.union(q2)
@@ -165,8 +163,6 @@ class Ride(db.Model):
 
         if kwargs.get('order_by') == 'cost':
             q = q.order_by(cls.cost)
-
-
 
         if kwargs.get('limit'):
             limit_number = int(kwargs.get('limit'))
@@ -239,7 +235,7 @@ def connect_db(app, db_uri=None):
     """Connect db to Flask app"""
 
     # Configure connection to PostgreSQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql:///rideshare'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql:///testdb'
 
     # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
