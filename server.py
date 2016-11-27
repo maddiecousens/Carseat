@@ -57,6 +57,7 @@ def search_rides():
 
     # initialize to show 10 results ordered by date
     limit = 10
+    cost = 50
     order_by = 'date'
 
     ### If user clicks 'All Rides' ###
@@ -64,20 +65,10 @@ def search_rides():
 
         # Defaulting to the starting toggle points when viewing all rides
         state = ''
-
         start_time = datetime.strptime("12:00 AM", '%I:%M %p')
         start_time = datetime.combine(datetime.now().date(), start_time.time())
         start_time = to_utc(state, start_time).time()
-
         date_from = to_utc(state, datetime.now()).date()
-
-        # datetime_aware = pytz.timezone(tz).localize(datetime_obj)
-        # datetime_aware = datetime_aware + timedelta(hours = 8)
-        # # Normalize to UTC in order to search DB
-        # datetime_utc = pytz.utc.normalize(datetime_aware)
-
-
-        cost = 50
 
         # Query database for all rides
         rides = Ride.get_rides(start_time=start_time, date_from=date_from, cost=cost, limit=limit, order_by=order_by)
@@ -100,7 +91,7 @@ def search_rides():
     else:
  
         # Start with 15mile square search
-        miles = 15
+        miles = 25
         deg = miles_to_degrees(miles)
         
         # Get search terms lat/lng
@@ -121,6 +112,12 @@ def search_rides():
                       "lat": end_lat,
                       "lng": end_lng
                       }
+
+        state = start_search['state']
+        start_time = datetime.strptime("12:00 AM", '%I:%M %p')
+        start_time = datetime.combine(datetime.now().date(), start_time.time())
+        start_time = to_utc(state, start_time).time()
+        date_from = to_utc(state, datetime.now()).date()
         # Get the first 10 results for query
         rides = Ride.get_rides(deg=deg,
                                start_lat=start_lat,
@@ -128,6 +125,8 @@ def search_rides():
                                end_lat=end_lat,
                                end_lng=end_lng,
                                limit=limit,
+                               start_time=start_time,
+                               date_from=date_from,
                                order_by=order_by)
         if len(rides) > limit:
             total_count = Ride.get_rides(deg=deg,
@@ -136,6 +135,8 @@ def search_rides():
                                    end_lat=end_lat,
                                    end_lng=end_lng,
                                    limit=limit,
+                                   start_time=start_time,
+                                   date_from=date_from,
                                    order_by=order_by,
                                    count=True)
             # Round up page count with + 1

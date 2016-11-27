@@ -16,6 +16,12 @@ span.glyphicon.glyphicon-transfer {
     font-size: 1.2em;
 }
 
+i:before {
+    text-decoration: none !important;
+}
+
+
+
 
 /*.container {
     width: 80%;
