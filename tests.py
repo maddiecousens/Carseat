@@ -94,10 +94,7 @@ class FlaskTests(unittest.TestCase):
         self.assertIn("""<div>Seattle, WA 
                     <span class="arrow-ie">""", result.data)
 
-
-
     # Test AJAX Search results
-
     def test_searchjson(self):
         """
         Testing with order_by, cost and time limits
@@ -176,6 +173,11 @@ class FlaskTests(unittest.TestCase):
         result = json.loads(result.data)
         # import pdb; pdb.set_trace()
         self.assertEqual(result[1][1]['cost'], 35)
+
+    # Test RideFrom
+    def test_rideform(self):
+        result = self.client.get('/post-ride')
+        self.assertIn('<h3>Offer Seats on your next trip</h3>', result.data)
 
 
 
