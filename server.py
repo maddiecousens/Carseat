@@ -251,16 +251,6 @@ def json_test():
 
     return jsonify(json_list)
 
-##################################                               
-######## Test Route #############
-##################################
-
-@app.route('/test', methods=["GET"])
-def view_test():
-    """ Form to post new ride """
-
-    return render_template('googletest5.html')
-
 
 ##################################                               
 ######## Post Ride Form ##########

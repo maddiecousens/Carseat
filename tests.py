@@ -99,6 +99,9 @@ class FlaskTests(unittest.TestCase):
     # Test AJAX Search results
 
     def test_searchjson(self):
+        """
+        Testing with order_by, cost and time limits
+        """
         date = datetime.now().date().strftime('%-m/%d/%Y')
         data = {'start_term': '',
                 'end_term': '',
@@ -122,6 +125,9 @@ class FlaskTests(unittest.TestCase):
         self.assertEqual(result[1][0]['end_city'], u'South Lake Tahoe')
 
     def test_searchjson2(self):
+        """
+        Testing AJAX with ending city
+        """
         date = datetime.now().date().strftime('%-m/%d/%Y')
         data = {'start_term': '',
                 'end_term': '',
@@ -143,6 +149,34 @@ class FlaskTests(unittest.TestCase):
         result = self.client.get("/search.json", query_string=data, follow_redirects=True)
         result = json.loads(result.data)
         self.assertEqual(result[1][0]['start_city'], u'Boston')
+
+    def test_searchjson3(self):
+        """
+        Testing AJAX with starting city
+        """
+        date = datetime.now().date().strftime('%-m/%d/%Y')
+        data = {'start_term': "Los Angeles, CA, United States",
+                'end_term': '',
+                'user_lat': '37.881248',
+                'user_lng': '-122.2891349',
+                'start_lat': '34.0522342',
+                'start_lng': '-118.2436849',
+                'end_lat': '',
+                'end_lng': '',
+                'start_state': 'CA',
+                'start': "12:00 AM",
+                'cost': "50",
+                'date_from': date,
+                'date_to': '',
+                'limit': '10',
+                'offset': "0",
+                'order': "date"
+        }
+        result = self.client.get("/search.json", query_string=data, follow_redirects=True)
+        result = json.loads(result.data)
+        # import pdb; pdb.set_trace()
+        self.assertEqual(result[1][1]['cost'], 35)
+
 
 
 
