@@ -1,10 +1,11 @@
 """Modes and database functions for Rideshare Project"""
 
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, time
 from sqlalchemy_utils import ArrowType
-from sqlalchemy import cast, Time, Date
+from sqlalchemy import cast, Time, Date, case
 import arrow
+from helperfunctions import order_by_time
 
 db = SQLAlchemy()
 
@@ -132,24 +133,143 @@ class Ride(db.Model):
             
             q = q.filter((cast(cls.start_timestamp, Date) <= date_to))
 
-        if kwargs.get('start_time'):
-            start_time = kwargs.get('start_time')
-            q = q.filter(cast(cls.start_timestamp, Time) >= start_time)
+        # print '\n\nhiii: {}\n\n'.format(kwargs.get('start_time'))
+       
+            #     q = q.filter(cast(cls.start_timestamp, Time) >= start_time)
+            # if kwargs.get('start_time') >= '00:00:00' kwargs.get('start_time') and < "00:08:00":
+            #     pass
+
+        # print '\n\n\n*STARTTIME*\n{}, {}\n\n\n'.format(start_time, type(start_time))
+
+            # q = q.filter(cast(cls.start_timestamp, Time) >= start_time)
 
         if kwargs.get('cost'):
             cost = int(kwargs.get('cost'))
             q = q.filter(cls.cost < cost)
+
+        start_time = kwargs.get('start_time')
+        print '\n\nhiii: {}\n\n'.format(kwargs.get('start_time'))
+        if start_time >= time(0,0) and start_time < time(8,0):
+            q1 = q.filter(cast(cls.start_timestamp, Time) >= start_time)
+            q2 = q.filter(cast(cls.start_timestamp, Time) < time(8, 0))
+            q = q1.intersect(q2)
+        else:
+            print 'OTHERWISE'
+            q1 = q.filter(cast(cls.start_timestamp, Time) >= start_time)
+            q2 = q.filter(cast(cls.start_timestamp, Time) < time(8, 0))
+            q = q1.union(q2)
 
         # q = q.order_by(cls.start_timestamp)
 
         if kwargs.get('order_by') == 'date':
             q = q.order_by(cls.start_timestamp)
 
+        # _whens = {time(0,0) : 65,
+        #             time(0,15) : 66,
+        #             time(0,30) : 67,
+        #             time(0,45) : 68,
+        #             time(1,0) : 69,
+        #             time(1,15) : 70,
+        #             time(1,30) : 71,
+        #             time(1,45) : 72,
+        #             time(2,0) : 73,
+        #             time(2,15) : 74,
+        #             time(2,30) : 75,
+        #             time(2,45) : 76,
+        #             time(3,0) : 77,
+        #             time(3,15) : 78,
+        #             time(3,30) : 79,
+        #             time(3,45) : 80,
+        #             time(4,0) : 81,
+        #             time(4,15) : 82,
+        #             time(4,30) : 83,
+        #             time(4,45) : 84,
+        #             time(5,0) : 85,
+        #             time(5,15) : 86,
+        #             time(5,30) : 87,
+        #             time(5,45) : 88,
+        #             time(6,0) : 89,
+        #             time(6,15) : 90,
+        #             time(6,30) : 91,
+        #             time(6,45) : 92,
+        #             time(7,0) : 93,
+        #             time(7,15) : 94,
+        #             time(7,30) : 95,
+        #             time(7,45) : 96,
+        #             time(8,0) : 1,
+        #             time(8,15) : 2,
+        #             time(8,30) : 3,
+        #             time(8,45) : 4,
+        #             time(9,0) : 5,
+        #             time(9,15) : 6,
+        #             time(9,30) : 7,
+        #             time(9,45) : 8,
+        #             time(10,0) : 9,
+        #             time(10,15) : 10,
+        #             time(10,30) : 11,
+        #             time(10,45) : 12,
+        #             time(11,0) : 13,
+        #             time(11,15) : 14,
+        #             time(11,30) : 15,
+        #             time(11,45) : 16,
+        #             time(12,0) : 17,
+        #             time(12,15) : 18,
+        #             time(12,30) : 19,
+        #             time(12,45) : 20,
+        #             time(13,0) : 21,
+        #             time(13,15) : 22,
+        #             time(13,30) : 23,
+        #             time(13,45) : 24,
+        #             time(14,0) : 25,
+        #             time(14,15) : 26,
+        #             time(14,30) : 27,
+        #             time(14,45) : 28,
+        #             time(15,0) : 29,
+        #             time(15,15) : 30,
+        #             time(15,30) : 31,
+        #             time(15,45) : 32,
+        #             time(16,0) : 33,
+        #             time(16,15) : 34,
+        #             time(16,30) : 35,
+        #             time(16,45) : 36,
+        #             time(17,0) : 37,
+        #             time(17,15) : 38,
+        #             time(17,30) : 39,
+        #             time(17,45) : 40,
+        #             time(18,0) : 41,
+        #             time(18,15) : 42,
+        #             time(18,30) : 43,
+        #             time(18,45) : 44,
+        #             time(19,0) : 45,
+        #             time(19,15) : 46,
+        #             time(19,30) : 47,
+        #             time(19,45) : 48,
+        #             time(20,0) : 49,
+        #             time(20,15) : 50,
+        #             time(20,30) : 51,
+        #             time(20,45) : 52,
+        #             time(21,0) : 53,
+        #             time(21,15) : 54,
+        #             time(21,30) : 55,
+        #             time(21,45) : 56,
+        #             time(22,0) : 57,
+        #             time(22,15) : 58,
+        #             time(22,30) : 59,
+        #             time(22,45) : 60,
+        #             time(23,0) : 61,
+        #             time(23,15) : 62,
+        #             time(23,30) : 63,
+        #             time(23,45) : 64}
+
+
         if kwargs.get('order_by') == 'time':
-            q = q.order_by(cast(cls.start_timestamp, Time))
+            sort_order = case(value=(cast(cls.start_timestamp, Time)), whens=order_by_time)
+            q = q.order_by(sort_order)
+
 
         if kwargs.get('order_by') == 'cost':
             q = q.order_by(cls.cost)
+
 
 
         if kwargs.get('limit'):

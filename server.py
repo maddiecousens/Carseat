@@ -63,10 +63,19 @@ def search_rides():
     if request.args.get('query'):
 
         # Defaulting to the starting toggle points when viewing all rides
-        start_time = datetime.strptime("12:00 AM", '%I:%M %p')
-        start_time = to_utc('', start_time).time()
+        state = ''
 
-        date_from = to_utc('', datetime.now()).date()
+        start_time = datetime.strptime("12:00 AM", '%I:%M %p')
+        start_time = datetime.combine(datetime.now().date(), start_time.time())
+        start_time = to_utc(state, start_time).time()
+
+        date_from = to_utc(state, datetime.now()).date()
+
+        # datetime_aware = pytz.timezone(tz).localize(datetime_obj)
+        # datetime_aware = datetime_aware + timedelta(hours = 8)
+        # # Normalize to UTC in order to search DB
+        # datetime_utc = pytz.utc.normalize(datetime_aware)
+
 
         cost = 50
 
@@ -201,7 +210,9 @@ def json_test():
         date_to = to_utc(start_state, date_to).date()
 
     start_time = datetime.strptime(start_time, '%I:%M %p')
+    start_time = datetime.combine(datetime.now().date(), start_time.time())
     start_time = to_utc(start_state, start_time).time()
+    print '\n\n*******\n{}\n****\n\n'.format(start_time)
 
 
     # Convert miles to lat/lng degrees
@@ -598,6 +609,24 @@ def to_utc(state, datetime_obj):
     datetime_utc = pytz.utc.normalize(datetime_aware)
 
     return datetime_utc
+
+def to_utc_db_time(state, datetime_obj):
+    """
+    Takes in unaware python datetime object, converts to tz aware, adding 8hour offset, then 
+    converts to UTC.
+
+    """
+    # Get timezone of starting state or user's state
+    tz = state_to_timezone(state)
+    # Localize to timezone of state the ride is leaving from
+    datetime_aware = pytz.timezone(tz).localize(datetime_obj)
+    utc_offset = datetime_aware.utcoffset().total_seconds()/60/60
+    datetime_aware = datetime_aware + timedelta(hours=utc_offset)
+    # Normalize to UTC in order to search DB
+    datetime_utc = pytz.utc.normalize(datetime_aware)
+
+    return datetime_utc
+
 
 def to_local(state, datetime_obj):
     """
