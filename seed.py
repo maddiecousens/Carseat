@@ -31,27 +31,18 @@ def all_data():
     db.create_all()
 
    # Add sample employees and departments
-    maddie = User(user_id=1, fb_userid="10154085900708339", first_name="Maddie", last_name="Cousens", age=24, email="maddie@", password="doge1", image="https://s-media-cache-ak0.pinimg.com/236x/3a/8e/6e/3a8e6eec898c6f3d1c9352503a9c8e37.jpg")
-    ahmad = User(user_id=2, fb_userid="108875526264733", first_name="Ahmad", last_name="Alawad", age=30, email="ahmad@", password="maddie2", image="http://theverybesttop10.com/wp-content/uploads/2014/10/Top-10-Images-of-Cats-Driving-2.jpg")
-    carl = User(user_id=3, fb_userid="100014238157245", first_name="Aretha", last_name="Franklin", age=51, email="carl@", password="maddie3", image="https://i.ytimg.com/vi/BWAK0J8Uhzk/hqdefault.jpg")
-    graham = User(user_id=4, fb_userid="100014205218090", first_name="Graham", last_name="Egan", age=27, email="graham@", password="maddie4", image="http://67.media.tumblr.com/tumblr_md019wlf781rz4vr8o1_1280.jpg")
-    grom= User(user_id=5, fb_userid="105608939924154", first_name="Grom", last_name="Gromoth", age=27, email="grom@", password="maddie5", image="https://s-media-cache-ak0.pinimg.com/originals/84/42/a7/8442a778bf0b163a3c30aefe7a64be61.jpg")
-    thomoth = User(user_id=6, fb_userid="100014168388615", first_name="Beyonce", last_name="Knowles", age=27, email="thomoth@", password="maddie6", image="https://s-media-cache-ak0.pinimg.com/originals/13/44/06/134406e512f3ab5b252df70df541bf56.jpg")
-    lexie = User(user_id=7, fb_userid="100014175948968", first_name="Lexie", last_name="Cousens", age=27, email="lexie@", password="maddie7", image="http://www.zercustoms.com/news/images/Subaru-dog-driving-lessons-b.jpg")
-    ryan = User(user_id=8, fb_userid="110433086107763", first_name="Ryan", last_name="Neal", age=27, email="ryan_xskfbpi_neal@tfbnw.net", password="testuser8", image="https://s-media-cache-ak0.pinimg.com/originals/28/c7/ad/28c7adffc9af705dcd8a8b77b1a9c0e8.jpg")
-
-    # rider1 = Rider(id=1, ride_id=1, user_id=3, seats=2)
-    # rider2 = Rider(id=2, ride_id=1, user_id=4, seats=2)
-    # rider3 = Rider(id=3, ride_id=2, user_id=1, seats=1)
-    # rider4 = Rider(id=4, ride_id=2, user_id=4, seats=1)
-
-    # request1 = Request(ride_id=1, requester=2, seats=2)
-    # request2 = Request(ride_id=3, requester=3, seats=2)
-    # request3 = Request(ride_id=5, requester=3, seats=3)
-    # request4 = Request(ride_id=5, requester=1, seats=1)
-
-    db.session.add_all([maddie, ahmad, carl, graham, grom, thomoth, lexie, ryan])
-    db.session.commit()
+    with open('seed-data/users_seed.csv', 'rb') as ride_data:
+        reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
+        reader.next()
+        for row in reader:
+            user = User(user_id = row[0],
+                        fb_userid = row[1],
+                        first_name = row[2],
+                        last_name = row[3],
+                        email = row[4],
+                        image = row[5])
+            db.session.add(user)
+            db.session.commit()
 
     with open('seed-data/rides_seed.csv', 'rb') as ride_data:
 
@@ -170,7 +161,29 @@ def all_data():
             db.session.add(ride)
             db.session.commit()
         print geocode
+
+    with open('seed-data/riders_seed.csv', 'rb') as ride_data:
+        reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
+        reader.next()
+        for row in reader:
+            rider = Rider(ride_id = row[0],
+                          user_id = row[1],
+                          seats = row[2])
+            db.session.add(rider)
+            db.session.commit()
+
+    with open('seed-data/requests_seed.csv', 'rb') as ride_data:
+        reader = csv.reader(ride_data, quotechar="'", delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True)
+        reader.next()
+        for row in reader:
+            request = Request(
+                ride_id=row[0],
+                requester = row[1],
+                seats = row[2])
+            db.session.add(request)
+            db.session.commit()
     print "adding data"
+
 
 def example_data():
     # In case this is run more than once, empty out existing data

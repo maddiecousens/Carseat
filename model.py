@@ -23,10 +23,7 @@ class User(db.Model):
     fb_userid = db.Column(db.String(20), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=True)
-    photo = db.Column(db.String(300), nullable=True)
     email = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
     member_since = db.Column(db.DateTime, default=datetime.now())
     image = db.Column(db.String(200), nullable=True)
 
