@@ -114,6 +114,8 @@ def search_rides():
                       }
 
         state = start_search['state']
+        if not state_to_timezone(state):
+            state = ''
         start_time = datetime.strptime("12:00 AM", '%I:%M %p')
         start_time = datetime.combine(datetime.now().date(), start_time.time())
         start_time = to_utc(state, start_time).time()
@@ -200,6 +202,8 @@ def json_test():
         except:
             # Blank start states default to 'US/Pacific'
             start_state = ''
+    if not state_to_timezone(start_state):
+        start_state = ''
 
     # convert dates and time to utc to be queried against db
     if date_from:
