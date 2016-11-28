@@ -93,22 +93,24 @@ def search_rides():
         # Start with 15mile square search
         miles = 25
         deg = miles_to_degrees(miles)
+
+
         
         # Get search terms lat/lng
-        start_lat = float(request.args.get('lat'))
-        start_lng = float(request.args.get('lng'))
-        end_lat = float(request.args.get('lat2'))
-        end_lng = float(request.args.get('lng2'))
+        start_lat = float(request.args.get('lat', '0.0'))
+        start_lng = float(request.args.get('lng', '0.0'))
+        end_lat = float(request.args.get('lat2', '0.0'))
+        end_lng = float(request.args.get('lng2', '0.0'))
 
         # Dicts holding search terms to be placed in DOM and used by AJAX when 
         #   user toggles search parameters
-        start_search = {"term": request.args.get('searchstring'),
-                        "state": request.args.get('administrative_area_level_1'),
+        start_search = {"term": request.args.get('searchstring',''),
+                        "state": request.args.get('administrative_area_level_1',''),
                         "lat": start_lat,
                         "lng": start_lng
                        }
-        end_search = {"term": request.args.get('searchstring2'),
-                      "state": request.args.get('administrative_area_level_1_2'),
+        end_search = {"term": request.args.get('searchstring2',''),
+                      "state": request.args.get('administrative_area_level_1_2',''),
                       "lat": end_lat,
                       "lng": end_lng
                       }
