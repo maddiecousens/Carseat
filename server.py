@@ -97,10 +97,10 @@ def search_rides():
 
         
         # Get search terms lat/lng
-        start_lat = float(request.args.get('lat', '0.0'))
-        start_lng = float(request.args.get('lng', '0.0'))
-        end_lat = float(request.args.get('lat2', '0.0'))
-        end_lng = float(request.args.get('lng2', '0.0'))
+        start_lat = float(request.args.get('lat', 0.0))
+        start_lng = float(request.args.get('lng', 0.0))
+        end_lat = float(request.args.get('lat2', 0.0))
+        end_lng = float(request.args.get('lng2', 0.0))
 
         # Dicts holding search terms to be placed in DOM and used by AJAX when 
         #   user toggles search parameters
