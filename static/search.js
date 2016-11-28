@@ -271,6 +271,9 @@ $(document).ajaxSuccess(function() {
             html += '<tr> \
                       <td> \
                         <p>No upcoming rides for that search</p> \
+                        <button type="button" class="btn all-rides"> \
+                        <a id="view-all-rides" href="/search?query=all">View All Rides</a> \
+                        </button> \
                       </td> \
                     </tr>';
         }

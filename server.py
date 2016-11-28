@@ -300,18 +300,9 @@ def process_rideform():
     # Convert to utc
     start_time = to_utc(start_state, start_time)
 
-    # calculate duration and mileage from gmaps api
-    gmaps = googlemaps.Client(key=GOOGLE_KEY)
-
     try:
-        directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
-                                             "{},{}".format(end_lat, end_lng),
-                                             traffic_model='best_guess',
-                                             departure_time=start_time)
-
-        duration = directions_result[0]['legs'][0]['duration']['text']
-
-        mileage = directions_result[0]['legs'][0]['distance']['text']
+        duration, mileage = get_directions(start_lat, start_lng, 
+                                           end_lat, end_lng, start_time)
     except:
         duration = None
         mileage = None
@@ -439,6 +430,11 @@ def user_profile(user_id):
     user = User.query.options(db.joinedload('rides_taking'), db.joinedload('rides_offered')).get(user_id)
     
     rides_offered = user.rides_offered
+
+    for ride in rides_offered:
+        ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
+        ride.start_timestamp = to_time_string(ride.start_state, ride.start_timestamp)
+
     rides_offered_requests = []
 
     # If there are requests for rides you are offering, append
@@ -447,7 +443,17 @@ def user_profile(user_id):
             rides_offered_requests.append(ride)
 
     rides_taking = user.rides_taking
+
+    for ride in rides_taking:
+        ride.start_timestamp = to_local(ride.start_state, ride.start_timestamp)
+        ride.start_timestamp = to_time_string(ride.start_state, ride.start_timestamp)
+    
     rides_taking_requests = Request.query.filter(Request.requester==user_id).all()
+
+    for request in rides_taking_requests:
+        request.ride.start_timestamp = to_local(request.ride.start_state, request.ride.start_timestamp)
+        request.ride.start_timestamp = to_time_string(request.ride.start_state, request.ride.start_timestamp)
+
 
     return render_template('profile.html',
                             user=user,
@@ -658,6 +664,25 @@ def to_time_string(state, datetime_obj):
         datetime_str = datetime_obj.strftime('%A, %b %d, %Y %-I:%M %p')
 
     return datetime_str
+
+def get_directions(start_lat, start_lng, end_lat, end_lng, start_time):
+    """
+    Takes in lat/lng's, start_time and returns duration/mileage using 
+    gmaps diretions API
+    """
+    # calculate duration and mileage from gmaps api
+    gmaps = googlemaps.Client(key=GOOGLE_KEY)
+
+    directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
+                                         "{},{}".format(end_lat, end_lng),
+                                         traffic_model='best_guess',
+                                         departure_time=start_time)
+
+    duration = directions_result[0]['legs'][0]['duration']['text']
+
+    mileage = directions_result[0]['legs'][0]['distance']['text']
+
+    return (duration, mileage)
 
 def validate_ride(ride):
     attributes = ["driver",

@@ -89,15 +89,11 @@ def all_data():
                 tz = state_to_timezone(geocode[route]['start_state'])
                 start_time_aware = pytz.timezone(tz).localize(start_datetime)
 
-                print '\n\n{},{},{},{},{}\n\n'.format(start_time, today, start_datetime, tz, start_time_aware)
-
                 try:
                     directions_result = gmaps.directions("{},{}".format(start_lat, start_lng),
                                                      "{},{}".format(end_lat, end_lng),
                                                      traffic_model='best_guess',
                                                      departure_time=start_time_aware)
-
-                    print 'made it past directions_result'
 
                     geocode[route]['duration'] = directions_result[0]['legs'][0]['duration']['text']
 
@@ -226,6 +222,7 @@ def example_data():
     os.system("psql testdb < testdb.sql")
     print 'loaded db'
     db.create_all()
+    
 
     rides = Ride.query.all()
 
@@ -425,8 +422,8 @@ def set_val_rider_id():
     db.session.commit()
 
 if __name__ == "__main__":
-    connect_db(app)
 
+    connect_db(app, os.environ.get("DATABASE_URL"))
     all_data()
     set_val_user_id()
     # set_val_rider_id()

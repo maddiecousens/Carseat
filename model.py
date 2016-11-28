@@ -235,7 +235,8 @@ def connect_db(app, db_uri=None):
     """Connect db to Flask app"""
 
     # Configure connection to PostgreSQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql:///testdb'
+    print '\n\nDATABSE URI: {}\n\n'.format(db_uri)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri #or 'postgres://tinmtubgipfpmw:6dwOzX7tRP8fpJv-oACHISxQn5@ec2-54-83-22-233.compute-1.amazonaws.com:5432/damstqgfr09imr'
 
     # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app

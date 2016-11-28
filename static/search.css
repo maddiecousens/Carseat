@@ -96,7 +96,7 @@ span.glyphicon-unchecked {
     padding-right:20px; border-right: 1px solid #ccc;
 }
 
-.request-seats {
+.request-seats, .all-rides {
     background-color: hsl(282, 38%, 48%) !important;
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#924faf", endColorstr="#8d4ba8");
@@ -123,6 +123,9 @@ span.glyphicon-unchecked {
 }
 #seats {
     width: auto;
+}
+#view-all-rides {
+    color: white;
 }
 
 .view-route-btn:hover {

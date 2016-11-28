@@ -17,15 +17,14 @@
 
 {% if rides_offered_requests %}
 
+    <div class="row">
     <table class="table table-hover">
-    <h2>Approve/Deny Ride Requests</h2>
+    <h2>Please Process the below Requests</h2>
     <thead>
       <tr>
         <th>Date</th>
         <th>From</th>
-        <th>Time</th>
         <th>To</th>
-        <th>Time</th>
         <th>Cost</th>
         <th>Requester</th>
         <th>Seats Requested</th>
@@ -37,12 +36,10 @@
 
 {% for request in ride.requests %}
       <tr>
-        <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.start_timestamp }}</td>
         <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
-        <td>{{ ride.start_timestamp.strftime('%H:%M') }}</td>
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
-        <td>hi</td>
-        <td>{{ ride.cost }}</td>
+        <td>${{ ride.cost }}</td>
         <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
         <td>{{ request.seats }}</td>
         <td>
@@ -63,21 +60,20 @@
 {% endfor %}
     </tbody>
   </table>
+</div>
 
 {% endif %}
 
 
 {% if rides_taking_requests %}
-
+    <div class="row">
     <table class="table table-hover">
-    <h2>Requested Rides - pending</h2>
+    <h2>Your Pending Requests</h2>
     <thead>
       <tr>
         <th>Date</th>
         <th>From</th>
-        <th>Time</th>
         <th>To</th>
-        <th>Time</th>
         <th>Cost</th>
         <th>Driver</th>
         <th>Seats Requested</th>
@@ -87,34 +83,31 @@
 {% for request in rides_taking_requests %}
 
       <tr>
-        <td>{{ request.ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ request.ride.start_timestamp }}</td>
         <td>{{ request.ride.start_city }}, {{ request.ride.start_state }}</td>
-        <td>{{ request.ride.start_timestamp.strftime('%H:%M') }}</td>
         <td>{{ request.ride.end_city }}, {{ request.ride.end_state }}</td>
-        <td></td>
-        <td>{{ request.ride.cost }}</td>
+        <td>${{ request.ride.cost }}</td>
         <td>{{ request.ride.user.first_name }}</td>
         <td>{{ request.seats }}</td>
       </tr>
 {% endfor %}
     </tbody>
   </table>
+</div>
 
 {% endif %}
 
 
 {% if rides_offered %}
 
-<div class="container">
+<div class="row">
     <table class="table table-hover">
-    <h2>Upcoming Rides you have offered</h2>
+    <h2>You're Driving for these trips</h2>
     <thead>
       <tr>
         <th>Date</th>
         <th>From</th>
-        <th>Time</th>
         <th>To</th>
-        <th>Time</th>
         <th>Seats</th>
         <th>Cost</th>
       </tr>
@@ -122,34 +115,31 @@
     <tbody>
     {% for ride in rides_offered %}
       <tr>
-        <td>{{ ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.start_timestamp }}</td>
         <td>{{ ride.start_city }}, {{ ride.start_state }}</td>
-        <td>{{ ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.end_city }}, {{ ride.end_state }}</td>
-        <td>hi</td>
         <td>{{ ride.seats }}</td>
-        <td>{{ ride.cost }}</td>
+        <td>${{ ride.cost }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+</div>
 
 {% endif %}
 
 
 {% if rides_taking %}
 
-<div class="container">
+<div class="row">
     <table class="table table-hover">
-    <h2>Upcoming Rides you are taking</h2>
+    <h2>You're riding on these trips</h2>
     <thead>
       <tr>
         <th>Date</th>
         <th>Driver</th>
         <th>From</th>
-        <th>Time</th>
         <th>To</th>
-        <th>Time</th>
         <th>Seats</th>
         <th>Cost</th>
       </tr>
@@ -157,18 +147,17 @@
     <tbody>
     {% for ride in rides_taking %}
       <tr>
-        <td>{{ ride.ride.start_timestamp.strftime('%Y-%m-%d') }}</td>
+        <td>{{ ride.ride.start_timestamp }}</td>
         <td>{{ ride.ride.user.first_name }} {{ ride.ride.user.last_name }}</td>
         <td>{{ ride.ride.start_city }}, {{ ride.ride.start_state }}</td>
-        <td>{{ ride.ride.start_timestamp.strftime('%H:%M')}}</td>
         <td>{{ ride.ride.end_city }}, {{ ride.ride.end_state }}</td>
-        <td>hi</td>
         <td>{{ ride.ride.seats }}</td>
-        <td>{{ ride.ride.cost }}</td>
+        <td>${{ ride.ride.cost }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+</div>
 
 {% endif %}
 

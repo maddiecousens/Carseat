@@ -7,6 +7,7 @@ from helperfunctions import state_to_timezone, miles_to_degrees
 from datetime import datetime
 from xmltest import XMLAssertions
 import json
+from flask import session
 
 class CarseatUnitTestCase(unittest.TestCase):
     """Unit Tests"""
@@ -25,11 +26,11 @@ class CarseatUnitTestCase(unittest.TestCase):
     # Server functions
 
     # to_time_string
-    def test_to_time_string(self):
-        self.assertIn('Tomorrow', server.to_time_string('CA', datetime.now() + timedelta(days = 1)))
+    # def test_to_time_string(self):
+    #     self.assertIn('Tomorrow', server.to_time_string('CA', datetime.now() + timedelta(days = 1)))
 
-    def test_to_time_string2(self):
-        self.assertIn('Today', server.to_time_string('CA', datetime.now()))
+    # def test_to_time_string2(self):
+    #     self.assertIn('Today', server.to_time_string('CA', datetime.now()))
 
     # to_utc
     def test_to_utc(self):
@@ -49,30 +50,40 @@ class CarseatUnitTestCase(unittest.TestCase):
         local_ny = server.to_local('NY', datetime.utcnow())
         self.assertEqual(local_ny.timetuple().tm_hour - local_ca.timetuple().tm_hour, 3)
 
-
 class FlaskTests(unittest.TestCase):
+
     def setUp(self):
+        """Do at beginning of every test."""
         # Get the Flask test client
         self.client = app.test_client()
 
         # Show Flask errors that happen during tests
         app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = "abcdef"
 
         # Connect to test database
         connect_db(app, "postgresql:///testdb")
-
-        # example_data()
         
-    def tearDown(self):
-            """Do at end of every test."""
 
-            db.session.close()
-            # db.drop_all()
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['current_user'] = 1
+
+        
+        def _mock_get_directions(start_lat, start_lng, end_lat, end_lng, start_time):
+            return ('9 hours 34 mins', '633 mi')
+
+        server.get_directions = _mock_get_directions
+
+    def tearDown(self):
+        """Do at end of every test."""
+        db.session.close()
+        # db.drop_all()
 
     # Test Database
     def test_does_ride_exist(self):
         """Can we find an employee in the sample data?"""
-
+        # example_data()
         driver1 = Ride.query.filter(Ride.driver == 1).first()
         self.assertEqual(driver1.user.first_name, "Maddie")
     # Test Homepage
@@ -178,6 +189,46 @@ class FlaskTests(unittest.TestCase):
     def test_rideform(self):
         result = self.client.get('/post-ride')
         self.assertIn('<h3>Offer Seats on your next trip</h3>', result.data)
+
+
+
+    def test_post_ride(self):
+        # with app.test_client() as client:
+        #     with client.session_transaction() as session:
+        #         # Modify the session in this context block.
+        #         session["current_user"] = "1"
+
+        data = {'seats': '2',
+                'cost': '30.00',
+                'start_address': 'Hackbright Academy, Sutter Street, San Francisco, CA, United States',
+                'lat': '37.7887459',
+                'lng': '-122.41158519999999',
+                'street_number': '',
+                'route': '',
+                'locality': 'San Francisco',
+                'administrative_area_level_1': 'CA',
+                'postal_code': '94109',
+                'end-address': 'Las Vegas, NV, United States',
+                'lat2': '36.1699412',
+                'lng2': '-115.13982959999998',
+                'street_number2': '',
+                'route2': '' ,
+                'locality2': 'Las Vegas' ,
+                'administrative_area_level_1_2': 'NV',
+                'postal_code2': '',
+                'date' : '01/21/2017',
+                'time' : '4:30 PM',
+                'luggage': 'medium',
+                'comments': 'Short Trip.',
+                'pickup-window': 'flexible',
+                'detour': '30 min',
+                'cartype': 'Honda'
+        }
+        
+        result = self.client.post('/post-ride', data=data, follow_redirects=True)
+        # import pdb; pdb.set_trace()
+        self.assertIn('<td>Las Vegas, NV</td>', result.data)
+        
 
 
 
