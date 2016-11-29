@@ -1,6 +1,6 @@
 [![N|Solid](https://i.imgsafe.org/ce014708f3.png)](http://carseat.maddiecousens.com/)
 
-##### App by **Maddie Cousens**, read more about the developer on her [LinkedIn]<br><br>
+##### App by **Maddie Cousens**, read more about the developer on her [LinkedIn]<br>
 ###### Deployed Site: [carseat.maddiecousens.com]<br>
 
 **Carseat** is a green platform for connecting travelers with open seats in cars. Travelers can efficiently search the ride database by location, date, pickup time, and cost. Drivers can post rides, specifying details such as drop-off and pickup-points, seats available, space for luggage, cost, and flexibility on pick-up time and detours. A request system allows drivers to approve travelers for their trip.
@@ -19,12 +19,12 @@ __Deployed:__ Heroku<br>
 Dependencies in requirements.txt
 
 ## <a name="features"></a>Features
-##### Search for rides by location.<br>
-*Tech Highlights:* Google Maps Places API Autocomplete<br>
+#### Search for rides by location.<br>
+##### *Tech Highlights:* Google Maps Places API Autocomplete<br>
 ![autocomplete](/static/img/_readme/autocomplete.gif)
 
 ##### Sort Rides by Departure Time, Date, Cost<br>
-*Tech Highlights:* Toggles bound to jQuery event listener, event handlers make AJAX call then re-render search results in DOM via Javascript<br>
+###### *Tech Highlights:* Toggles bound to jQuery event listener, event handlers make AJAX call then re-render search results in DOM via Javascript<br>
 ![search_toggles](/static/img/_readme/search_toggles.gif)
 
 ##### Add Search Locations, Reverse Input<br>
