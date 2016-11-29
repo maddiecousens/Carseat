@@ -23,34 +23,34 @@ Dependencies in requirements.txt
 ##### *Tech Highlights:* Google Maps Places API Autocomplete<br>
 ![autocomplete](/static/img/_readme/autocomplete.gif)
 
-##### Sort Rides by Departure Time, Date, Cost<br>
-###### *Tech Highlights:* Toggles bound to jQuery event listener, event handlers make AJAX call then re-render search results in DOM via Javascript<br>
+#### Sort Rides by Departure Time, Date, Cost<br>
+##### *Tech Highlights:* Toggles bound to jQuery event listener, event handlers make AJAX call then re-render search results in DOM via Javascript<br>
 ![search_toggles](/static/img/_readme/search_toggles.gif)
 
-##### Add Search Locations, Reverse Input<br>
-*Tech Highlights:* Google Maps Places Autocomplete API, Javascript<br>
+#### Add Search Locations, Reverse Input<br>
+##### *Tech Highlights:* Google Maps Places Autocomplete API, Javascript<br>
 ![reverse_input](/static/img/_readme/reverse_input.gif)
 
-##### Pagination
-*Tech Highlights:* jQuery event listeners on pagination buttons, event handler makes AJAX call, SQLAlchemy adds offset parameter. Offset stored as html data attribute so 'previous' and 'next' can calculate current page<br>
+#### Pagination
+##### *Tech Highlights:* jQuery event listeners on pagination buttons, event handler makes AJAX call, SQLAlchemy adds offset parameter. Offset stored as html data attribute so 'previous' and 'next' can calculate current page<br>
 ![pagination](/static/img/_readme/pagination.png)
 
-##### Request Seats & Facebook OAuth Login
-*Tech Highlights:* Facebook OAuth, Javascript SDK<br>
+#### Request Seats & Facebook OAuth Login
+##### *Tech Highlights:* Facebook OAuth, Javascript SDK<br>
 ![login](/static/img/_readme/login.gif)
 
-##### View Route
-*Tech Highlights:* Google Maps API<br>
+#### View Route
+##### *Tech Highlights:* Google Maps API<br>
 ![login](/static/img/_readme/view_route.gif)
 
-##### Sort by Time, Cost, Date
-*Tech Highlights:* SQLAlchemy order_by filter. Custom ordering for Time to handle ordering in UTC<br>
+#### Sort by Time, Cost, Date
+##### *Tech Highlights:* SQLAlchemy order_by filter. Custom ordering for Time to handle ordering in UTC<br>
 ![login](/static/img/_readme/sort_by.gif)
 
-##### ##### Approve/Reject Requests
+#### Approve/Reject Requests
 ![login](/static/img/_readme/approve_reject.gif)
 
-##### Post Ride
+#### Add Ride to database
 ![login](/static/img/_readme/post_ride.png)
 
 ## <a name="setup"></a>Setup and Installation
