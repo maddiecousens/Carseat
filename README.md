@@ -11,20 +11,22 @@ Deployed Site: [carseat.maddiecousens.com]
 * [Setup Installation](#setup)
 
 ## <a name="techused"></a>Technologies Used
+__Backend:__ Python, Flask, PostgreSQL, SQLAlchemy, Scrapy
+__Frontend:__ Javascript, jQuery, AJAX, Bootstrap
+__APIs:__ Google Maps: Places, Directions, Geocode API, Facebook OAuth
+__Deployed:__ Heroku
 
-* Python
-* Javascript/jQuery
-* Flask
-* PostgreSQL
-* SQLalchemy
-* AJAX/JSON
-* Bootstrap
-* Deployed via Heroku
-* API's: Google Maps Places, Directions, Geocoder API
 
 Dependencies in requirements.txt
 
 ## <a name="features"></a>Features
+Search for rides via location.
+Tech Highlights: Google Maps Places API Autocomplete
+![autocomplete](/static/img/_readme/autocomplete.gif)
+
+Sort Rides by Departure time, Date, Cost
+Tech Highlights: AJAX, Jquery
+![search_toggles](/static/img/_readme/search_toggles.gif)
 
 ## <a name="setup"></a>Setup and Installation
 hi
