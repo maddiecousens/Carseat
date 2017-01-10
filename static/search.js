@@ -286,7 +286,8 @@ $(document).ajaxSuccess(function() {
     function newSearch(evt) {
         // If user doesn't enter a from date, make it todays date
         var today = new Date()
-        var today_string = (today.getMonth() 
+        var month = today.getMonth() + 1
+        var today_string = (month
                         + '/' 
                         + today.getDate() 
                         + '/' 

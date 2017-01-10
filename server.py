@@ -94,8 +94,6 @@ def search_rides():
         miles = 25
         deg = miles_to_degrees(miles)
 
-
-        
         # Get search terms lat/lng
         start_lat = request.args.get('lat')
         start_lng = request.args.get('lng')
